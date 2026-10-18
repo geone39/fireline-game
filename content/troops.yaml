@@ -1,0 +1,34 @@
+# content/troops.yaml — owner: module `content` (stats by `balance`). Level-1 values; level n: hp*=1.18^(n-1), dps*=1.16^(n-1).
+# tile = 1 grid cell; speed tiles/s; dps = damage per second vs preferred; range 0 = melee.
+schema: 1
+classes: {INF: infantry, VEH: vehicle, AIR: air, SEA: ship}
+troops:
+  - {id: u_rifleman, name_key: u.rifleman, role: "Пехотинец: универсал, дёшев, толпой хорош", class: INF, hp: 55, dps: 9,  range: 4.5, speed: 2.0, housing: 1, train_s: 12,  cost: {fuel: 25},  fav: any,      unlock: {barracks: 1, hq: 1}}
+  - {id: u_brawler,  name_key: u.brawler,  role: "Штурмовик: ближний бой, высокий урон, крепкий", class: INF, hp: 190, dps: 34, range: 0, speed: 1.6, housing: 4, train_s: 45, cost: {fuel: 110}, fav: any,    unlock: {barracks: 2, hq: 2}}
+  - {id: u_sniper,   name_key: u.sniper,   role: "Снайпер: далеко бьёт, очень хрупкий, приоритет — стрелки/пулемёты", class: INF, hp: 30, dps: 28, range: 9.0, speed: 1.8, housing: 2, train_s: 30, cost: {fuel: 70}, fav: defence_gunners, unlock: {barracks: 3, hq: 3}}
+  - {id: u_dasher,   name_key: u.dasher,   role: "Рейдер: долго и быстро бежит, бьёт слабо, мало HP; бросается на ресурсные постройки", class: INF, hp: 40, dps: 11, range: 0, speed: 4.2, housing: 1, train_s: 14, cost: {fuel: 30}, fav: resource, unlock: {barracks: 2, hq: 2}}
+  - {id: u_breacher, name_key: u.breacher, role: "Подрывник: взрывается у заборов/проволоки (x40 урона по стенам)", class: INF, hp: 35, dps: 0,  burst: 160, wall_mult: 40, range: 0, speed: 2.6, housing: 2, train_s: 25, cost: {fuel: 60}, fav: walls, unlock: {barracks: 3, hq: 3}}
+  - {id: u_medic,    name_key: u.medic,    role: "Медик: лечит пехоту рядом, не атакует", class: INF, hp: 60, dps: 0, heal_ps: 14, range: 4.0, speed: 2.0, housing: 3, train_s: 40, cost: {fuel: 95}, fav: none, unlock: {barracks: 4, hq: 4}}
+  - {id: u_grenadier,name_key: u.grenadier,role: "Гренадёр: гранаты по площади, плох против одиночных целей", class: INF, hp: 75, dps: 18, splash_r: 1.5, range: 6.0, speed: 1.7, housing: 3, train_s: 40, cost: {fuel: 90}, fav: any, unlock: {barracks: 4, hq: 4}}
+  - {id: u_flamer,   name_key: u.flamer,   role: "Огнемётчик: короткая дистанция, конус; чистит пехоту гарнизона и проволоку", class: INF, hp: 120, dps: 48, range: 2.2, speed: 1.7, housing: 4, train_s: 55, cost: {fuel: 130}, fav: any, unlock: {barracks: 5, hq: 5}}
+  - {id: u_saboteur, name_key: u.saboteur, role: "Диверсант: глушит оборонительную постройку на 8 с (EMP-заряд)", class: INF, hp: 45, dps: 0, jam_s: 8, range: 0, speed: 3.0, housing: 3, train_s: 50, cost: {fuel: 120}, fav: defence, unlock: {barracks: 6, hq: 6}}
+  - {id: u_heavy,    name_key: u.heavy,    role: "Тяжёлый пехотинец: щит-танк, притягивает огонь (fav=defence)", class: INF, hp: 520, dps: 24, range: 0, speed: 1.2, housing: 6, train_s: 90, cost: {fuel: 280}, fav: defence, unlock: {barracks: 7, hq: 7}}
+  - {id: u_drone,    name_key: u.drone,    role: "Дрон-бомбардир: летит над стенами, бросает заряд; уязвим для ПВО", class: AIR, hp: 70, dps: 40, range: 0, speed: 3.2, housing: 3, train_s: 60, cost: {fuel: 140}, fav: any, unlock: {barracks: 6, hq: 6}}
+  - {id: u_paratrooper, name_key: u.paratrooper, role: "Десант: сбрасывается пачкой по 4 в любую точку радиуса 3 от края", class: INF, hp: 50, dps: 20, range: 4.0, speed: 2.0, housing: 5, train_s: 70, cost: {fuel: 170}, fav: any, unlock: {barracks: 8, hq: 8}}
+vehicles:   # from Vehicle Factory; cost in cash+alloy; housing in garage slots
+  - {id: v_humvee,   name_key: v.humvee,   role: "Хамви с пулемётчиком: быстрая машина, пулемёт по пехоте", class: VEH, hp: 260, dps: 22, range: 6.0, speed: 3.6, housing: 5, train_s: 120, cost: {cash: 400}, fav: any, unlock: {factory: 1, hq: 3}}
+  - {id: v_apc,      name_key: v.apc,      role: "БТР: везёт 6 пехотинцев, высаживает внутри базы при уничтожении или по команде", class: VEH, hp: 700, dps: 16, range: 5.0, speed: 2.4, carries: 6, housing: 8, train_s: 240, cost: {cash: 900}, fav: any, unlock: {factory: 2, hq: 5}}
+  - {id: v_tank,     name_key: v.tank,     role: "Танк: пушка, хорош против построек", class: VEH, hp: 1100, dps: 55, range: 7.0, speed: 1.8, housing: 12, train_s: 420, cost: {cash: 1800, alloy: 20}, fav: defence, unlock: {factory: 3, hq: 7}}
+  - {id: v_mortar,   name_key: v.artillery,role: "Самоходка: дальний обстрел по площади, беззащитна вблизи", class: VEH, hp: 400, dps: 38, splash_r: 2.0, range: 12.0, speed: 1.4, housing: 10, train_s: 360, cost: {cash: 1500, alloy: 15}, fav: defence, unlock: {factory: 4, hq: 8}}
+  - {id: v_engineer, name_key: v.engineer, role: "Ремонтная машина: чинит технику рядом", class: VEH, hp: 500, dps: 0, heal_ps: 40, range: 4.5, speed: 2.2, housing: 8, train_s: 300, cost: {cash: 1100, alloy: 10}, fav: none, unlock: {factory: 5, hq: 9}}
+ships:      # from Shipyard; only on bases with a coastline map (water tiles); attackers sail in, defenders get coastal batteries
+  - {id: s_gunboat,  name_key: s.gunboat,  role: "Катер: быстрый обстрел береговой линии", class: SEA, hp: 600, dps: 30, range: 8.0, speed: 3.0, housing: 6, train_s: 300, cost: {cash: 700}, unlock: {shipyard: 1, hq: 4}}
+  - {id: s_lander,   name_key: s.lander,   role: "Десантный катер: везёт 10 пехотинцев и высаживает на берегу", class: SEA, hp: 900, dps: 0, carries: 10, range: 0, speed: 2.5, housing: 8, train_s: 400, cost: {cash: 1200}, unlock: {shipyard: 2, hq: 6}}
+  - {id: s_destroyer,name_key: s.destroyer,role: "Эсминец: дальнобойные орудия + ПВО-зонтик над своими", class: SEA, hp: 2400, dps: 60, splash_r: 1.8, range: 11.0, speed: 1.6, housing: 14, train_s: 900, cost: {cash: 3500, alloy: 40}, unlock: {shipyard: 4, hq: 9}}
+spells:     # "Support calls" — one-shot abilities from Support Bay (same role as CoC spells); cost fuel
+  - {id: c_airstrike,name_key: c.airstrike,role: "Авиаудар: урон в круге r=3 за 4 с", dmg_total: 600, radius: 3.0, housing: 2, cost: {fuel: 150}, unlock: {hq: 4}}
+  - {id: c_smoke,    name_key: c.smoke,    role: "Дымовая завеса: враг не видит цели внутри 8 с (падает точность по пехоте)", radius: 3.5, duration_s: 8, housing: 1, cost: {fuel: 80}, unlock: {hq: 3}}
+  - {id: c_medkit,   name_key: c.medkit,   role: "Аптечка: лечит пехоту 12 с", radius: 3.0, heal_total: 400, housing: 1, cost: {fuel: 90}, unlock: {hq: 3}}
+  - {id: c_adrenaline,name_key: c.adrenaline, role: "Адреналин: +40% скорость и +25% урон на 10 с", radius: 3.0, duration_s: 10, housing: 1, cost: {fuel: 110}, unlock: {hq: 5}}
+  - {id: c_emp,      name_key: c.emp,      role: "ЭМИ: выключает все постройки в радиусе на 6 с", radius: 3.5, duration_s: 6, housing: 2, cost: {fuel: 170}, unlock: {hq: 6}}
+  - {id: c_breach,   name_key: c.breach,   role: "Пролом: мгновенно уничтожает стены в круге r=2", radius: 2.0, housing: 2, cost: {fuel: 140}, unlock: {hq: 5}}

@@ -1,0 +1,7 @@
+/sim/              @team-sim
+/server/           @team-server
+/client/           @team-client
+/content/          @team-design @team-economy
+/tools/econ_sim.py @team-economy
+/docs/design/      @team-design
+/docs/variants/    @product-owner

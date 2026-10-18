@@ -1,0 +1,37 @@
+# content/economy.yaml — owner: module `economy`. Values calibrated by tools/econ_sim.py (run it after any change).
+schema: 1
+resources:
+  cash:  {kind: soft, name_key: res.cash,  use: "build, upgrade defences/walls, train vehicles"}
+  fuel:  {kind: soft, name_key: res.fuel,  use: "train troops, research, heroes ability refills"}
+  alloy: {kind: rare, name_key: res.alloy, use: "heroes, tier-3 vehicles/ships, rush-free premium-lite upgrades", unlock_hq: 4}
+  gems:  {kind: premium, name_key: res.gems, use: "skip timers, extra builder, cosmetics, battle pass", sources: [campaign_first_clear, achievements, daily_quest, purchase]}
+  trophies: {kind: score, name_key: res.trophies, use: "league ladder; not spendable"}
+builders: {hq_level: {1: 2, 2: 2, 3: 3, 4: 3, 5: 4, 6: 4, 7: 5, 8: 5, 9: 5, 10: 5}, extra_builder_gems: 250}
+progression: {hq_max_release1: 10, target_days_casual: {1: 1, 2: 2, 3: 4, 4: 7, 5: 11, 6: 16, 7: 22, 8: 30, 9: 40, 10: 52}}
+costs:   # total bill per HQ level (informs per-building tables); formula = base * growth^(L-1)
+  cash: {base: 2000, growth: 2.05}
+  fuel: {base: 1200, growth: 2.10}
+  time_growth_per_level: 1.6
+passive:
+  collectors_count: "min(2 + L // 2, 6)"
+  rate_per_hour_each: {base: 40, growth: 1.62}
+  storage_per_resource: {base: 1500, growth: 2.0}
+  offline_accrual_cap_pct_of_storage: 50   # collector's own pool; forces return visits 2-3x/day
+raids:
+  loot_pct_of_victim_stock_full_win: 0.225   # LOOT_PCT 0.075 * 3 ; applies to lootable stock only
+  star_multiplier: {0: 0.0, 1: 0.40, 2: 0.70, 3: 1.00}
+  loot_cap_pct_of_attacker_storage: 0.35
+  shield_hours_by_stars_lost: {1: 16, 2: 12, 3: 8}
+  max_raids_on_one_base_per_day: 3
+  same_pair_cooldown_hours: 24
+  max_daily_loot_loss_pct: 0.35          # anti-grief floor protection
+  protected_stock_pct: 0.20              # Vault “safe” part never lootable
+  matchmaking: {trophy_window: 150, search_cost_cash_by_hq: "round(20 * 1.9^(L-1), -1)", reroll_allowed: true}
+  trophies: {win_base: 30, loss_base: -22, star_bonus: 8, league_gap_scale: true}
+campaign:
+  energy: {max: 6, regen_minutes: 120, per_stage: 2}   # = ~3 stages/day cap -> deliberate slow-down
+  payout_multiplier_vs_raid: 1.6
+  first_clear_gems: [10, 15, 20]
+  bots_never_gain_loot_from_player: true
+daily_budget_target_pct: {passive: 50, raids: 38, campaign: 12}
+pacing_targets_days_cumulative: {casual: {2: 1, 5: 25, 8: 93, 10: 185}, active: {2: 1, 5: 21, 8: 73, 10: 142}}

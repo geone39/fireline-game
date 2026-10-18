@@ -1,0 +1,20 @@
+# content/defences.yaml — defender-side structures. Level n: hp*=1.2^(n-1), dps*=1.17^(n-1). Footprints in tiles (w x h).
+schema: 1
+passive_obstacles:   # block movement; attackers must destroy or path around (path-around is the whole puzzle of base design)
+  - {id: d_wire,     name_key: d.wire,     role: "Колючая проволока: замедляет пехоту на 50% и ранит; дёшева, обходима", size: [1,1], hp: 90,  slow_pct: 50, dot_dps: 4, blocks: false, cost: {cash: 40}, unlock_hq: 1, max_count_by_hq: {1: 20, 5: 60, 10: 120}}
+  - {id: d_fence,    name_key: d.fence,    role: "Забор: стенка, сломать можно; HP низкие, но линия длинная", size: [1,1], hp: 300, blocks: true, cost: {cash: 60}, unlock_hq: 1, max_count_by_hq: {1: 40, 5: 120, 10: 250}}
+  - {id: d_wall,     name_key: d.wall,     role: "Бетонная стена: HP высокие, апгрейды до ур.12", size: [1,1], hp: 900, blocks: true, cost: {cash: 400}, unlock_hq: 4, max_count_by_hq: {4: 60, 7: 160, 10: 250}}
+  - {id: d_tank_trap,name_key: d.tank_trap,role: "Ёж: блокирует технику, пехота проходит", size: [1,1], hp: 600, blocks: vehicles, cost: {cash: 250}, unlock_hq: 5, max_count_by_hq: {5: 20, 10: 60}}
+  - {id: d_mine,     name_key: d.mine,     role: "Мина: невидима для атакующего до срабатывания; урон по площади, одноразовая", size: [1,1], hp: 1, burst: 180, splash_r: 1.2, vs: [INF,VEH], rearm_cost: {cash: 80}, unlock_hq: 2, max_count_by_hq: {2: 3, 6: 8, 10: 14}}
+  - {id: d_spring_trap, name_key: d.spring_trap, role: "Пружинная ловушка: подкидывает одного лёгкого юнита за стену", size: [1,1], hp: 1, vs: [INF], max_hp_flung: 160, unlock_hq: 4, max_count_by_hq: {4: 2, 10: 8}}
+active:
+  - {id: d_mg_nest,  name_key: d.mg_nest,  role: "Пулемётное гнездо: скорострельное, по пехоте и дронам", size: [2,2], hp: 420, dps: 30, range: 7.0, vs: [INF, AIR], cost: {cash: 600}, unlock_hq: 1, max_count_by_hq: {1: 1, 3: 3, 6: 5, 9: 7}}
+  - {id: d_sniper_tower, name_key: d.sniper_tower, role: "Снайперская вышка: дальняя, одиночный урон; слепая зона r=2", size: [2,2], hp: 520, dps: 70, range: 11.0, min_range: 2.0, vs: [INF], cost: {cash: 1100}, unlock_hq: 3, max_count_by_hq: {3: 1, 6: 3, 9: 4}}
+  - {id: d_mortar,  name_key: d.mortar,    role: "Миномёт: по площади, медленный, не бьёт по близким целям; слаб против быстрых", size: [3,3], hp: 600, dps: 22, splash_r: 1.6, range: 10.0, min_range: 3.0, vs: [INF], cost: {cash: 1500}, unlock_hq: 2, max_count_by_hq: {2: 1, 5: 3, 9: 4}}
+  - {id: d_at_cannon,name_key: d.at_cannon,role: "ПТ-пушка: хороша против техники и кораблей", size: [2,2], hp: 750, dps: 85, range: 8.0, vs: [VEH, SEA], cost: {cash: 2000}, unlock_hq: 4, max_count_by_hq: {4: 1, 7: 3, 10: 4}}
+  - {id: d_aa,       name_key: d.aa,       role: "ПВО-зенитка: только воздух", size: [2,2], hp: 520, dps: 60, range: 9.0, vs: [AIR], cost: {cash: 1800}, unlock_hq: 5, max_count_by_hq: {5: 1, 8: 3, 10: 4}}
+  - {id: d_flame_trap,name_key: d.flame_trap, role: "Огневая ловушка: конус вдоль прохода, перегрев после 6 с", size: [2,2], hp: 380, dps: 90, range: 3.0, vs: [INF], cost: {cash: 2400}, unlock_hq: 6, max_count_by_hq: {6: 1, 10: 3}}
+  - {id: d_bunker,   name_key: d.bunker,   role: "Бункер: внутри до 6 пехотинцев-защитников (из казармы защиты), которые выходят в бой", size: [3,3], hp: 1400, garrison: 6, cost: {cash: 3000}, unlock_hq: 5, max_count_by_hq: {5: 1, 8: 2, 10: 3}}
+  - {id: d_jammer,   name_key: d.jammer,   role: "Генератор помех: Support calls врага (авиаудар/ЭМИ) в радиусе 8 получают -50%", size: [2,2], hp: 450, aura_r: 8, cost: {cash: 2800}, unlock_hq: 7, max_count_by_hq: {7: 1, 10: 2}}
+  - {id: d_coastal, name_key: d.coastal,   role: "Береговая батарея: только по кораблям, огромная дальность", size: [3,3], hp: 1000, dps: 110, range: 14.0, vs: [SEA], cost: {cash: 3200}, unlock_hq: 4, requires_water: true, max_count_by_hq: {4: 1, 8: 3, 10: 4}}
+  - {id: d_tesla,    name_key: d.tesla,    role: "Дуга Теслы: цепная молния до 4 целей; топ-тир, дорогая", size: [2,2], hp: 800, dps: 120, chain: 4, range: 7.0, vs: [INF, VEH], cost: {cash: 5200, alloy: 40}, unlock_hq: 9, max_count_by_hq: {9: 1, 10: 2}}

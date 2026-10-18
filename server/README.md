@@ -1,0 +1,1 @@
+# Сервер (Go). Пока заготовка. См. modules/server-core, raid, base, army, campaign, economy. Структура: cmd/api, gateway/, auth/, db/, migrations/, svc/{profile,base,army,raid,campaign,economy,league,notify,shop}, jobs/.

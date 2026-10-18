@@ -1,0 +1,18 @@
+# content/campaign.yaml — bot bases. Same battle engine, bases are hand-authored layouts (content/campaign/*.yaml). Energy gated.
+schema: 1
+chapters:
+  - id: ch1
+    name_key: ch.1
+    title_placeholder: "Первый плацдарм"
+    unlock_hq: 1
+    stages: 10
+    boss_stage: 10
+    stage_loot_base: {cash: 400, fuel: 250}   # scaled by STAGE_SCALE below
+    first_clear: {gems: 10, unit_unlock: u_dasher}
+    story_beats: [intro_briefing, mid_twist, boss_fall]
+  - {id: ch2, title_placeholder: "Береговая линия", unlock_hq: 4, stages: 12, boss_stage: 12, first_clear: {gems: 15, unit_unlock: s_gunboat}, requires_water: true}
+  - {id: ch3, title_placeholder: "Индустриальный пояс", unlock_hq: 6, stages: 14, boss_stage: 14, first_clear: {gems: 20}}
+  - {id: ch4, title_placeholder: "Крепость командира", unlock_hq: 8, stages: 16, boss_stage: 16, first_clear: {gems: 25, hero: h_warden}}
+stage_scale: "loot = base * 1.18^(stage-1) * hq_factor ; hq_factor = 2.05^(hq-1)/2.05^(chapter_hq-1) capped"
+modifiers_pool: [night_vision_off, fog_of_war, minefield_heavy, reinforcements_on_hq_hit, timer_90s, no_air_support, heroes_only]
+bot_ai: {defend_style: [turtle, spread, kill_zone, bait], ai_garrison_wakes_on_trigger_range: true, bots_can_be_replayed: true, replay_pays_pct: 40}

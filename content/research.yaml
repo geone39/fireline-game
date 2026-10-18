@@ -1,0 +1,16 @@
+# content/research.yaml — Laboratory. One research at a time. Each node raises max level of an item; time/cost by tier.
+schema: 1
+tiers: {1: {fuel: 800, hours: 2}, 2: {fuel: 3000, hours: 8}, 3: {fuel: 12000, hours: 24}, 4: {fuel: 45000, hours: 72}, 5: {fuel: 160000, hours: 168}}
+nodes:
+  - {id: r_rifle_1,  unit: u_rifleman, to_level: 2, tier: 1, lab: 1}
+  - {id: r_rifle_2,  unit: u_rifleman, to_level: 4, tier: 2, lab: 3}
+  - {id: r_brawler_1,unit: u_brawler,  to_level: 2, tier: 1, lab: 2}
+  - {id: r_sniper_1, unit: u_sniper,   to_level: 2, tier: 2, lab: 3}
+  - {id: r_dasher_1, unit: u_dasher,   to_level: 2, tier: 1, lab: 2}
+  - {id: r_breach_1, unit: u_breacher, to_level: 2, tier: 2, lab: 3}
+  - {id: r_humvee_1, unit: v_humvee,   to_level: 2, tier: 2, lab: 4}
+  - {id: r_tank_1,   unit: v_tank,     to_level: 2, tier: 3, lab: 6}
+  - {id: r_airstrike_1, spell: c_airstrike, to_level: 2, tier: 2, lab: 4}
+  - {id: r_camp_cap, perk: "army_housing_pct+5", tier: 3, lab: 5}
+  - {id: r_loot_1,   perk: "raid_loot_pct+5", tier: 3, lab: 6, note: "capped; respects raids.loot_cap"}
+  - {id: r_radar_scan, perk: "scan_reveals_traps", tier: 3, lab: 6}

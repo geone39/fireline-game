@@ -1,0 +1,16 @@
+{ "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Unit entry (troops.yaml)",
+  "type": "object",
+  "required": ["id","name_key","class","hp","speed","housing","train_s","cost","unlock"],
+  "properties": {
+    "id": {"type":"string","pattern":"^[uvs]_[a-z0-9_]+$"},
+    "name_key": {"type":"string"}, "role": {"type":"string"},
+    "class": {"enum":["INF","VEH","AIR","SEA"]},
+    "hp": {"type":"number","exclusiveMinimum":0},
+    "dps": {"type":"number","minimum":0}, "range": {"type":"number","minimum":0},
+    "speed": {"type":"number","exclusiveMinimum":0}, "housing": {"type":"integer","minimum":1},
+    "train_s": {"type":"integer","minimum":1},
+    "cost": {"type":"object","minProperties":1,"propertyNames":{"enum":["cash","fuel","alloy"]}},
+    "unlock": {"type":"object"}
+  }
+}

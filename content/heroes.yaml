@@ -1,0 +1,7 @@
+# content/heroes.yaml — heroes: 1 deployed per raid, rest & heal at Command Post, can defend (stay in base, auto-wake on raid).
+schema: 1
+heroes:
+  - {id: h_commander, name_key: h.commander, role: "Командир: аура +20% урона и скорости для своих рядом; способность 'Огонь по моей позиции' (авиаудар вокруг себя)", class: INF, hp: 1600, dps: 80, range: 5.0, speed: 2.0, unlock: {command: 1}, upgrade_cost_fuel_base: 8000, ability: {id: a_cover_fire, cooldown_s: 40}}
+  - {id: h_engineer,  name_key: h.engineer,  role: "Инженер: чинит технику, ставит турель-приманку; слаб в бою", class: INF, hp: 1000, dps: 40, range: 4.5, speed: 2.2, unlock: {command: 3}, ability: {id: a_decoy_turret, cooldown_s: 30}}
+  - {id: h_ghost,     name_key: h.ghost,     role: "Призрак: снайпер-герой; невидим 6 с, выстрел x4 по цели ≥ HQ", class: INF, hp: 700, dps: 150, range: 12.0, speed: 2.4, unlock: {command: 5}, ability: {id: a_vanish, cooldown_s: 45}}
+  - {id: h_warden,    name_key: h.warden,    role: "Страж (защитный герой): в обороне держит позицию, щит-аура на постройки рядом", class: INF, hp: 2200, dps: 55, range: 0, speed: 1.6, unlock: {command: 7}, ability: {id: a_bulwark, cooldown_s: 50}}
