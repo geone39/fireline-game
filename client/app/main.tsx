@@ -14,6 +14,7 @@ if (root) {
       contentVersion={import.meta.env.VITE_CONTENT_VERSION as string | undefined}
       lang={lang === 'ru' || lang === 'en' ? lang : undefined}
       map={params.get('map') ?? undefined}
+      screen={params.get('screen') === 'battle' ? 'battle' : undefined}
     />,
     root,
   );

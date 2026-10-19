@@ -1,10 +1,12 @@
 // Шелл приложения: жизненный цикл (вход → загрузка → экран базы), ошибки и content_outdated.
 import type { VNode } from 'preact';
+import { Suspense, lazy } from 'preact/compat';
 import { useEffect, useMemo, useState } from 'preact/hooks';
 import type { PlatformAdapter } from '../platform/adapter';
 import type { App, AppState } from './app';
 import { createApp } from './app';
 import { BaseScreen } from './BaseScreen';
+const BattleScreen = lazy(() => import('./BattleScreen').then((m) => ({ default: m.BattleScreen })));
 import { detectLang, loadContent, type Lang } from './content';
 import { createAppT } from './i18n';
 import { SHELL_CSS } from './styles';
@@ -15,6 +17,8 @@ export interface ShellProps {
   contentVersion?: string;
   lang?: Lang;
   map?: string;
+  /** Стартовый экран: `battle` — локальный тестовый бой без сервера. */
+  screen?: 'base' | 'battle';
 }
 
 function useAppState(app: App): AppState {
@@ -40,15 +44,36 @@ export function Shell(p: ShellProps): VNode {
     [p.platform, p.baseUrl, p.contentVersion, content],
   );
   useEffect(() => {
+    if (p.screen === 'battle') return; // локальный бой не требует сервера
     void app.start();
     return () => app.dispose();
   }, [app]);
   const state = useAppState(app);
+  const [screen, setScreen] = useState<'base' | 'battle'>(p.screen ?? 'base');
 
   let body: VNode;
+  if (screen === 'battle') {
+    // Выход: из автономного боя — перезагрузка без ?screen=battle, из шелла — назад на базу.
+    const exit = (): void => (p.screen === 'battle' ? location.assign(location.pathname) : setScreen('base'));
+    return (
+      <>
+        <style>{SHELL_CSS}</style>
+        <Suspense fallback={<Center><p>{t('battle.loading')}</p></Center>}>
+          <BattleScreen t={t} onExit={exit} />
+        </Suspense>
+      </>
+    );
+  }
   switch (state.phase) {
     case 'ready':
-      body = <BaseScreen app={app} content={content} t={t} />;
+      body = (
+        <>
+          <BaseScreen app={app} content={content} t={t} />
+          <button type="button" class="battle-open" data-testid="battle-open" onClick={() => setScreen('battle')}>
+            {t('battle.open')}
+          </button>
+        </>
+      );
       break;
     case 'outdated':
       body = (

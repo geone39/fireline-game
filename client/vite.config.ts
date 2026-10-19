@@ -12,6 +12,6 @@ export default defineConfig({
   server: { fs: { allow: ['..'] }, proxy: { '/v1': { target: apiTarget, changeOrigin: true } } },
   test: {
     environment: 'node',
-    include: ['engine/**/*.test.ts', 'core/**/*.test.ts', 'platform/**/*.test.ts', 'app/**/*.test.{ts,tsx}'],
+    include: ['engine/**/*.test.ts', 'core/**/*.test.ts', 'platform/**/*.test.ts', 'sim-wasm/**/*.test.ts', 'app/**/*.test.{ts,tsx}'],
   },
 });
