@@ -1,6 +1,10 @@
 # CHANGELOG `sim`
 
 ## Unreleased
+### 0.2.3+ — SIM-4: WASM-сборка (EngineVersion не менялся, контракт не менялся)
+- `sim/wasm/`: `main.go` (`//go:build js && wasm`, глобал `fireline_sim`: `engineVersion`, `run`, `newBattle`, `apply`, `result`, `free`), `wire/` (JSON-фасад без build-тегов: Command с именами op, `StateHash` и seed строками), `build.ps1`/`build.sh` (`GOOS=js GOARCH=wasm`, `-s -w`, + `wasm_exec.js` из GOROOT), `run_golden.js`, `api.d.ts`.
+- Тест `TestWasmParity`: собирает WASM, прогоняет G01…G20 через node (`run` и пошаговый `newBattle/apply`) и требует байт-в-байт тот же ответ, что нативный фасад, и StateHash из golden. `TestWireMatchesGolden`, `TestWireErrors`.
+- Размер `sim.wasm`: 4 638 851 байт (≈1,29 МБ gzip). Пакет `sim` не тронут (`TestDeterminismLint` зелёный); обёртка вне пакета `sim`.
 ### 0.2.3 — SIM-3: фаза обороны (EngineVersion 0.2.3)
 - `EndTurn` запускает фазу обороны (спека §7): (1) триггеры бункера — гарнизон выходит при уроне бункеру или атакующем в `TriggerCells` (по умолчанию — наибольшая дальность гарнизона), на кольцо клеток вокруг footprint по `(Y,X)`, действует в ту же фазу; (2) проволока `DotDmg`; (3) постройки по `EntityID`: цель `(расстояние Чебышёва, hp, EntityID)`, `min_range`, классы `Vs`, сплэш, цепь `d_tesla`, перегрев `d_flame_trap` (`OverheatFireTurns`/`CoolTurns`, счёт в ходах); (4) гарнизон по `EntityID`: выстрел или один шаг по Дейкстре (§7.4) и выстрел вторым AP; (5) конец боя проверяется после каждого действия (`no_units` во время обороны обрывает фазу), затем `max_turns`.
 - События для анимации: `Released`, `EffectTick` (проволока), `Attacked/Killed/Destroyed/Moved` с `Actor` обороны.
