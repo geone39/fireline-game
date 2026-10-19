@@ -1,0 +1,11 @@
+# content/battle.yaml — battle rules constants (CONTENT-4; CONTENT-REQ of docs/design/battle-sim.md §14, OQ-SIM3).
+# Read by: server (time_limit_s, max_turns -> raids/start), the sim loader (the rest -> sim.Rules). Not game code constants (AGENTS.md rule 3).
+# Owner decisions (2026-10-19): battle length 5 minutes of REAL time (OQ-7.3), ap 1 for all except light infantry and recon (OQ-7.1), no LOS (OQ-7.5).
+schema: 1
+battle:
+  time_limit_s: 300        # real-time limit of a battle, server-side only (ticket expires_at); sim never sees it
+  turn_s: 2                # seconds of "one turn" - ONLY the scale for converting per-second numbers into per-turn integers (sim 3.2)
+  max_turns: 60            # safety fuse of the sim, not a limit players meet. ASSUMPTION: ~12 s a turn x 60 > 300 s, so the clock ends the battle first (OQ-CONTENT4-1)
+  splash_falloff_pct: 40   # damage loss at the splash edge, 0..100 (the old realtime value, sim 6.2)
+  spells_per_turn: 0       # support calls per player turn; 0 = no limit (sim 9.1). ASSUMPTION: no invented cap (OQ-CONTENT4-2)
+  paradrop_edge_cells: 3   # u_paratrooper may land within this many cells of the map edge ("radius 3 from the edge")

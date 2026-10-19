@@ -1,7 +1,23 @@
 # content/heroes.yaml — heroes: 1 deployed per raid, rest & heal at Command Post, can defend (stay in base, auto-wake on raid).
+# Battle keys (CONTENT-4, read by sim via the loader, docs/design/battle-sim.md §3.2/§5.3/§9.2):
+#   ap, move_cells, range_cells (cells, == floor(speed*turn_s) / max(1,floor(range)), checked by validate_content.py),
+#   ability.effect {kind: zone_damage|spawn_decoy|stealth|buff_aura, ...}, aura_cells/aura_dmg_permille/aura_move_permille.
+#   Seconds (duration_s, cooldown_s) -> turns by the loader: max(1, ceil(s*10 / (battle.turn_s*10))).
+# ASSUMPTION: hero level growth = troops growth (hp x1.18, dps x1.16 per level); balance to confirm (OQ-CONTENT4-3).
 schema: 1
+level_growth: {hp_permille: 1180, dps_permille: 1160}
 heroes:
-  - {id: h_commander, name_key: h.commander, role: "Командир: аура +20% урона и скорости для своих рядом; способность 'Огонь по моей позиции' (авиаудар вокруг себя)", class: INF, hp: 1600, dps: 80, range: 5.0, speed: 2.0, unlock: {command: 1}, upgrade_cost_fuel_base: 8000, ability: {id: a_cover_fire, cooldown_s: 40}}
-  - {id: h_engineer,  name_key: h.engineer,  role: "Инженер: чинит технику, ставит турель-приманку; слаб в бою", class: INF, hp: 1000, dps: 40, range: 4.5, speed: 2.2, unlock: {command: 3}, ability: {id: a_decoy_turret, cooldown_s: 30}}
-  - {id: h_ghost,     name_key: h.ghost,     role: "Призрак: снайпер-герой; невидим 6 с, выстрел x4 по цели ≥ HQ", class: INF, hp: 700, dps: 150, range: 12.0, speed: 2.4, unlock: {command: 5}, ability: {id: a_vanish, cooldown_s: 45}}
-  - {id: h_warden,    name_key: h.warden,    role: "Страж (защитный герой): в обороне держит позицию, щит-аура на постройки рядом", class: INF, hp: 2200, dps: 55, range: 0, speed: 1.6, unlock: {command: 7}, ability: {id: a_bulwark, cooldown_s: 50}}
+  - {id: h_commander, name_key: h.commander, role: "Командир: аура +20% урона и скорости для своих рядом; способность 'Огонь по моей позиции' (авиаудар вокруг себя)", class: INF, hp: 1600, dps: 80, range: 5.0, speed: 2.0, unlock: {command: 1}, upgrade_cost_fuel_base: 8000,
+     ap: 1, move_cells: 4, range_cells: 5, aura_cells: 3, aura_dmg_permille: 200, aura_move_permille: 200,   # ASSUMPTION: aura_cells 3 ("рядом"); +20% from the role text
+     ability: {id: a_cover_fire, cooldown_s: 40, effect: {kind: zone_damage, radius: 3.0, duration_s: 4, dmg_total: 400}}}   # ASSUMPTION: like c_airstrike (r3, 4 s) but 400 < 600 as it is reusable
+  - {id: h_engineer,  name_key: h.engineer,  role: "Инженер: чинит технику, ставит турель-приманку; слаб в бою", class: INF, hp: 1000, dps: 40, range: 4.5, speed: 2.2, unlock: {command: 3},
+     ap: 1, move_cells: 4, range_cells: 4,
+     ability: {id: a_decoy_turret, cooldown_s: 30, effect: {kind: spawn_decoy, radius: 3.0, duration_s: 20, unit: u_decoy_turret}}}   # ASSUMPTION: decoy within 3 cells, lives 20 s (10 turns)
+  - {id: h_ghost,     name_key: h.ghost,     role: "Призрак: снайпер-герой; невидим 6 с, выстрел x4 по цели ≥ HQ", class: INF, hp: 700, dps: 150, range: 12.0, speed: 2.4, unlock: {command: 5},
+     ap: 1, move_cells: 4, range_cells: 12,
+     ability: {id: a_vanish, cooldown_s: 45, effect: {kind: stealth, duration_s: 6, bonus_permille: 4000, bonus_vs: HQ}}}   # "x4 по цели >= HQ" is taken as target group HQ (OQ-SIM11 (9))
+  - {id: h_warden,    name_key: h.warden,    role: "Страж (защитный герой): в обороне держит позицию, щит-аура на постройки рядом", class: INF, hp: 2200, dps: 55, range: 0, speed: 1.6, unlock: {command: 7},
+     ap: 1, move_cells: 3, range_cells: 1, in_r1: false,   # OQ-7.6: the warden and a_bulwark are out of R1; the loader must skip them
+     ability: {id: a_bulwark, cooldown_s: 50, effect: {kind: buff_aura}}}   # numbers deliberately absent: out of R1
+decoys:   # units spawned by hero abilities (ability.effect.unit); never part of an army, not trainable
+  - {id: u_decoy_turret, name_key: u.decoy_turret, role: "Турель-приманка: неподвижная цель, на которую обороне выгодно тратить огонь", class: INF, hp: 250, dps: 0, range: 0, speed: 0, ap: 1, move_cells: 0, range_cells: 1}   # ASSUMPTION: 250 hp, no attack (conservative)

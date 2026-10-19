@@ -1,0 +1,30 @@
+{ "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Defence / passive obstacle (defences.yaml)",
+  "type": "object",
+  "required": ["id", "name_key", "size", "hp"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^d_[a-z0-9_]+$"},
+    "name_key": {"type": "string"},
+    "size": {"type": "array", "items": {"type": "integer", "minimum": 1}, "minItems": 2, "maxItems": 2},
+    "hp": {"type": "integer", "minimum": 1},
+    "dps": {"type": "number", "minimum": 0},
+    "range": {"type": "number", "minimum": 0}, "range_cells": {"type": "integer", "minimum": 1},
+    "min_range": {"type": "number", "minimum": 0}, "min_range_cells": {"type": "integer", "minimum": 0},
+    "splash_r": {"type": "number", "minimum": 0}, "splash_cells": {"type": "integer", "minimum": 0},
+    "vs": {"type": "array", "items": {"enum": ["INF", "VEH", "AIR", "SEA"]}},
+    "trap": {"enum": ["mine", "spring"]},
+    "hidden": {"type": "boolean"},
+    "burst": {"type": "integer", "minimum": 1},
+    "max_hp_flung": {"type": "integer", "minimum": 1}, "fling_cells": {"type": "integer", "minimum": 1},
+    "garrison": {"type": "integer", "minimum": 1}, "trigger_cells": {"type": "integer", "minimum": 0},
+    "overheat_fire_turns": {"type": "integer", "minimum": 1}, "cool_turns": {"type": "integer", "minimum": 1},
+    "chain": {"type": "integer", "minimum": 1}, "chain_cells": {"type": "integer", "minimum": 1},
+    "aura_r": {"type": "number", "exclusiveMinimum": 0}, "jam_pct": {"type": "integer", "minimum": 0, "maximum": 100},
+    "slow_pct": {"type": "integer", "minimum": 0, "maximum": 99}, "dot_dps": {"type": "number", "minimum": 0},
+    "destruction_weight": {"type": "integer", "minimum": 1}
+  },
+  "dependentRequired": {
+    "overheat_fire_turns": ["cool_turns"], "chain_cells": ["chain"], "jam_pct": ["aura_r"],
+    "trap": ["hidden", "vs"], "fling_cells": ["max_hp_flung"]
+  }
+}

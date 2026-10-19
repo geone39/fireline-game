@@ -1,0 +1,21 @@
+{ "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Battle rules constants (battle.yaml)",
+  "type": "object",
+  "required": ["schema", "battle"],
+  "properties": {
+    "schema": {"const": 1},
+    "battle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["time_limit_s", "turn_s", "max_turns", "splash_falloff_pct", "spells_per_turn", "paradrop_edge_cells"],
+      "properties": {
+        "time_limit_s": {"type": "integer", "minimum": 1},
+        "turn_s": {"type": "integer", "minimum": 1},
+        "max_turns": {"type": "integer", "minimum": 1},
+        "splash_falloff_pct": {"type": "integer", "minimum": 0, "maximum": 100},
+        "spells_per_turn": {"type": "integer", "minimum": 0},
+        "paradrop_edge_cells": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{ "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Hero (heroes.yaml)",
+  "type": "object",
+  "required": ["id", "name_key", "class", "hp", "dps", "range", "speed", "ap", "move_cells", "range_cells", "ability"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^h_[a-z0-9_]+$"},
+    "name_key": {"type": "string"},
+    "class": {"enum": ["INF"]},
+    "hp": {"type": "integer", "minimum": 1}, "dps": {"type": "number", "minimum": 0},
+    "range": {"type": "number", "minimum": 0}, "speed": {"type": "number", "exclusiveMinimum": 0},
+    "ap": {"enum": [1, 2]}, "move_cells": {"type": "integer", "minimum": 1}, "range_cells": {"type": "integer", "minimum": 1},
+    "aura_cells": {"type": "integer", "minimum": 1},
+    "aura_dmg_permille": {"type": "integer", "minimum": 0}, "aura_move_permille": {"type": "integer", "minimum": 0},
+    "in_r1": {"type": "boolean"},
+    "ability": {
+      "type": "object",
+      "required": ["id", "cooldown_s", "effect"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^a_[a-z0-9_]+$"},
+        "cooldown_s": {"type": "integer", "minimum": 1},
+        "effect": {
+          "type": "object",
+          "required": ["kind"],
+          "properties": {"kind": {"enum": ["zone_damage", "spawn_decoy", "stealth", "buff_aura"]}},
+          "allOf": [
+            {"if": {"properties": {"kind": {"const": "zone_damage"}}}, "then": {"required": ["radius", "duration_s", "dmg_total"]}},
+            {"if": {"properties": {"kind": {"const": "spawn_decoy"}}}, "then": {"required": ["radius", "unit"]}},
+            {"if": {"properties": {"kind": {"const": "stealth"}}}, "then": {"required": ["duration_s", "bonus_permille", "bonus_vs"]}}
+          ]
+        }
+      }
+    }
+  }
+}

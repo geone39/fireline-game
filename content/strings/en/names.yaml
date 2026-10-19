@@ -14,6 +14,7 @@ strings:
   u.heavy: "Heavy"
   u.drone: "Bomber Drone"
   u.paratrooper: "Paratrooper"
+  u.decoy_turret: "Decoy Turret"
   v.humvee: "Humvee"
   v.apc: "APC"
   v.tank: "Tank"

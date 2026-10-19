@@ -14,6 +14,7 @@ strings:
   u.heavy: "Тяжёлый пехотинец"
   u.drone: "Дрон-бомбардир"
   u.paratrooper: "Десантник"
+  u.decoy_turret: "Турель-приманка"
   v.humvee: "Лёгкий внедорожник"
   v.apc: "БТР"
   v.tank: "Танк"

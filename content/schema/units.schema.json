@@ -1,16 +1,164 @@
-{ "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Unit entry (troops.yaml)",
-  "type": "object",
-  "required": ["id","name_key","class","hp","speed","housing","train_s","cost","unlock"],
-  "properties": {
-    "id": {"type":"string","pattern":"^[uvs]_[a-z0-9_]+$"},
-    "name_key": {"type":"string"}, "role": {"type":"string"},
-    "class": {"enum":["INF","VEH","AIR","SEA"]},
-    "hp": {"type":"number","exclusiveMinimum":0},
-    "dps": {"type":"number","minimum":0}, "range": {"type":"number","minimum":0},
-    "speed": {"type":"number","exclusiveMinimum":0}, "housing": {"type":"integer","minimum":1},
-    "train_s": {"type":"integer","minimum":1},
-    "cost": {"type":"object","minProperties":1,"propertyNames":{"enum":["cash","fuel","alloy"]}},
-    "unlock": {"type":"object"}
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "Unit entry (troops.yaml)",
+ "type": "object",
+ "required": [
+  "id",
+  "name_key",
+  "class",
+  "hp",
+  "speed",
+  "housing",
+  "train_s",
+  "cost",
+  "unlock",
+  "ap"
+ ],
+ "properties": {
+  "id": {
+   "type": "string",
+   "pattern": "^[uvs]_[a-z0-9_]+$"
+  },
+  "name_key": {
+   "type": "string"
+  },
+  "role": {
+   "type": "string"
+  },
+  "class": {
+   "enum": [
+    "INF",
+    "VEH",
+    "AIR",
+    "SEA"
+   ]
+  },
+  "hp": {
+   "type": "number",
+   "exclusiveMinimum": 0
+  },
+  "dps": {
+   "type": "number",
+   "minimum": 0
+  },
+  "range": {
+   "type": "number",
+   "minimum": 0
+  },
+  "speed": {
+   "type": "number",
+   "exclusiveMinimum": 0
+  },
+  "housing": {
+   "type": "integer",
+   "minimum": 1
+  },
+  "train_s": {
+   "type": "integer",
+   "minimum": 1
+  },
+  "cost": {
+   "type": "object",
+   "minProperties": 1,
+   "propertyNames": {
+    "enum": [
+     "cash",
+     "fuel",
+     "alloy"
+    ]
+   }
+  },
+  "unlock": {
+   "type": "object"
+  },
+  "ap": {
+   "enum": [
+    1,
+    2
+   ]
+  },
+  "move_cells": {
+   "type": "integer",
+   "minimum": 0
+  },
+  "range_cells": {
+   "type": "integer",
+   "minimum": 1
+  },
+  "splash_r": {
+   "type": "number",
+   "minimum": 0
+  },
+  "splash_cells": {
+   "type": "integer",
+   "minimum": 0
+  },
+  "burst": {
+   "type": "integer",
+   "minimum": 1
+  },
+  "wall_mult": {
+   "type": "integer",
+   "minimum": 1
+  },
+  "vs_mult": {
+   "type": "object",
+   "propertyNames": {
+    "enum": [
+     "wire",
+     "wall",
+     "building",
+     "defence",
+     "INF",
+     "VEH",
+     "AIR",
+     "SEA",
+     "HQ"
+    ]
+   },
+   "additionalProperties": {
+    "type": "integer",
+    "minimum": 0
+   }
+  },
+  "carries": {
+   "type": "integer",
+   "minimum": 1
+  },
+  "group": {
+   "type": "integer",
+   "minimum": 2
+  },
+  "paradrop": {
+   "type": "boolean"
+  },
+  "heal_ps": {
+   "type": "number",
+   "exclusiveMinimum": 0
+  },
+  "heal_vs": {
+   "type": "array",
+   "items": {
+    "enum": [
+     "INF",
+     "VEH",
+     "AIR",
+     "SEA"
+    ]
+   },
+   "minItems": 1
+  },
+  "jam_s": {
+   "type": "integer",
+   "minimum": 1
   }
+ },
+ "dependentRequired": {
+  "heal_ps": [
+   "heal_vs"
+  ],
+  "group": [
+   "paradrop"
+  ]
+ }
 }

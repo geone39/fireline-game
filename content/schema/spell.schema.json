@@ -1,0 +1,26 @@
+{ "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Support call (troops.yaml spells)",
+  "type": "object",
+  "required": ["id", "name_key", "kind", "radius", "radius_cells", "housing", "cost", "unlock"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^c_[a-z0-9_]+$"},
+    "name_key": {"type": "string"},
+    "kind": {"enum": ["airstrike", "medkit", "smoke", "adrenaline", "emp", "breach"]},
+    "radius": {"type": "number", "exclusiveMinimum": 0},
+    "radius_cells": {"type": "integer", "minimum": 0},
+    "duration_s": {"type": "integer", "minimum": 1},
+    "dmg_total": {"type": "integer", "minimum": 1},
+    "heal_total": {"type": "integer", "minimum": 1},
+    "adrenaline_move_permille": {"type": "integer", "minimum": 0},
+    "adrenaline_dmg_permille": {"type": "integer", "minimum": 0},
+    "housing": {"type": "integer", "minimum": 1},
+    "cost": {"type": "object", "minProperties": 1},
+    "unlock": {"type": "object"}
+  },
+  "allOf": [
+    {"if": {"properties": {"kind": {"const": "airstrike"}}}, "then": {"required": ["duration_s", "dmg_total"]}},
+    {"if": {"properties": {"kind": {"const": "medkit"}}}, "then": {"required": ["duration_s", "heal_total"]}},
+    {"if": {"properties": {"kind": {"enum": ["smoke", "emp"]}}}, "then": {"required": ["duration_s"]}},
+    {"if": {"properties": {"kind": {"const": "adrenaline"}}}, "then": {"required": ["duration_s", "adrenaline_move_permille", "adrenaline_dmg_permille"]}}
+  ]
+}

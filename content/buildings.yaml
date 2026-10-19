@@ -1,30 +1,32 @@
 # content/buildings.yaml — base buildings. Costs/time for level n: C1*cost_growth^(n-1), T1*time_growth^(n-1).
 schema: 1
+# Battle keys (CONTENT-4): hp_l1 + hp_growth (per level, x) and destruction_weight on every counted building; decor/obstacles are untargetable (hp_l1: 1 only because sim requires hp > 0).
+# ASSUMPTION: hp_l1 of non-HQ buildings and hp_growth 1.2 are conservative placeholders (not in docs/design); destruction_weight 1 for all (OQ-CONTENT4-5).
 core:
-  - {id: b_hq, name_key: b.hq, role: "Штаб. Уничтожение = 1 звезда из 3. Определяет лимиты построек. Хранит 'пайку' ресурсов (10%) недоступную для лута", size: [4,4], hp_l1: 800, hp_growth: 1.22, levels: 10, stars_on_destroy: 1}
+  - {id: b_hq, name_key: b.hq, role: "Штаб. Уничтожение = 1 звезда из 3. Определяет лимиты построек. Хранит 'пайку' ресурсов (10%) недоступную для лута", size: [4,4], hp_l1: 800, hp_growth: 1.22, levels: 10, stars_on_destroy: 1, destruction_weight: 1}
 resources:
-  - {id: b_cash_mine,    name_key: b.cash_mine,  produces: cash,  size: [3,3], levels: 10, unlock_hq: 1, max_by_hq: {1: 2, 2: 3, 4: 4, 6: 5, 8: 6}}
-  - {id: b_fuel_refinery,name_key: b.refinery,   produces: fuel,  size: [3,3], levels: 10, unlock_hq: 1, max_by_hq: {1: 2, 2: 3, 4: 4, 6: 5, 8: 6}}
-  - {id: b_alloy_foundry,name_key: b.foundry,    produces: alloy, size: [3,3], levels: 8,  unlock_hq: 4, max_by_hq: {4: 1, 6: 2, 8: 3}}
-  - {id: b_vault,        name_key: b.vault,      stores: cash,    size: [3,3], levels: 10, unlock_hq: 1, max_by_hq: {1: 1, 4: 2, 7: 3}}
-  - {id: b_fuel_tank,    name_key: b.fuel_tank,  stores: fuel,    size: [3,3], levels: 10, unlock_hq: 1, max_by_hq: {1: 1, 4: 2, 7: 3}}
-  - {id: b_alloy_depot,  name_key: b.depot,      stores: alloy,   size: [2,2], levels: 8,  unlock_hq: 4, max_by_hq: {4: 1, 7: 2}}
+  - {id: b_cash_mine,    name_key: b.cash_mine,  produces: cash,  size: [3,3], levels: 10, unlock_hq: 1, max_by_hq: {1: 2, 2: 3, 4: 4, 6: 5, 8: 6}, hp_l1: 500, hp_growth: 1.2, destruction_weight: 1}
+  - {id: b_fuel_refinery,name_key: b.refinery,   produces: fuel,  size: [3,3], levels: 10, unlock_hq: 1, max_by_hq: {1: 2, 2: 3, 4: 4, 6: 5, 8: 6}, hp_l1: 500, hp_growth: 1.2, destruction_weight: 1}
+  - {id: b_alloy_foundry,name_key: b.foundry,    produces: alloy, size: [3,3], levels: 8,  unlock_hq: 4, max_by_hq: {4: 1, 6: 2, 8: 3}, hp_l1: 600, hp_growth: 1.2, destruction_weight: 1}
+  - {id: b_vault,        name_key: b.vault,      stores: cash,    size: [3,3], levels: 10, unlock_hq: 1, max_by_hq: {1: 1, 4: 2, 7: 3}, hp_l1: 700, hp_growth: 1.2, destruction_weight: 1}
+  - {id: b_fuel_tank,    name_key: b.fuel_tank,  stores: fuel,    size: [3,3], levels: 10, unlock_hq: 1, max_by_hq: {1: 1, 4: 2, 7: 3}, hp_l1: 650, hp_growth: 1.2, destruction_weight: 1}
+  - {id: b_alloy_depot,  name_key: b.depot,      stores: alloy,   size: [2,2], levels: 8,  unlock_hq: 4, max_by_hq: {4: 1, 7: 2}, hp_l1: 500, hp_growth: 1.2, destruction_weight: 1}
 military:
-  - {id: b_barracks,   name_key: b.barracks,   role: "Казарма: обучает пехоту. Очередь = 1 здание на 1 тренировку (до 4 зданий)", size: [3,3], levels: 12, unlock_hq: 1, max_by_hq: {1: 1, 3: 2, 6: 3, 8: 4}}
-  - {id: b_factory,    name_key: b.factory,    role: "Завод техники: Хамви, БТР, танки, самоходки", size: [4,4], levels: 6, unlock_hq: 3, max_by_hq: {3: 1, 8: 2}}
-  - {id: b_shipyard,   name_key: b.shipyard,   role: "Верфь (только у берега): катера, десантные, эсминцы + 'патрульная флотилия' защиты", size: [4,4], levels: 5, unlock_hq: 4, requires_water: true, max_by_hq: {4: 1}}
-  - {id: b_laboratory, name_key: b.laboratory, role: "Лаборатория: исследования улучшают уровни юнитов, техники, поддержки (1 исследование за раз)", size: [4,4], levels: 10, unlock_hq: 2, max_by_hq: {2: 1}}
-  - {id: b_camp,       name_key: b.camp,       role: "Лагерь: вместимость армии (housing). 4 лагеря × 20 на L1 → до 280 housing к HQ10", size: [4,4], levels: 10, unlock_hq: 1, max_by_hq: {1: 1, 3: 2, 6: 3, 8: 4}}
-  - {id: b_garage,     name_key: b.garage,     role: "Гараж: вместимость техники и кораблей", size: [3,3], levels: 6, unlock_hq: 3, max_by_hq: {3: 1, 7: 2}}
-  - {id: b_support_bay,name_key: b.support_bay,role: "Центр поддержки: готовит Support calls (авиаудар, дым и т.д.)", size: [3,3], levels: 6, unlock_hq: 3, max_by_hq: {3: 1, 8: 2}}
-  - {id: b_command,    name_key: b.command,    role: "Командный пункт: открывает героев; герой отдыхает и лечится здесь", size: [3,3], levels: 8, unlock_hq: 5, max_by_hq: {5: 1}}
-  - {id: b_defense_barracks, name_key: b.def_barracks, role: "Казарма обороны: гарнизонные пехотинцы для бункера + 'тревожный отряд' (выходит при приближении врага)", size: [3,3], levels: 6, unlock_hq: 5, max_by_hq: {5: 1}}
-  - {id: b_radar,      name_key: b.radar,      role: "Радар: показывает всю оборону и ловушки врага ПЕРЕД боем (разведка), в обороне - выдаёт 'подсветку' цели по атакующим", size: [2,2], levels: 5, unlock_hq: 6, max_by_hq: {6: 1}}
-  - {id: b_market,     name_key: b.market,     role: "Рынок: ежедневный обмен 1 ресурса на другой с комиссией 25%", size: [3,3], levels: 5, unlock_hq: 4, max_by_hq: {4: 1}}
+  - {id: b_barracks,   name_key: b.barracks,   role: "Казарма: обучает пехоту. Очередь = 1 здание на 1 тренировку (до 4 зданий)", size: [3,3], levels: 12, unlock_hq: 1, max_by_hq: {1: 1, 3: 2, 6: 3, 8: 4}, hp_l1: 400, hp_growth: 1.2, destruction_weight: 1}
+  - {id: b_factory,    name_key: b.factory,    role: "Завод техники: Хамви, БТР, танки, самоходки", size: [4,4], levels: 6, unlock_hq: 3, max_by_hq: {3: 1, 8: 2}, hp_l1: 600, hp_growth: 1.2, destruction_weight: 1}
+  - {id: b_shipyard,   name_key: b.shipyard,   role: "Верфь (только у берега): катера, десантные, эсминцы + 'патрульная флотилия' защиты", size: [4,4], levels: 5, unlock_hq: 4, requires_water: true, max_by_hq: {4: 1}, hp_l1: 600, hp_growth: 1.2, destruction_weight: 1}
+  - {id: b_laboratory, name_key: b.laboratory, role: "Лаборатория: исследования улучшают уровни юнитов, техники, поддержки (1 исследование за раз)", size: [4,4], levels: 10, unlock_hq: 2, max_by_hq: {2: 1}, hp_l1: 500, hp_growth: 1.2, destruction_weight: 1}
+  - {id: b_camp,       name_key: b.camp,       role: "Лагерь: вместимость армии (housing). 4 лагеря × 20 на L1 → до 280 housing к HQ10", size: [4,4], levels: 10, unlock_hq: 1, max_by_hq: {1: 1, 3: 2, 6: 3, 8: 4}, hp_l1: 450, hp_growth: 1.2, destruction_weight: 1}
+  - {id: b_garage,     name_key: b.garage,     role: "Гараж: вместимость техники и кораблей", size: [3,3], levels: 6, unlock_hq: 3, max_by_hq: {3: 1, 7: 2}, hp_l1: 450, hp_growth: 1.2, destruction_weight: 1}
+  - {id: b_support_bay,name_key: b.support_bay,role: "Центр поддержки: готовит Support calls (авиаудар, дым и т.д.)", size: [3,3], levels: 6, unlock_hq: 3, max_by_hq: {3: 1, 8: 2}, hp_l1: 450, hp_growth: 1.2, destruction_weight: 1}
+  - {id: b_command,    name_key: b.command,    role: "Командный пункт: открывает героев; герой отдыхает и лечится здесь", size: [3,3], levels: 8, unlock_hq: 5, max_by_hq: {5: 1}, hp_l1: 500, hp_growth: 1.2, destruction_weight: 1}
+  - {id: b_defense_barracks, name_key: b.def_barracks, role: "Казарма обороны: гарнизонные пехотинцы для бункера + 'тревожный отряд' (выходит при приближении врага)", size: [3,3], levels: 6, unlock_hq: 5, max_by_hq: {5: 1}, hp_l1: 450, hp_growth: 1.2, destruction_weight: 1}
+  - {id: b_radar,      name_key: b.radar,      role: "Радар: показывает всю оборону и ловушки врага ПЕРЕД боем (разведка), в обороне - выдаёт 'подсветку' цели по атакующим", size: [2,2], levels: 5, unlock_hq: 6, max_by_hq: {6: 1}, hp_l1: 300, hp_growth: 1.2, destruction_weight: 1}
+  - {id: b_market,     name_key: b.market,     role: "Рынок: ежедневный обмен 1 ресурса на другой с комиссией 25%", size: [3,3], levels: 5, unlock_hq: 4, max_by_hq: {4: 1}, hp_l1: 400, hp_growth: 1.2, destruction_weight: 1}
 decor:     # cosmetic only, paid with gems or earned; no gameplay stats
-  - {id: x_flag, name_key: x.flag, size: [1,1]}
-  - {id: x_statue, name_key: x.statue, size: [2,2]}
-  - {id: x_flowerbed, name_key: x.flowerbed, size: [2,2]}
+  - {id: x_flag, name_key: x.flag, size: [1,1], untargetable: true, hp_l1: 1}
+  - {id: x_statue, name_key: x.statue, size: [2,2], untargetable: true, hp_l1: 1}
+  - {id: x_flowerbed, name_key: x.flowerbed, size: [2,2], untargetable: true, hp_l1: 1}
 obstacles: # spawn on base periodically; clearing gives small cash/gems reward (retention hook)
-  - {id: o_rock, name_key: o.rock, size: [1,1], clear_cost: {cash: 200}, reward: {gems: 1}, respawn_hours: 48}
-  - {id: o_wreck, name_key: o.wreck, size: [2,2], clear_cost: {cash: 600}, reward: {gems: 2, alloy: 5}, respawn_hours: 96}
+  - {id: o_rock, name_key: o.rock, size: [1,1], clear_cost: {cash: 200}, reward: {gems: 1}, respawn_hours: 48, untargetable: true, hp_l1: 1}
+  - {id: o_wreck, name_key: o.wreck, size: [2,2], clear_cost: {cash: 600}, reward: {gems: 2, alloy: 5}, respawn_hours: 96, untargetable: true, hp_l1: 1}
