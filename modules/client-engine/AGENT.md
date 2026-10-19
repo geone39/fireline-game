@@ -1,7 +1,7 @@
 # AGENT.md — модуль `client-engine`
 **Цель:** Рендер и анимации (PixiJS).
 
-**OWNS (правишь только это):** `client/engine/**`
+**OWNS (правишь только это):** `client/engine/**`, корневые файлы сборки `client/` (`package.json`, `vite.config.*`, `tsconfig*.json`, `index.html`, lock-файл)
 **READS (читаешь, не правишь):** `art/manifest.json`
 **Вход:** World state из core/sim
 **Выход:** Canvas, события ввода

@@ -1,7 +1,7 @@
 # AGENT.md — модуль `client-core`
 **Цель:** Стейт, команда→сервер, PlatformAdapter, оффлайн, WASM-интеграция.
 
-**OWNS (правишь только это):** `client/core/**`, `client/platform/**`, `client/sim-wasm/**`
+**OWNS (правишь только это):** `client/core/**` (кроме `client/core/base/**` — он принадлежит модулю `base`), `client/platform/**`, `client/sim-wasm/**`
 **READS (читаешь, не правишь):** `docs/03-api.md`
 **Вход:** API
 **Выход:** Store, адаптеры
