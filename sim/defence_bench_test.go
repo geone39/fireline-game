@@ -4,7 +4,10 @@ import "testing"
 
 // fullBase is the HQ10-sized load of spec 11.8: 150 buildings (10 bunkers holding 120 garrison units, defences,
 // walls, wire, mines), packed row by row into the build zone, and 120 heavy attackers on the rim.
-func fullBase(tb testing.TB) *Battle {
+func fullBase(tb testing.TB) *Battle { return fullBaseWith(tb, nil) }
+
+// fullBaseWith is fullBase after mut changed the snapshot (nil = untouched).
+func fullBaseWith(tb testing.TB, mut func(*Snapshot)) *Battle {
 	tb.Helper()
 	s := f01Snapshot()
 	s.Buildings = nil
@@ -54,6 +57,9 @@ func fullBase(tb testing.TB) *Battle {
 		s.Garrison = append(s.Garrison, GarrisonUnit{[]string{"u_guard", "u_scout"}[i%2], 1})
 	}
 	s.Army = []ArmySlot{{"u_heavy", 1, 120}}
+	if mut != nil {
+		mut(&s)
+	}
 	b, err := NewBattle(s, 1)
 	if err != nil {
 		tb.Fatal(err)
@@ -111,6 +117,23 @@ func BenchmarkDefenceTenTurnsFullBase(bn *testing.B) {
 		b := fullBase(bn)
 		bn.StartTimer()
 		for turn := 1; turn <= 10 && b.ph == phasePlayer; turn++ {
+			b.Apply(end(turn))
+		}
+	}
+}
+
+// BenchmarkSupportTenTurnsFullBase: the full base under a barrage of spells (SIM-5): smoke and an airstrike over the
+// landing rim every turn keep several zones alive while ten defence phases run.
+func BenchmarkSupportTenTurnsFullBase(bn *testing.B) {
+	for i := 0; i < bn.N; i++ {
+		bn.StopTimer()
+		b := fullBaseWith(bn, func(s *Snapshot) {
+			s.Spells = []ArmySlot{{"c_smoke", 1, 10}, {"c_airstrike", 1, 10}, {"c_medkit", 1, 10}}
+		})
+		bn.StartTimer()
+		for turn := 1; turn <= 10 && b.ph == phasePlayer; turn++ {
+			b.Apply(cast(turn, "c_smoke", 1, 20))
+			b.Apply(cast(turn, "c_airstrike", 3, 6))
 			b.Apply(end(turn))
 		}
 	}

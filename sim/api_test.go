@@ -13,19 +13,26 @@ var (
 	_ func(*Battle) Result                              = (*Battle).Result
 )
 
-func TestUnimplementedOpsReturnErrNotImplemented(t *testing.T) {
+// Ability and Cast are implemented since SIM-5: a command that is illegal for the unit is a rejection, never an
+// error, and consumes a log index.
+func TestAbilityAndCastAreRejectionsNotErrors(t *testing.T) {
 	for _, op := range []Op{OpAbility, OpCast} {
 		b, _ := NewBattle(f01Snapshot(), 1)
 		b.Apply(dep("u_rifleman", 1, 10))
 		b.Apply(Command{Op: OpStart})
 		before := b.Result().StateHash
-		_, err := b.Apply(Command{Turn: 1, Op: op, Unit: 3, Target: 1})
-		if !errors.Is(err, ErrNotImplemented) {
-			t.Fatalf("op %d: want ErrNotImplemented, got %v", op, err)
+		if _, err := b.Apply(Command{Turn: 1, Op: op, Unit: 3, Target: 1, ID: "nope"}); err != nil {
+			t.Fatalf("op %d: %v", op, err)
 		}
-		if b.Result().StateHash != before || b.nCmd != 2 {
-			t.Fatalf("op %d changed the state or consumed a log index", op)
+		if b.nCmd != 3 || len(b.rejected) != 1 {
+			t.Fatalf("op %d: nCmd %d rejected %v", op, b.nCmd, b.rejected)
 		}
+		r := b.Result()
+		want := map[Op]RejectCode{OpAbility: RejectInvalidTarget, OpCast: RejectNoStock}[op]
+		if r.Rejected[0].Code != want || r.Rejected[0].Index != 2 {
+			t.Fatalf("op %d: %+v, want %d", op, r.Rejected, want)
+		}
+		_ = before
 	}
 }
 

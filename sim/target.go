@@ -42,7 +42,7 @@ func (b *Battle) reach(s, t *entity, lo, hi int, vs uint8) (int, bool) {
 		return 0, false
 	}
 	d := footDist(s, t)
-	if d < lo || d > hi || !lineOfFire(s.pos, t.pos) {
+	if d < lo || d > hi || !lineOfFire(s.pos, t.pos) || b.concealed(s, t, d) {
 		return 0, false
 	}
 	return d, true

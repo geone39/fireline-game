@@ -109,7 +109,38 @@ func (b *Battle) stateHash() uint64 {
 		h.i(int(e.aboard))
 		h.i(int(e.inside))
 		h.t(e.revealed)
+		h.i(e.stealthUntil)
+		h.i(e.decoyUntil)
+		h.i(len(e.cargo)) // boarding order decides who gets out first
+		for _, p := range e.cargo {
+			h.i(int(p))
+		}
 	}
+	h.i(len(b.zones))
+	for i := range b.zones {
+		z := &b.zones[i]
+		h.i(int(z.kind))
+		h.i(int(z.centre.X))
+		h.i(int(z.centre.Y))
+		h.i(z.r)
+		h.i(z.first)
+		h.i(z.last)
+		h.i(z.step)
+		h.i(z.amount)
+		h.i(z.movePm)
+		h.i(z.dmgPm)
+		h.i(len(z.members))
+		for _, m := range z.members {
+			h.i(int(m))
+		}
+	}
+	h.i(len(b.spells))
+	for _, s := range b.spells {
+		h.s(s.ID)
+		h.i(s.Level)
+		h.i(s.Count)
+	}
+	h.i(b.spellsTurn)
 	h.i(len(b.stock))
 	for _, s := range b.stock {
 		h.s(s.ID)

@@ -46,6 +46,8 @@ type entity struct {
 	heat      int  // consecutive turns of fire (overheat, spec 7.3); the cool-down is counted in cd
 	// disabledUntil is the last turn the entity is jammed on (spec 7.5); 0 = never. Set by SIM-5 (jam, EMP).
 	disabledUntil int
+	stealthUntil  int // last turn the hero is hidden from the defence (a_vanish), 0 = visible (SIM-5)
+	decoyUntil    int // last turn a decoy exists, 0 = until destroyed (SIM-5)
 	slot          int // army slot index for losses, -1 for hero / defender
 	ud            *UnitDef
 	bd            *BuildingDef
@@ -86,6 +88,13 @@ type Battle struct {
 	rejected  []Rejection
 	heroDmg   int
 
+	// support layer (SIM-5)
+	zones      []zone
+	spells     []ArmySlot // remaining support calls, Count decreases on Cast
+	spellIdx   map[string]int
+	spellsTurn int // spells cast in the current player turn
+	spellsUsed []SlotCount
+
 	pf pathfinder
 }
 
@@ -99,6 +108,10 @@ func NewBattle(snap Snapshot, seed uint64) (*Battle, error) {
 	b.unitIdx = make(map[string]int, len(r.Units))
 	for i := range r.Units {
 		b.unitIdx[r.Units[i].ID] = i
+	}
+	b.spellIdx = make(map[string]int, len(r.Spells))
+	for i := range r.Spells {
+		b.spellIdx[r.Spells[i].ID] = i
 	}
 	b.bldIdx = make(map[string]int, len(r.Buildings))
 	for i := range r.Buildings {
@@ -218,6 +231,13 @@ func NewBattle(snap Snapshot, seed uint64) (*Battle, error) {
 	for _, s := range snap.Army {
 		if _, ok := b.unitIdx[s.ID]; !ok || s.Level < 1 || s.Level > maxLevel || s.Count < 0 {
 			return nil, fmt.Errorf("%w: army slot %q level %d count %d", ErrBadSnapshot, s.ID, s.Level, s.Count)
+		}
+	}
+	b.spells = make([]ArmySlot, len(snap.Spells))
+	copy(b.spells, snap.Spells)
+	for _, s := range snap.Spells {
+		if _, ok := b.spellIdx[s.ID]; !ok || s.Level < 1 || s.Level > maxLevel || s.Count < 0 {
+			return nil, fmt.Errorf("%w: spell slot %q level %d count %d", ErrBadSnapshot, s.ID, s.Level, s.Count)
 		}
 	}
 	if snap.Hero != "" {

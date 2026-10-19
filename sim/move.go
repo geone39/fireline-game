@@ -19,7 +19,7 @@ func (b *Battle) cmdMove(c Command) ([]Event, RejectCode) {
 	if u.ud.MoveCells == 0 || len(c.Path) == 0 {
 		return nil, RejectBadPath
 	}
-	cur, cost := u.pos, 0
+	cur, cost, limit := u.pos, 0, b.moveLimit(u)
 	for _, to := range c.Path {
 		if Cheb(cur, to) != 1 {
 			return nil, RejectBadPath
@@ -28,7 +28,7 @@ func (b *Battle) cmdMove(c Command) ([]Event, RejectCode) {
 			return nil, code
 		}
 		cost += b.stepCost(u, to)
-		if cost > u.ud.MoveCells {
+		if cost > limit {
 			return nil, RejectPathCost
 		}
 		cur = to

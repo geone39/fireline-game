@@ -22,6 +22,8 @@ func (e *entity) hasTag(t VsTag) bool {
 			return e.bd.Kind == KindBuilding
 		case VsDefence:
 			return e.bd.Kind == KindDefence
+		case VsHQ:
+			return e.bd.HQ
 		}
 		return false
 	}
@@ -40,9 +42,10 @@ func (e *entity) hasTag(t VsTag) bool {
 
 // shotDamage is the damage of one attack of unit s on victim v at the centre of the blast (spec 6.1):
 // base (Dmg, or Burst x wall_mult on walls/wire) x (1000 + sum of vs_mult bonuses) / 1000, one floor.
-// Adrenaline and the commander aura (SIM-5) will join the same bonus sum.
-func shotDamage(s, v *entity) int {
-	base := s.ud.Dmg
+// Adrenaline and the commander aura join the same bonus sum (SIM-5); a hero's first shot out of hiding is then
+// multiplied by its stealth bonus. Dmg grows with the level (dmg_growth, spec 3.2).
+func (b *Battle) shotDamage(s, v *entity) int {
+	base := scaledHP(s.ud.Dmg, s.ud.DmgGrowthPermille, s.level)
 	if s.ud.Burst > 0 {
 		base = s.ud.Burst
 		if v.bd != nil && v.bd.isWallLike() && s.ud.WallMult > 1 {
@@ -55,7 +58,14 @@ func shotDamage(s, v *entity) int {
 			bonus += m.Permille - 1000
 		}
 	}
-	return base * max(0, 1000+bonus) / 1000
+	if _, dm := b.bonuses(s); dm > 0 {
+		bonus += dm
+	}
+	d := base * max(0, 1000+bonus) / 1000
+	if m := b.stealthMult(s, v); m != 1000 {
+		d = d * m / 1000
+	}
+	return d
 }
 
 // splashDamage applies the edge falloff: dmg x (100 - falloff x d / r) / 100 with one floor (spec 6.2).
@@ -196,7 +206,8 @@ func (b *Battle) cmdAttack(c Command) ([]Event, RejectCode) {
 // own blast. The caller has checked legality.
 func (b *Battle) shoot(u, t *entity) []Event {
 	u.apLeft--
-	evs := b.blast(u, t, aimCell(u, t), u.ud.SplashCells, func(v *entity) int { return shotDamage(u, v) }, nil)
+	evs := b.blast(u, t, aimCell(u, t), u.ud.SplashCells, func(v *entity) int { return b.shotDamage(u, v) }, nil)
+	u.stealthUntil = 0 // an attack ends the hero's hiding (a_vanish)
 	if u.ud.Burst > 0 && u.alive {
 		evs = append(evs, b.kill(u.id, u)...)
 	}

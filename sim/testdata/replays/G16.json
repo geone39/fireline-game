@@ -1,7 +1,7 @@
 {
  "name": "G16",
  "about": "d_wire dot 4: a rifleman on a wire loses 4 per defence phase until a tank shoots the wire away (2 shots), the other keeps losing; a tank and a drone on wires take nothing",
- "engine_version": "0.2.3",
+ "engine_version": "0.2.4",
  "seed": 16,
  "snapshot": {
   "ContentVersion": "test-fixture",
@@ -107,6 +107,8 @@
    "MaxTurns": 30,
    "ParadropEdgeCells": 3,
    "SplashFalloffPct": 40,
+   "SpellsPerTurn": 0,
+   "Spells": null,
    "Units": [
     {
      "ID": "u_rifleman",
@@ -125,7 +127,25 @@
      "VsMult": null,
      "Carries": 0,
      "Group": 0,
-     "Paradrop": false
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     },
     {
      "ID": "u_brawler",
@@ -144,7 +164,25 @@
      "VsMult": null,
      "Carries": 0,
      "Group": 0,
-     "Paradrop": false
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     },
     {
      "ID": "u_sniper",
@@ -163,7 +201,25 @@
      "VsMult": null,
      "Carries": 0,
      "Group": 0,
-     "Paradrop": false
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     },
     {
      "ID": "u_medic",
@@ -182,7 +238,25 @@
      "VsMult": null,
      "Carries": 0,
      "Group": 0,
-     "Paradrop": false
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     },
     {
      "ID": "u_para",
@@ -201,7 +275,25 @@
      "VsMult": null,
      "Carries": 0,
      "Group": 4,
-     "Paradrop": true
+     "Paradrop": true,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     },
     {
      "ID": "v_apc",
@@ -220,7 +312,25 @@
      "VsMult": null,
      "Carries": 2,
      "Group": 0,
-     "Paradrop": false
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     },
     {
      "ID": "v_buggy",
@@ -239,7 +349,25 @@
      "VsMult": null,
      "Carries": 2,
      "Group": 0,
-     "Paradrop": false
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     },
     {
      "ID": "v_tank",
@@ -258,7 +386,25 @@
      "VsMult": null,
      "Carries": 0,
      "Group": 0,
-     "Paradrop": false
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     },
     {
      "ID": "u_drone",
@@ -277,7 +423,25 @@
      "VsMult": null,
      "Carries": 0,
      "Group": 0,
-     "Paradrop": false
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     },
     {
      "ID": "s_gunboat",
@@ -296,7 +460,25 @@
      "VsMult": null,
      "Carries": 0,
      "Group": 0,
-     "Paradrop": false
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     },
     {
      "ID": "s_lander",
@@ -315,7 +497,25 @@
      "VsMult": null,
      "Carries": 3,
      "Group": 0,
-     "Paradrop": false
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     },
     {
      "ID": "v_turret",
@@ -334,7 +534,25 @@
      "VsMult": null,
      "Carries": 0,
      "Group": 0,
-     "Paradrop": false
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     },
     {
      "ID": "h_commander",
@@ -353,7 +571,25 @@
      "VsMult": null,
      "Carries": 0,
      "Group": 0,
-     "Paradrop": false
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     },
     {
      "ID": "u_breacher",
@@ -372,7 +608,25 @@
      "VsMult": null,
      "Carries": 0,
      "Group": 0,
-     "Paradrop": false
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     },
     {
      "ID": "u_grenadier",
@@ -391,7 +645,25 @@
      "VsMult": null,
      "Carries": 0,
      "Group": 0,
-     "Paradrop": false
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     },
     {
      "ID": "u_flamer",
@@ -419,7 +691,25 @@
      ],
      "Carries": 0,
      "Group": 0,
-     "Paradrop": false
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     },
     {
      "ID": "u_heavy",
@@ -438,7 +728,25 @@
      "VsMult": null,
      "Carries": 0,
      "Group": 0,
-     "Paradrop": false
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     },
     {
      "ID": "u_guard",
@@ -457,7 +765,25 @@
      "VsMult": null,
      "Carries": 0,
      "Group": 0,
-     "Paradrop": false
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     },
     {
      "ID": "u_scout",
@@ -476,7 +802,25 @@
      "VsMult": null,
      "Carries": 0,
      "Group": 0,
-     "Paradrop": false
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
     }
    ],
    "Buildings": [
@@ -510,7 +854,9 @@
      "OverheatFireTurns": 0,
      "CoolTurns": 0,
      "Chain": 0,
-     "ChainCells": 0
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
     },
     {
      "ID": "b_vault",
@@ -542,7 +888,9 @@
      "OverheatFireTurns": 0,
      "CoolTurns": 0,
      "Chain": 0,
-     "ChainCells": 0
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
     },
     {
      "ID": "d_mg_nest",
@@ -574,7 +922,9 @@
      "OverheatFireTurns": 0,
      "CoolTurns": 0,
      "Chain": 0,
-     "ChainCells": 0
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
     },
     {
      "ID": "d_mortar",
@@ -606,7 +956,9 @@
      "OverheatFireTurns": 0,
      "CoolTurns": 0,
      "Chain": 0,
-     "ChainCells": 0
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
     },
     {
      "ID": "d_bunker",
@@ -638,7 +990,9 @@
      "OverheatFireTurns": 0,
      "CoolTurns": 0,
      "Chain": 0,
-     "ChainCells": 0
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
     },
     {
      "ID": "d_flame_trap",
@@ -670,7 +1024,9 @@
      "OverheatFireTurns": 3,
      "CoolTurns": 2,
      "Chain": 0,
-     "ChainCells": 0
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
     },
     {
      "ID": "d_tesla",
@@ -702,7 +1058,9 @@
      "OverheatFireTurns": 0,
      "CoolTurns": 0,
      "Chain": 4,
-     "ChainCells": 3
+     "ChainCells": 3,
+     "AuraCells": 0,
+     "JamPct": 0
     },
     {
      "ID": "d_wall",
@@ -734,7 +1092,9 @@
      "OverheatFireTurns": 0,
      "CoolTurns": 0,
      "Chain": 0,
-     "ChainCells": 0
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
     },
     {
      "ID": "d_wire",
@@ -766,7 +1126,9 @@
      "OverheatFireTurns": 0,
      "CoolTurns": 0,
      "Chain": 0,
-     "ChainCells": 0
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
     },
     {
      "ID": "d_tank_trap",
@@ -798,7 +1160,9 @@
      "OverheatFireTurns": 0,
      "CoolTurns": 0,
      "Chain": 0,
-     "ChainCells": 0
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
     },
     {
      "ID": "d_mine",
@@ -830,7 +1194,9 @@
      "OverheatFireTurns": 0,
      "CoolTurns": 0,
      "Chain": 0,
-     "ChainCells": 0
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
     },
     {
      "ID": "d_spring_trap",
@@ -862,7 +1228,9 @@
      "OverheatFireTurns": 0,
      "CoolTurns": 0,
      "Chain": 0,
-     "ChainCells": 0
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
     },
     {
      "ID": "d_fence",
@@ -894,7 +1262,9 @@
      "OverheatFireTurns": 0,
      "CoolTurns": 0,
      "Chain": 0,
-     "ChainCells": 0
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
     },
     {
      "ID": "x_statue",
@@ -926,7 +1296,9 @@
      "OverheatFireTurns": 0,
      "CoolTurns": 0,
      "Chain": 0,
-     "ChainCells": 0
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
     }
    ]
   }
@@ -1096,8 +1468,8 @@
   "HeroDamageTaken": 0,
   "HeroSurvived": false,
   "Rejected": null,
-  "EngineVersion": "0.2.3",
-  "StateHash": 11079438350137717503
+  "EngineVersion": "0.2.4",
+  "StateHash": 14602388553109643888
  },
- "state_hash_hex": "99c2127a62cc72ff"
+ "state_hash_hex": "caa61b05b454a270"
 }

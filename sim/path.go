@@ -129,7 +129,7 @@ func (b *Battle) approach(u *entity) ([]Cell, EntityID, bool) {
 	var bestTarget EntityID
 	for i := range b.ents {
 		t := &b.ents[i]
-		if !b.isCandidate(u, t) {
+		if !b.isCandidate(u, t) || b.concealed(u, t, 2) { // hidden or smoked units are not walked to (spec 7.4)
 			continue
 		}
 		lo, hi := u.ud.MinRangeCells, u.ud.RangeCells

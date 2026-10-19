@@ -15,6 +15,7 @@ import (
 // A mismatch without a version bump is a rules change in disguise and fails the build.
 
 var update = flag.Bool("update", false, "regenerate golden replays (only with an EngineVersion bump)")
+var only = flag.String("only", "", "with -update: regenerate only the scenarios whose name starts with this prefix")
 
 var opNames = []string{"deploy", "load", "start", "move", "attack", "ability", "cast", "end_turn", "retreat"}
 
@@ -178,7 +179,8 @@ func scenarios() []scenario {
 			dep("u_rifleman", 1, 10), {Op: OpRetreat}, dep("u_brawler", 1, 12),
 		}})
 	all = append(all, scenariosSim2()...)
-	return append(all, scenariosSim3()...)
+	all = append(all, scenariosSim3()...)
+	return append(all, scenariosSim5()...)
 }
 
 func goldenDir() string { return filepath.Join("testdata", "replays") }

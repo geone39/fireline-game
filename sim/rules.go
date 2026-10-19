@@ -65,6 +65,62 @@ type UnitDef struct {
 	Carries          int // passenger slots (INF only)
 	Group            int // units per Deploy, 0/1 = single (u_paratrooper = 4)
 	Paradrop         bool
+	// Support (SIM-5, contract 0.2.4, additive; zero = "none").
+	DmgGrowthPermille int        // per-level growth of Dmg (spec 3.2 Mdps), 0 = none
+	Heal              int        // ability heal: hit points restored per action (u_medic, v_engineer); needs RangeCells >= 1
+	HealVs            uint8      // mask of ClassBit the heal works on (medic INF, engineer VEH)
+	JamTurns          int        // ability jam (u_saboteur): turns(jam_s), the target stays disabled this many turns
+	Ability           AbilityDef // hero ability (spec 5.3), Kind 0 = none; heroes only
+	AuraCells         int        // hero aura (h_commander): allies within this many cells get the bonuses below
+	AuraDmgPermille   int
+	AuraMovePermille  int
+}
+
+// AbilityKind is the effect of a hero ability (content heroes.yaml ability.effect.kind, spec 5.3).
+type AbilityKind uint8
+
+const (
+	AbilityNone       AbilityKind = iota
+	AbilityZoneDamage             // zone_damage: an airstrike around the hero (a_cover_fire)
+	AbilityDecoy                  // spawn_decoy: a decoy unit the defence treats as a target (a_decoy_turret)
+	AbilityStealth                // stealth: untargetable for the defence until the hero attacks (a_vanish)
+)
+
+// AbilityDef is the hero ability. The effect-specific numbers are per kind; unused ones stay zero.
+type AbilityDef struct {
+	ID            string
+	Kind          AbilityKind
+	CooldownTurns int    // turns(cooldown_s), >= 1
+	RadiusCells   int    // zone_damage: blast radius; spawn_decoy: how far from the hero the decoy may stand
+	DurationTurns int    // zone_damage: steps; stealth: turns; spawn_decoy: lifetime, 0 = until destroyed
+	Dmg           int    // zone_damage: damage over the whole duration
+	DecoyUnit     string // spawn_decoy: Units id of the decoy (a stationary ground unit; its numbers are the decoy's)
+	BonusPermille int    // stealth: multiplier of the first shot out of hiding (4000 = x4), 0 = none
+	BonusVs       VsTag  // stealth: the bonus applies to targets of this group
+}
+
+// SpellKind is the effect of a support call (spec 9.1).
+type SpellKind uint8
+
+const (
+	SpellAirstrike  SpellKind = iota + 1 // c_airstrike
+	SpellMedkit                          // c_medkit
+	SpellSmoke                           // c_smoke
+	SpellAdrenaline                      // c_adrenaline
+	SpellEMP                             // c_emp
+	SpellBreach                          // c_breach
+)
+
+// SpellDef is a support call from the Support Bay in per-turn integers (content troops.yaml spells).
+type SpellDef struct {
+	ID            string
+	Kind          SpellKind
+	RadiusCells   int
+	DurationTurns int // turns(duration_s): airstrike, medkit, smoke, adrenaline, emp
+	DmgTotal      int // airstrike: damage to each enemy over the whole duration
+	HealTotal     int // medkit: hit points to each infantry unit over the whole duration
+	MovePermille  int // adrenaline: bonus to move_cells (floor, at least +1 cell)
+	DmgPermille   int // adrenaline: bonus to damage
 }
 
 // BuildingDef is a defender structure: building, defence, wall, trap, decor, obstacle.
@@ -99,6 +155,9 @@ type BuildingDef struct {
 	CoolTurns         int // d_flame_trap: turns without fire after overheating
 	Chain             int // d_tesla: the arc hits up to Chain targets (<= 1 = single target)
 	ChainCells        int // d_tesla: reach of each jump to the next target
+	// Support (SIM-5, contract 0.2.4, additive; zero = "none").
+	AuraCells int // d_jammer: a spell centred within this many cells of the footprint is weakened
+	JamPct    int // d_jammer: airstrike damage / EMP duration lose this percent (0..100)
 }
 
 // VsTag is a target group for a unit's damage multiplier (content `vs_mult`, spec 6.1).
@@ -113,6 +172,7 @@ const (
 	VsVEH
 	VsAIR
 	VsSEA
+	VsHQ // b_hq (SIM-5: the stealth bonus of a_vanish)
 )
 
 // VsMult scales the damage against a target group: Permille 1500 = x1.5. Several matching entries add up
@@ -140,6 +200,8 @@ type Rules struct {
 	MaxTurns          int // battle.max_turns safety fuse
 	ParadropEdgeCells int // battle.paradrop_edge_cells
 	SplashFalloffPct  int // battle.splash_falloff_pct (0..100): damage loss at the splash edge
+	SpellsPerTurn     int // battle.spells_per_turn (SIM-5): spells per player turn, 0 = no limit
+	Spells            []SpellDef
 	Units             []UnitDef
 	Buildings         []BuildingDef
 }
@@ -182,9 +244,51 @@ func (r *Rules) validate() error {
 			return bad("unit %q: attack needs range >= 1", u.ID)
 		}
 		for _, m := range u.VsMult {
-			if m.Tag < VsWire || m.Tag > VsSEA || m.Permille < 0 {
+			if m.Tag < VsWire || m.Tag > VsHQ || m.Permille < 0 {
 				return bad("unit %q: bad vs_mult", u.ID)
 			}
+		}
+		if u.DmgGrowthPermille < 0 || u.Heal < 0 || u.JamTurns < 0 || u.AuraCells < 0 || u.AuraDmgPermille < 0 || u.AuraMovePermille < 0 {
+			return bad("unit %q has invalid support numbers", u.ID)
+		}
+		if u.Heal > 0 && (u.RangeCells < 1 || u.HealVs == 0) {
+			return bad("unit %q: heal needs range >= 1 and heal_vs", u.ID)
+		}
+		if (u.AuraCells > 0) != (u.AuraDmgPermille+u.AuraMovePermille > 0) {
+			return bad("unit %q: aura needs aura_cells and a bonus", u.ID)
+		}
+	}
+	for i := range r.Units {
+		if err := r.validateAbility(&r.Units[i]); err != nil {
+			return err
+		}
+	}
+	if r.SpellsPerTurn < 0 {
+		return bad("spells_per_turn < 0")
+	}
+	for _, sp := range r.Spells {
+		if seen["c:"+sp.ID] {
+			return bad("duplicate spell %q", sp.ID)
+		}
+		seen["c:"+sp.ID] = true
+		if sp.RadiusCells < 0 || sp.DurationTurns < 0 || sp.DmgTotal < 0 || sp.HealTotal < 0 || sp.MovePermille < 0 || sp.DmgPermille < 0 {
+			return bad("spell %q has invalid numbers", sp.ID)
+		}
+		ok := false
+		switch sp.Kind {
+		case SpellAirstrike:
+			ok = sp.DurationTurns >= 1 && sp.DmgTotal >= 1
+		case SpellMedkit:
+			ok = sp.DurationTurns >= 1 && sp.HealTotal >= 1
+		case SpellSmoke, SpellEMP:
+			ok = sp.DurationTurns >= 1
+		case SpellAdrenaline:
+			ok = sp.DurationTurns >= 1 && sp.MovePermille+sp.DmgPermille > 0
+		case SpellBreach:
+			ok = true
+		}
+		if !ok {
+			return bad("spell %q (kind %d) lacks its effect numbers", sp.ID, sp.Kind)
 		}
 	}
 	for _, d := range r.Buildings {
@@ -206,6 +310,9 @@ func (r *Rules) validate() error {
 		}
 		if d.TriggerCells < 0 || d.DotDmg < 0 || d.OverheatFireTurns < 0 || d.CoolTurns < 0 || d.Chain < 0 || d.ChainCells < 0 {
 			return bad("building %q has invalid defence numbers", d.ID)
+		}
+		if d.AuraCells < 0 || d.JamPct < 0 || d.JamPct > 100 {
+			return bad("building %q has invalid jammer numbers", d.ID)
 		}
 		if d.OverheatFireTurns > 0 && d.CoolTurns < 1 {
 			return bad("building %q: overheat needs cool_turns", d.ID)
@@ -240,4 +347,47 @@ func scaledHP(hp, growthPermille, level int) int {
 		m = m * growthPermille / 1000
 	}
 	return hp * m / 1000
+}
+
+// validateAbility checks the hero ability of u against the rest of the rules.
+func (r *Rules) validateAbility(u *UnitDef) error {
+	a := &u.Ability
+	bad := func(format string, x ...any) error {
+		return fmt.Errorf("%w: rules: unit %q ability: %s", ErrBadSnapshot, u.ID, fmt.Sprintf(format, x...))
+	}
+	if a.Kind == AbilityNone {
+		if *a != (AbilityDef{}) {
+			return bad("numbers without a kind")
+		}
+		return nil
+	}
+	if !u.Hero {
+		return bad("only heroes have abilities")
+	}
+	if a.CooldownTurns < 1 || a.RadiusCells < 0 || a.DurationTurns < 0 || a.Dmg < 0 || a.BonusPermille < 0 {
+		return bad("invalid numbers")
+	}
+	switch a.Kind {
+	case AbilityZoneDamage:
+		if a.Dmg < 1 || a.DurationTurns < 1 {
+			return bad("zone_damage needs dmg and duration")
+		}
+	case AbilityDecoy:
+		ok := false
+		for i := range r.Units {
+			if d := &r.Units[i]; d.ID == a.DecoyUnit && !d.Hero && d.Class != ClassAIR && d.Class != ClassSEA {
+				ok = true
+			}
+		}
+		if !ok {
+			return bad("spawn_decoy needs a ground decoy unit, got %q", a.DecoyUnit)
+		}
+	case AbilityStealth:
+		if a.DurationTurns < 1 || (a.BonusPermille > 0 && (a.BonusVs < VsWire || a.BonusVs > VsHQ)) {
+			return bad("stealth needs duration and a valid bonus target")
+		}
+	default:
+		return bad("kind %d", a.Kind)
+	}
+	return nil
 }

@@ -2,8 +2,7 @@ package sim
 
 // Apply feeds one command and returns the animation events. A refused command is not an error:
 // it is recorded in Result.Rejected and leaves the state unchanged (the only exception is the implicit
-// EndTurn that a turn change in Command.Turn performs, spec 4.2). ErrNotImplemented leaves the state unchanged
-// and does not consume a log index.
+// EndTurn that a turn change in Command.Turn performs, spec 4.2).
 func (b *Battle) Apply(cmd Command) ([]Event, error) {
 	evs, code, err := b.apply(cmd)
 	if err != nil {
@@ -63,6 +62,10 @@ func (b *Battle) apply(c Command) ([]Event, RejectCode, error) {
 		more, code = b.cmdStart()
 	case OpMove:
 		more, code = b.cmdMove(c)
+	case OpAbility:
+		more, code = b.cmdAbility(c)
+	case OpCast:
+		more, code = b.cmdCast(c)
 	case OpAttack:
 		more, code = b.cmdAttack(c)
 	case OpEndTurn:
@@ -70,8 +73,6 @@ func (b *Battle) apply(c Command) ([]Event, RejectCode, error) {
 	case OpRetreat:
 		b.finish(EndRetreat)
 		more = []Event{{Kind: EventBattleEnded, Value: int(EndRetreat)}}
-	default: // OpAbility, OpCast: SIM-5
-		return nil, 0, ErrNotImplemented
 	}
 	if code != 0 {
 		return evs, code, nil
@@ -103,7 +104,7 @@ func (b *Battle) checkEnd() EndReason {
 	}
 	for i := range b.ents {
 		e := &b.ents[i]
-		if e.owner == ownerAttacker && e.alive {
+		if e.owner == ownerAttacker && e.alive && e.kind != KindDecoy { // a decoy is not an army unit (SIM-5)
 			return EndNone
 		}
 	}
@@ -128,6 +129,7 @@ func (b *Battle) endTurn() []Event {
 }
 
 func (b *Battle) startPlayerTurn() {
+	b.spellsTurn = 0
 	for i := range b.ents {
 		e := &b.ents[i]
 		if e.owner == ownerAttacker && e.alive {

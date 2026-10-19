@@ -3,13 +3,14 @@
 // and time is counted in turns. Same (Snapshot, Commands, Seed, ContentVersion) MUST give a byte-identical
 // Result on every platform (server validation + client WASM). Rules: docs/design/battle-sim.md.
 //
-// Implemented so far (SIM-1/2/3): world, deployment, Move, pathfinding, target selection, Attack with damage /
+// Implemented (SIM-1..5): world, deployment, Move, pathfinding, target selection, Attack with damage /
 // splash / destruction, hidden traps, stars and loot basis, the defence phase (bunker release, wire, building
-// fire with overheat and chains, garrison AI). Ability/Cast return ErrNotImplemented until SIM-5.
+// fire with overheat and chains, garrison AI), and the support layer: Ability (heal, jam, unload, hero abilities),
+// Cast (airstrike, medkit, smoke, adrenaline, EMP, breach with zone effects counted in turns), the hero aura.
 package sim
 
 // EngineVersion identifies the rule set. Any rule change bumps it and regenerates the golden replays.
-const EngineVersion = "0.2.3"
+const EngineVersion = "0.2.4"
 
 // Game numbers (turn limit, time limit, splash falloff, ...) live in content/battle.yaml and are passed in by
 // the caller; there are deliberately no such constants here (AGENTS.md rule 3).
@@ -31,6 +32,7 @@ const (
 	KindVehicle
 	KindShip
 	KindHero
+	KindDecoy // a unit spawned by a hero ability (spawn_decoy): a target for the defence, never counted as army
 )
 
 // Snapshot is the frozen defender base (what the server stored) + attacker army loadout.
@@ -201,6 +203,7 @@ const (
 	EventReleased
 	EventTurnEnded
 	EventBattleEnded
+	EventSpawned // a decoy appeared (SIM-5)
 )
 
 // Event is a state change the client animates.

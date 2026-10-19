@@ -18,7 +18,7 @@ export interface Command {
   unit?: number;
   /** attack/ability target; carrier for load */
   target?: number;
-  /** deploy: slot id; cast: spell id; ability: kind */
+  /** deploy: slot id; cast: spell id; ability: kind ("heal" | "jam" | "unload" | "hero") */
   id?: string;
   level?: number;
   /** deploy / cast / ability cell */
@@ -81,7 +81,8 @@ export interface Result {
 }
 
 /** sim.EventKind: 1 moved, 2 attacked, 3 killed, 4 destroyed, 5 trap_triggered, 6 spell_cast, 7 effect_tick,
- *  8 healed, 9 released, 10 turn_ended, 11 battle_ended. Animation only; not part of StateHash. */
+ *  8 healed, 9 released, 10 turn_ended, 11 battle_ended, 12 spawned (a decoy, SIM-5). Animation only; not part of
+ *  StateHash. */
 export interface Event { Kind: number; Actor: number; Target: number; Cell: Cell; Value: number }
 
 export type Reply<T> = { ok: true; result: T } | { ok: false; error: string };

@@ -2,7 +2,7 @@ package sim
 
 // The defence phase (spec 7), run by endTurn after the player's EndTurn. Fixed order:
 //  1. bunker triggers release their garrison,
-//  2. zone effects: wire damage over time (spells are SIM-5),
+//  2. zone effects: airstrike / medkit steps in the order cast, then wire damage over time,
 //  3. defence buildings by EntityID: pick a target (dist, hp, EntityID), fire, overheat,
 //  4. garrison units by EntityID: shoot, or walk towards the nearest target (Dijkstra, spec 7.4),
 //  5. end of turn (timers; the max_turns fuse is in endTurn).
@@ -31,7 +31,17 @@ func (b *Battle) defencePhase() []Event {
 			return evs
 		}
 	}
-	for i := range b.ents { // 2. zone effects: wire
+	for i := range b.zones { // 2a. zone effects of the spells and abilities, in the order they were cast
+		z := &b.zones[i]
+		if z.active(b.turn) {
+			more := b.zoneStep(z)
+			z.step++
+			if done(more) {
+				return evs
+			}
+		}
+	}
+	for i := range b.ents { // 2b. zone effects: wire
 		u := &b.ents[i]
 		if u.owner != ownerAttacker || !u.alive || !u.onField || u.class() != ClassINF {
 			continue
@@ -55,7 +65,7 @@ func (b *Battle) defencePhase() []Event {
 			return evs
 		}
 	}
-	return evs // 5. nothing else is timed in R1: cool-downs tick in step 3, spell effects are SIM-5
+	return append(evs, b.endOfDefence()...) // 5. finished zones go, finished decoys vanish
 }
 
 // releaseGarrison lets the garrison of bunker k out when it has been hurt, or an attacker unit stands within
@@ -161,7 +171,7 @@ func (b *Battle) chainShot(s, first *entity) []Event {
 		nd := 0
 		for i := range b.ents {
 			v := &b.ents[i]
-			if !b.isCandidate(s, v) || v.ud == nil || s.bd.Vs&ClassBit(v.ud.Class) == 0 {
+			if !b.isCandidate(s, v) || v.ud == nil || s.bd.Vs&ClassBit(v.ud.Class) == 0 || b.concealed(s, v, footDist(s, v)) {
 				continue
 			}
 			hit := false
