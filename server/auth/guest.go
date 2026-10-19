@@ -17,6 +17,9 @@ const ProviderGuest = "guest"
 // ErrInvalidDeviceID is returned for a malformed device_id.
 var ErrInvalidDeviceID = errors.New("auth: invalid device_id")
 
+// ErrInvalidRefresh is returned for a malformed, expired, unknown or already used refresh token.
+var ErrInvalidRefresh = errors.New("auth: invalid refresh token")
+
 var deviceIDRe = regexp.MustCompile(`^[A-Za-z0-9_-]{16,64}$`)
 
 // Tokens is the token pair returned by login.
@@ -51,16 +54,51 @@ func (s *Service) Guest(ctx context.Context, deviceID string) (db.Player, Tokens
 }
 
 func (s *Service) issuePair(ctx context.Context, player uuid.UUID) (Tokens, error) {
-	var t Tokens
-	var err error
-	t.AccessToken, t.AccessExpiresAt, err = s.Signer.Issue(KindAccess, player, uuid.New())
-	if err != nil {
-		return t, err
-	}
-	jti := uuid.New()
-	t.RefreshToken, t.RefreshExpiresAt, err = s.Signer.Issue(KindRefresh, player, jti)
+	t, jti, err := s.signPair(player)
 	if err != nil {
 		return t, err
 	}
 	return t, s.Store.SaveRefreshToken(ctx, jti, player, t.RefreshExpiresAt)
+}
+
+func (s *Service) signPair(player uuid.UUID) (Tokens, uuid.UUID, error) {
+	var t Tokens
+	var err error
+	t.AccessToken, t.AccessExpiresAt, err = s.Signer.Issue(KindAccess, player, uuid.New())
+	if err != nil {
+		return t, uuid.Nil, err
+	}
+	jti := uuid.New()
+	t.RefreshToken, t.RefreshExpiresAt, err = s.Signer.Issue(KindRefresh, player, jti)
+	return t, jti, err
+}
+
+// Refresh exchanges a valid, unused refresh token for a new pair and revokes the old
+// token (rotation). Any failure to validate yields ErrInvalidRefresh; presenting an
+// already revoked token is indistinguishable from an unknown one.
+func (s *Service) Refresh(ctx context.Context, refreshToken string) (uuid.UUID, Tokens, error) {
+	claims, err := s.Signer.Verify(refreshToken, KindRefresh)
+	if err != nil {
+		return uuid.Nil, Tokens{}, ErrInvalidRefresh
+	}
+	player, err := claims.PlayerID()
+	if err != nil {
+		return uuid.Nil, Tokens{}, ErrInvalidRefresh
+	}
+	oldJTI, err := uuid.Parse(claims.ID)
+	if err != nil {
+		return uuid.Nil, Tokens{}, ErrInvalidRefresh
+	}
+	t, newJTI, err := s.signPair(player)
+	if err != nil {
+		return uuid.Nil, Tokens{}, err
+	}
+	err = s.Store.RotateRefreshToken(ctx, oldJTI, newJTI, player, t.RefreshExpiresAt, s.Signer.now())
+	if errors.Is(err, db.ErrRefreshInvalid) {
+		return uuid.Nil, Tokens{}, ErrInvalidRefresh
+	}
+	if err != nil {
+		return uuid.Nil, Tokens{}, err
+	}
+	return player, t, nil
 }

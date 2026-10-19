@@ -46,6 +46,48 @@ func (s *Server) handleGuest(w http.ResponseWriter, r *http.Request) {
 	s.writeJSON(w, http.StatusOK, guestResponse{PlayerID: p.ID.String(), DeviceID: deviceID, Tokens: tokens})
 }
 
+type refreshRequest struct {
+	RefreshToken string `json:"refresh_token"`
+}
+
+type refreshResponse struct {
+	PlayerID string      `json:"player_id"`
+	Tokens   auth.Tokens `json:"tokens"`
+}
+
+// handleRefresh rotates a refresh token: the old jti is revoked, a new pair is returned.
+// Unknown, expired, revoked or malformed tokens all give 401 unauthorized.
+func (s *Server) handleRefresh(w http.ResponseWriter, r *http.Request) {
+	var req refreshRequest
+	body, err := io.ReadAll(http.MaxBytesReader(w, r.Body, 4096))
+	if err != nil || json.Unmarshal(body, &req) != nil || req.RefreshToken == "" {
+		s.writeError(w, http.StatusBadRequest, CodeInvalid, "body must be JSON {\"refresh_token\": string}", nil)
+		return
+	}
+	player, tokens, err := s.auth.Refresh(r.Context(), req.RefreshToken)
+	if errors.Is(err, auth.ErrInvalidRefresh) {
+		s.metrics.refresh.WithLabelValues("invalid").Inc()
+		s.writeError(w, http.StatusUnauthorized, CodeUnauthorized, "invalid, expired or already used refresh token", nil)
+		return
+	}
+	if err != nil {
+		s.metrics.refresh.WithLabelValues("error").Inc()
+		s.internal(w, r, err)
+		return
+	}
+	s.metrics.refresh.WithLabelValues("ok").Inc()
+	s.writeJSON(w, http.StatusOK, refreshResponse{PlayerID: player.String(), Tokens: tokens})
+}
+
+// builder is a placeholder shape for the builders list of GET /v1/me.
+// ASSUMPTION: the real data (count, busy timers) comes from svc/base; until it is wired
+// the list is empty. Fields are additive-only.
+type builder struct {
+	ID        string     `json:"id"`
+	BusyUntil *time.Time `json:"busy_until"`
+	TargetID  string     `json:"target_id,omitempty"`
+}
+
 type profile struct {
 	ID          string     `json:"id"`
 	Nickname    string     `json:"nickname"`
@@ -57,8 +99,9 @@ type profile struct {
 }
 
 type meResponse struct {
-	Profile profile          `json:"profile"`
-	Wallets map[string]int64 `json:"wallets"`
+	Profile  profile          `json:"profile"`
+	Wallets  map[string]int64 `json:"wallets"`
+	Builders []builder        `json:"builders"`
 }
 
 func (s *Server) handleMe(w http.ResponseWriter, r *http.Request) {
@@ -80,7 +123,8 @@ func (s *Server) handleMe(w http.ResponseWriter, r *http.Request) {
 	s.writeJSON(w, http.StatusOK, meResponse{
 		Profile: profile{ID: p.ID.String(), Nickname: p.Nickname, HQLevel: p.HQLevel, Trophies: p.Trophies,
 			League: p.League, ShieldUntil: p.ShieldUntil, CreatedAt: p.CreatedAt},
-		Wallets: wallets,
+		Wallets:  wallets,
+		Builders: []builder{},
 	})
 }
 

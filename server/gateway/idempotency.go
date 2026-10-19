@@ -66,7 +66,7 @@ func (s *Server) idempotency(next http.Handler) http.Handler {
 		}
 		body, err := io.ReadAll(http.MaxBytesReader(w, r.Body, maxBodyBytes))
 		if err != nil {
-			s.writeError(w, http.StatusRequestEntityTooLarge, CodeInvalid, "request body too large", nil)
+			s.writeError(w, http.StatusBadRequest, CodeInvalid, "request body too large", nil)
 			return
 		}
 		r.Body = io.NopCloser(bytes.NewReader(body))
@@ -92,6 +92,7 @@ func (s *Server) idempotency(next http.Handler) http.Handler {
 				s.writeError(w, http.StatusConflict, CodeConflict, "request with this Idempotency-Key is in progress", nil)
 			default:
 				w.Header().Set("Content-Type", rec.ContentType)
+				s.metrics.idemReplays.Inc()
 				w.Header().Set("Idempotent-Replay", "true")
 				w.WriteHeader(rec.Status)
 				_, _ = w.Write(rec.Body)

@@ -12,6 +12,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rs/zerolog"
 
 	"github.com/geone39/fireline/server/auth"
@@ -53,11 +54,17 @@ type Server struct {
 	ipLimits   *limiterSet
 	userLimits *limiterSet
 	extra      func(r chi.Router)
+	metrics    *metrics
 }
 
 // New builds a Server.
 func New(d Deps) *Server {
 	s := &Server{cfg: d.Config, auth: d.Auth, store: d.Store, idem: d.Idem, content: d.Content, log: d.Log, nowFn: d.Now, extra: d.ExtraAuthedRoutes}
+	var pool *pgxpool.Pool
+	if d.Store != nil {
+		pool = d.Store.Pool
+	}
+	s.metrics = newMetrics(pool)
 	s.ipLimits = newLimiterSet(d.Config.IPRateRPS, d.Config.IPRateBurst, s.now)
 	s.userLimits = newLimiterSet(d.Config.UserRateRPS, d.Config.UserRateBurst, s.now)
 	return s
@@ -73,17 +80,20 @@ func (s *Server) now() time.Time {
 // Handler returns the root http.Handler.
 func (s *Server) Handler() http.Handler {
 	r := chi.NewRouter()
-	r.Use(s.requestID, s.recoverer, s.accessLog, s.ipRateLimit)
+	r.Use(s.requestID, s.instrument, s.recoverer, s.accessLog, s.ipRateLimit)
 	r.NotFound(func(w http.ResponseWriter, _ *http.Request) {
 		s.writeError(w, http.StatusNotFound, CodeNotFound, "route not found", nil)
 	})
 	r.MethodNotAllowed(func(w http.ResponseWriter, _ *http.Request) {
-		s.writeError(w, http.StatusMethodNotAllowed, CodeInvalid, "method not allowed", nil)
+		s.writeError(w, http.StatusBadRequest, CodeInvalid, "method not allowed", nil)
 	})
 
 	r.Get("/healthz", func(w http.ResponseWriter, _ *http.Request) {
 		s.writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
 	})
+	// ASSUMPTION: /metrics is served on the public listener without auth; restrict it at
+	// the reverse proxy / network policy in production.
+	r.Method(http.MethodGet, "/metrics", s.metrics.handler())
 	r.Get("/readyz", func(w http.ResponseWriter, req *http.Request) {
 		if err := s.store.Ping(req.Context()); err != nil {
 			s.writeError(w, http.StatusServiceUnavailable, CodeInternal, "database unavailable", nil)
@@ -94,6 +104,7 @@ func (s *Server) Handler() http.Handler {
 
 	r.Route("/v1", func(r chi.Router) {
 		r.Post("/auth/guest", s.handleGuest)
+		r.Post("/auth/refresh", s.handleRefresh)
 		r.Get("/content/manifest", s.handleManifest)
 
 		r.Group(func(r chi.Router) {
@@ -201,11 +212,12 @@ func (s *Server) authenticate(next http.Handler) http.Handler {
 	})
 }
 
-// contentCheck rejects mutating requests from a client whose X-Content-Version differs
-// from the server's. ASSUMPTION: header name X-Content-Version, HTTP 409.
+// contentCheck rejects authenticated requests from a client whose X-Content-Version
+// differs from the server's (docs/03-api.md: content_outdated, HTTP 409). A missing
+// header is accepted.
 func (s *Server) contentCheck(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if v := r.Header.Get(headerContentVer); v != "" && v != s.content.Version() && r.Method != http.MethodGet {
+		if v := r.Header.Get(headerContentVer); v != "" && v != s.content.Version() {
 			s.writeError(w, http.StatusConflict, CodeContentOld, "client content version is outdated",
 				map[string]any{"content_version": s.content.Version(), "bundle_url": s.content.bundleURL})
 			return

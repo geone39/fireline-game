@@ -76,3 +76,30 @@ func (s *Store) SaveRefreshToken(ctx context.Context, jti, player uuid.UUID, exp
 	_, err := s.Pool.Exec(ctx, `INSERT INTO refresh_tokens (jti, player_id, expires_at) VALUES ($1, $2, $3)`, jti, player, expires)
 	return err
 }
+
+// ErrRefreshInvalid is returned when a refresh token is unknown, revoked or expired.
+var ErrRefreshInvalid = errors.New("db: refresh token invalid")
+
+// RotateRefreshToken atomically revokes the refresh token oldJTI (only if it is still
+// active at now) and records newJTI for the same player. The conditional UPDATE makes
+// concurrent use of the same token succeed at most once.
+func (s *Store) RotateRefreshToken(ctx context.Context, oldJTI, newJTI uuid.UUID, player uuid.UUID, newExpires, now time.Time) error {
+	tx, err := s.Pool.Begin(ctx)
+	if err != nil {
+		return err
+	}
+	defer func() { _ = tx.Rollback(ctx) }()
+	tag, err := tx.Exec(ctx, `
+		UPDATE refresh_tokens SET revoked_at = $3
+		WHERE jti = $1 AND player_id = $2 AND revoked_at IS NULL AND expires_at > $3`, oldJTI, player, now)
+	if err != nil {
+		return err
+	}
+	if tag.RowsAffected() != 1 {
+		return ErrRefreshInvalid
+	}
+	if _, err := tx.Exec(ctx, `INSERT INTO refresh_tokens (jti, player_id, expires_at) VALUES ($1, $2, $3)`, newJTI, player, newExpires); err != nil {
+		return err
+	}
+	return tx.Commit(ctx)
+}

@@ -57,7 +57,8 @@ func (s *limiterSet) allow(key string) (ok bool, retry time.Duration) {
 	return true, 0
 }
 
-func (s *Server) rejectRateLimited(w http.ResponseWriter, retry time.Duration) {
+func (s *Server) rejectRateLimited(w http.ResponseWriter, scope string, retry time.Duration) {
+	s.metrics.rateLimited.WithLabelValues(scope).Inc()
 	secs := int(retry.Seconds()) + 1
 	w.Header().Set("Retry-After", strconv.Itoa(secs))
 	s.writeError(w, http.StatusTooManyRequests, CodeRateLimited, "too many requests", map[string]any{"retry_after_s": secs})
@@ -72,7 +73,7 @@ func (s *Server) ipRateLimit(next http.Handler) http.Handler {
 			host = r.RemoteAddr
 		}
 		if ok, retry := s.ipLimits.allow(host); !ok {
-			s.rejectRateLimited(w, retry)
+			s.rejectRateLimited(w, "ip", retry)
 			return
 		}
 		next.ServeHTTP(w, r)
@@ -84,7 +85,7 @@ func (s *Server) userRateLimit(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if id, ok := PlayerFrom(r.Context()); ok {
 			if ok, retry := s.userLimits.allow(id.String()); !ok {
-				s.rejectRateLimited(w, retry)
+				s.rejectRateLimited(w, "user", retry)
 				return
 			}
 		}

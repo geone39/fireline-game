@@ -50,6 +50,7 @@ func (s *Server) writeJSON(w http.ResponseWriter, status int, v any) {
 	}
 	body, _ := json.Marshal(out)
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set(headerContentVer, s.content.Version())
 	w.WriteHeader(status)
 	_, _ = w.Write(body)
 }
