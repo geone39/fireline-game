@@ -1,6 +1,13 @@
 # CHANGELOG `sim`
 
 ## Unreleased
+### 0.2.2 — SIM-2: Attack, урон, разрушение, ловушки, конец боя (EngineVersion 0.2.2)
+- `Attack`: дальность/`min_range` по Чебышёву до footprint, AP, допустимые цели, целочисленный урон со множителями `vs_mult`, `Burst × wall_mult` (u_breacher), сплэш с затуханием `splash_falloff_pct` (центр — ближайшая к стрелку клетка цели; враги по возрастанию `EntityID`), мгновенное разрушение и освобождение клеток, события `Attacked/Killed/Destroyed`.
+- Скрытые ловушки при `Move`: `d_mine` (взрыв + сплэш по классам из `Vs`), `d_spring_trap` (бросок лёгкого INF назад над препятствиями), прерывание пути, вскрытая ловушка (радар) — цель `Attack`; гибель перевозчика высаживает пассажиров (§5.4).
+- Конец боя после каждой команды: 100% (приоритетнее `no_units`), нет юнитов атакующего, `Retreat`, `max_turns`. Звёзды HQ/50%/100%, `Destruction`, `LootBasis` (хранилища), `HeroDamageTaken`; потеря героя не входит в `UnitsLost`.
+- **Additive contract-change 0.2.2:** `Rules.SplashFalloffPct`, `UnitDef.{SplashCells,Burst,WallMult,VsMult}`, `BuildingDef.{SplashCells,Trap,Burst,MaxHPFlung,FlingCells}`; `Attack` больше не `ErrNotImplemented`.
+- Тесты: golden G06–G12 (G01–G05 пересозданы отдельным коммитом из-за bump версии), unit-тесты урона/сплэша/ловушек/перевозчика/окончаний, property на 1000 журналов с Attack и ловушками (Run дважды, Run = Apply-цикл, перестановка `Buildings`), `TestDeterminismLint`.
+- Не сделано (SIM-3/5): фаза обороны (выстрелы построек, проволока dot, бункер, ИИ гарнизона), `Ability`, `Cast`, герой-аура; броня вне R1.
 ### 0.2.1 — SIM-1: мир, высадка, Move, поиск пути, цели (EngineVersion 0.2.1)
 - Мир 44×44 по `Snapshot.Rules`: вода (`maps.<id>.water`), здания по `(Y,X,ID)` (канонический порядок EntityID, §2.4), слои земля/вода/воздух, проходимость (стены, `d_tank_trap`, диагональная «лесенка»), гарнизон бункеров получает EntityID (юниты внутри, высвобождение — SIM-3).
 - Фаза 0: `Deploy` (зона высадки = вне `build_zone`, корабли — вода, герой один, десант группой по `Group`), `Load`, `Start`; `Retreat`. Отклонения по `RejectCode`, состояние не меняется.

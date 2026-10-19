@@ -1,7 +1,7 @@
 {
  "name": "G04",
  "about": "deployment variants: paratrooper group of 4, hero level 2, APC loading up to carries=2 (third passenger rejected)",
- "engine_version": "0.2.1",
+ "engine_version": "0.2.2",
  "seed": 4,
  "snapshot": {
   "ContentVersion": "test-fixture",
@@ -88,6 +88,7 @@
    ],
    "MaxTurns": 30,
    "ParadropEdgeCells": 3,
+   "SplashFalloffPct": 40,
    "Units": [
     {
      "ID": "u_rifleman",
@@ -100,6 +101,10 @@
      "RangeCells": 4,
      "MinRangeCells": 0,
      "Dmg": 10,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
      "Carries": 0,
      "Group": 0,
      "Paradrop": false
@@ -115,6 +120,10 @@
      "RangeCells": 1,
      "MinRangeCells": 0,
      "Dmg": 30,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
      "Carries": 0,
      "Group": 0,
      "Paradrop": false
@@ -128,8 +137,12 @@
      "AP": 1,
      "MoveCells": 2,
      "RangeCells": 9,
-     "MinRangeCells": 0,
+     "MinRangeCells": 2,
      "Dmg": 28,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
      "Carries": 0,
      "Group": 0,
      "Paradrop": false
@@ -145,6 +158,10 @@
      "RangeCells": 0,
      "MinRangeCells": 0,
      "Dmg": 0,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
      "Carries": 0,
      "Group": 0,
      "Paradrop": false
@@ -160,6 +177,10 @@
      "RangeCells": 4,
      "MinRangeCells": 0,
      "Dmg": 20,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
      "Carries": 0,
      "Group": 4,
      "Paradrop": true
@@ -175,6 +196,29 @@
      "RangeCells": 5,
      "MinRangeCells": 0,
      "Dmg": 16,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 2,
+     "Group": 0,
+     "Paradrop": false
+    },
+    {
+     "ID": "v_buggy",
+     "Class": 1,
+     "Hero": false,
+     "HP": 15,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 3,
+     "RangeCells": 3,
+     "MinRangeCells": 0,
+     "Dmg": 6,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
      "Carries": 2,
      "Group": 0,
      "Paradrop": false
@@ -190,6 +234,10 @@
      "RangeCells": 7,
      "MinRangeCells": 0,
      "Dmg": 55,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
      "Carries": 0,
      "Group": 0,
      "Paradrop": false
@@ -205,6 +253,10 @@
      "RangeCells": 1,
      "MinRangeCells": 0,
      "Dmg": 40,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
      "Carries": 0,
      "Group": 0,
      "Paradrop": false
@@ -220,6 +272,10 @@
      "RangeCells": 8,
      "MinRangeCells": 0,
      "Dmg": 30,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
      "Carries": 0,
      "Group": 0,
      "Paradrop": false
@@ -235,6 +291,10 @@
      "RangeCells": 0,
      "MinRangeCells": 0,
      "Dmg": 0,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
      "Carries": 3,
      "Group": 0,
      "Paradrop": false
@@ -250,6 +310,10 @@
      "RangeCells": 3,
      "MinRangeCells": 0,
      "Dmg": 5,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
      "Carries": 0,
      "Group": 0,
      "Paradrop": false
@@ -265,6 +329,95 @@
      "RangeCells": 5,
      "MinRangeCells": 0,
      "Dmg": 80,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false
+    },
+    {
+     "ID": "u_breacher",
+     "Class": 0,
+     "Hero": false,
+     "HP": 35,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 3,
+     "RangeCells": 1,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "SplashCells": 1,
+     "Burst": 16,
+     "WallMult": 40,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false
+    },
+    {
+     "ID": "u_grenadier",
+     "Class": 0,
+     "Hero": false,
+     "HP": 75,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 6,
+     "MinRangeCells": 0,
+     "Dmg": 20,
+     "SplashCells": 2,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false
+    },
+    {
+     "ID": "u_flamer",
+     "Class": 0,
+     "Hero": false,
+     "HP": 120,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 2,
+     "MinRangeCells": 0,
+     "Dmg": 30,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": [
+      {
+       "Tag": 1,
+       "Permille": 1500
+      },
+      {
+       "Tag": 2,
+       "Permille": 500
+      }
+     ],
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false
+    },
+    {
+     "ID": "u_heavy",
+     "Class": 0,
+     "Hero": false,
+     "HP": 520,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 1,
+     "RangeCells": 1,
+     "MinRangeCells": 0,
+     "Dmg": 24,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
      "Carries": 0,
      "Group": 0,
      "Paradrop": false
@@ -280,6 +433,10 @@
      "RangeCells": 3,
      "MinRangeCells": 0,
      "Dmg": 5,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
      "Carries": 0,
      "Group": 0,
      "Paradrop": false
@@ -305,7 +462,12 @@
      "RangeCells": 0,
      "MinRangeCells": 0,
      "Dmg": 0,
-     "Vs": 0
+     "Vs": 0,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0
     },
     {
      "ID": "b_vault",
@@ -326,7 +488,12 @@
      "RangeCells": 0,
      "MinRangeCells": 0,
      "Dmg": 0,
-     "Vs": 0
+     "Vs": 0,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0
     },
     {
      "ID": "d_mg_nest",
@@ -347,7 +514,12 @@
      "RangeCells": 7,
      "MinRangeCells": 0,
      "Dmg": 20,
-     "Vs": 5
+     "Vs": 5,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0
     },
     {
      "ID": "d_mortar",
@@ -368,7 +540,12 @@
      "RangeCells": 10,
      "MinRangeCells": 3,
      "Dmg": 22,
-     "Vs": 1
+     "Vs": 1,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0
     },
     {
      "ID": "d_bunker",
@@ -389,7 +566,12 @@
      "RangeCells": 0,
      "MinRangeCells": 0,
      "Dmg": 0,
-     "Vs": 0
+     "Vs": 0,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0
     },
     {
      "ID": "d_wall",
@@ -410,7 +592,12 @@
      "RangeCells": 0,
      "MinRangeCells": 0,
      "Dmg": 0,
-     "Vs": 0
+     "Vs": 0,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0
     },
     {
      "ID": "d_wire",
@@ -431,7 +618,12 @@
      "RangeCells": 0,
      "MinRangeCells": 0,
      "Dmg": 0,
-     "Vs": 0
+     "Vs": 0,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0
     },
     {
      "ID": "d_tank_trap",
@@ -452,7 +644,12 @@
      "RangeCells": 0,
      "MinRangeCells": 0,
      "Dmg": 0,
-     "Vs": 0
+     "Vs": 0,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0
     },
     {
      "ID": "d_mine",
@@ -473,7 +670,64 @@
      "RangeCells": 0,
      "MinRangeCells": 0,
      "Dmg": 0,
-     "Vs": 0
+     "Vs": 3,
+     "SplashCells": 1,
+     "Trap": 1,
+     "Burst": 18,
+     "MaxHPFlung": 0,
+     "FlingCells": 0
+    },
+    {
+     "ID": "d_spring_trap",
+     "Kind": 2,
+     "W": 1,
+     "H": 1,
+     "HP": 1,
+     "HPGrowthPermille": 0,
+     "Block": 1,
+     "SlowPct": 0,
+     "Counted": false,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": true,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 1,
+     "SplashCells": 0,
+     "Trap": 2,
+     "Burst": 0,
+     "MaxHPFlung": 60,
+     "FlingCells": 3
+    },
+    {
+     "ID": "d_fence",
+     "Kind": 2,
+     "W": 1,
+     "H": 1,
+     "HP": 300,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": false,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 0,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0
     },
     {
      "ID": "x_statue",
@@ -494,7 +748,12 @@
      "RangeCells": 0,
      "MinRangeCells": 0,
      "Dmg": 0,
-     "Vs": 0
+     "Vs": 0,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0
     }
    ]
   }
@@ -662,7 +921,7 @@
     "Code": 14
    }
   ],
-  "EngineVersion": "0.2.1",
+  "EngineVersion": "0.2.2",
   "StateHash": 13141090789571983738
  },
  "state_hash_hex": "b65e8872d998797a"

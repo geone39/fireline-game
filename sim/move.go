@@ -33,9 +33,26 @@ func (b *Battle) cmdMove(c Command) ([]Event, RejectCode) {
 		}
 		cur = to
 	}
-	// SIM-2: stepping on a hidden trap (d_mine, d_spring_trap) interrupts the walk here (spec 5.1, 8.4).
+	// The walk stops on the first trap that fires; the rest of the path is dropped, the AP is spent (spec 5.1).
+	var trap *entity
+	walked, stop := 0, len(c.Path)
+	for i, to := range c.Path {
+		walked += b.stepCost(u, to)
+		if trap = b.trapAt(u, to); trap != nil {
+			stop = i + 1
+			break
+		}
+	}
+	end, prev := c.Path[stop-1], u.pos
+	if stop > 1 {
+		prev = c.Path[stop-2]
+	}
 	b.lift(u)
-	b.place(u, cur)
+	b.place(u, end)
 	u.apLeft--
-	return []Event{{Kind: EventMoved, Actor: u.id, Cell: cur, Value: cost}}, 0
+	evs := []Event{{Kind: EventMoved, Actor: u.id, Cell: end, Value: walked}}
+	if trap != nil {
+		evs = append(evs, b.fireTrap(trap, u, int(end.X)-int(prev.X), int(end.Y)-int(prev.Y))...)
+	}
+	return evs, 0
 }

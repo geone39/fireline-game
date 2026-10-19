@@ -9,20 +9,25 @@ func fixtureRules() Rules {
 			{ID: "plain"},
 			{ID: "coastal", Water: []Rect{{40, 0, 4, 44}, {36, 28, 4, 12}, {34, 34, 2, 6}}},
 		},
-		MaxTurns: 30, ParadropEdgeCells: 3,
+		MaxTurns: 30, ParadropEdgeCells: 3, SplashFalloffPct: 40,
 		Units: []UnitDef{
 			{ID: "u_rifleman", Class: ClassINF, HP: 50, AP: 2, MoveCells: 3, RangeCells: 4, Dmg: 10},
 			{ID: "u_brawler", Class: ClassINF, HP: 100, AP: 1, MoveCells: 4, RangeCells: 1, Dmg: 30},
-			{ID: "u_sniper", Class: ClassINF, HP: 30, AP: 1, MoveCells: 2, RangeCells: 9, Dmg: 28},
+			{ID: "u_sniper", Class: ClassINF, HP: 30, AP: 1, MoveCells: 2, RangeCells: 9, MinRangeCells: 2, Dmg: 28},
 			{ID: "u_medic", Class: ClassINF, HP: 60, AP: 1, MoveCells: 2},
 			{ID: "u_para", Class: ClassINF, HP: 50, AP: 1, MoveCells: 2, RangeCells: 4, Dmg: 20, Group: 4, Paradrop: true},
 			{ID: "v_apc", Class: ClassVEH, HP: 700, AP: 1, MoveCells: 3, RangeCells: 5, Dmg: 16, Carries: 2},
+			{ID: "v_buggy", Class: ClassVEH, HP: 15, AP: 1, MoveCells: 3, RangeCells: 3, Dmg: 6, Carries: 2}, // fragile carrier
 			{ID: "v_tank", Class: ClassVEH, HP: 1100, AP: 1, MoveCells: 2, RangeCells: 7, Dmg: 55},
 			{ID: "u_drone", Class: ClassAIR, HP: 70, AP: 1, MoveCells: 5, RangeCells: 1, Dmg: 40},
 			{ID: "s_gunboat", Class: ClassSEA, HP: 600, AP: 1, MoveCells: 3, RangeCells: 8, Dmg: 30},
 			{ID: "s_lander", Class: ClassSEA, HP: 900, AP: 1, MoveCells: 3, Carries: 3},
 			{ID: "v_turret", Class: ClassVEH, HP: 10, AP: 1, MoveCells: 0, RangeCells: 3, Dmg: 5}, // stationary
 			{ID: "h_commander", Class: ClassINF, Hero: true, HP: 1600, AP: 1, MoveCells: 2, RangeCells: 5, Dmg: 80},
+			{ID: "u_breacher", Class: ClassINF, HP: 35, AP: 1, MoveCells: 3, RangeCells: 1, Burst: 16, WallMult: 40, SplashCells: 1},
+			{ID: "u_grenadier", Class: ClassINF, HP: 75, AP: 1, MoveCells: 2, RangeCells: 6, Dmg: 20, SplashCells: 2},
+			{ID: "u_flamer", Class: ClassINF, HP: 120, AP: 1, MoveCells: 2, RangeCells: 2, Dmg: 30, VsMult: []VsMult{{VsWire, 1500}, {VsWall, 500}}},
+			{ID: "u_heavy", Class: ClassINF, HP: 520, AP: 1, MoveCells: 1, RangeCells: 1, Dmg: 24},
 			{ID: "u_guard", Class: ClassINF, HP: 40, AP: 1, MoveCells: 2, RangeCells: 3, Dmg: 5},
 		},
 		Buildings: []BuildingDef{
@@ -34,7 +39,9 @@ func fixtureRules() Rules {
 			{ID: "d_wall", Kind: KindWall, W: 1, H: 1, HP: 900, Block: BlockAll},
 			{ID: "d_wire", Kind: KindWall, W: 1, H: 1, HP: 90, Block: BlockNone, SlowPct: 50},
 			{ID: "d_tank_trap", Kind: KindWall, W: 1, H: 1, HP: 600, Block: BlockVehicles},
-			{ID: "d_mine", Kind: KindWall, W: 1, H: 1, HP: 1, Block: BlockNone, Hidden: true},
+			{ID: "d_mine", Kind: KindWall, W: 1, H: 1, HP: 1, Block: BlockNone, Hidden: true, Trap: TrapMine, Burst: 18, SplashCells: 1, Vs: ClassBit(ClassINF) | ClassBit(ClassVEH)},
+			{ID: "d_spring_trap", Kind: KindWall, W: 1, H: 1, HP: 1, Block: BlockNone, Hidden: true, Trap: TrapSpring, MaxHPFlung: 60, FlingCells: 3, Vs: ClassBit(ClassINF)},
+			{ID: "d_fence", Kind: KindWall, W: 1, H: 1, HP: 300, Block: BlockAll},
 			{ID: "x_statue", Kind: KindBuilding, W: 2, H: 2, HP: 1, Untargetable: true},
 		},
 	}

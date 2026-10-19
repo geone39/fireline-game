@@ -27,7 +27,7 @@ func (b *Battle) isCandidate(s, t *entity) bool {
 // shooterStats returns attack numbers of an entity; ok=false if it cannot attack.
 func shooterStats(s *entity) (lo, hi int, vs uint8, ok bool) {
 	if s.ud != nil {
-		return s.ud.MinRangeCells, s.ud.RangeCells, 0xff, s.ud.Dmg > 0
+		return s.ud.MinRangeCells, s.ud.RangeCells, 0xff, s.ud.canAttack()
 	}
 	return s.bd.MinRangeCells, s.bd.RangeCells, s.bd.Vs, s.bd.Dmg > 0
 }

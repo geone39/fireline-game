@@ -75,10 +75,10 @@ func TestMoveWireCost(t *testing.T) {
 	// ids: wire=1, mine=2, wire=3; units 4.. (infantry x2, tank)
 	b := started(t, func(s *Snapshot) {
 		s.Buildings = []PlacedBuilding{pb("d_wire", 3, 12), pb("d_mine", 3, 13), pb("d_wire", 3, 15)}
-	}, du{"u_rifleman", 1, 12}, du{"u_rifleman", 1, 13}, du{"v_tank", 1, 15})
+	}, du{"u_rifleman", 1, 12}, du{"u_drone", 1, 13}, du{"v_tank", 1, 15})
 	wantReject(t, b, mv(1, 4, 2, 12, 3, 12, 4, 12), RejectPathCost) // 1 + 2 + 1 = 4 > 3
 	applyOK(t, b, mv(1, 4, 2, 12, 3, 12))                           // 1 + ceil(100/50) = 3
-	applyOK(t, b, mv(1, 5, 2, 13, 3, 13, 4, 13))                    // a hidden mine neither blocks nor costs (trigger: SIM-2)
+	applyOK(t, b, mv(1, 5, 2, 13, 3, 13, 4, 13))                    // a hidden mine neither blocks nor costs, and does not fire for air
 	applyOK(t, b, mv(1, 6, 2, 15, 3, 15))                           // only infantry is slowed
 }
 

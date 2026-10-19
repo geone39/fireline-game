@@ -63,12 +63,14 @@ func (b *Battle) apply(c Command) ([]Event, RejectCode, error) {
 		more, code = b.cmdStart()
 	case OpMove:
 		more, code = b.cmdMove(c)
+	case OpAttack:
+		more, code = b.cmdAttack(c)
 	case OpEndTurn:
 		more = b.endTurn()
 	case OpRetreat:
 		b.finish(EndRetreat)
 		more = []Event{{Kind: EventBattleEnded, Value: int(EndRetreat)}}
-	default: // OpAttack, OpAbility, OpCast: SIM-2/5
+	default: // OpAbility, OpCast: SIM-5
 		return nil, 0, ErrNotImplemented
 	}
 	if code != 0 {

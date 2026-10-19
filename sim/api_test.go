@@ -14,7 +14,7 @@ var (
 )
 
 func TestUnimplementedOpsReturnErrNotImplemented(t *testing.T) {
-	for _, op := range []Op{OpAttack, OpAbility, OpCast} {
+	for _, op := range []Op{OpAbility, OpCast} {
 		b, _ := NewBattle(f01Snapshot(), 1)
 		b.Apply(dep("u_rifleman", 1, 10))
 		b.Apply(Command{Op: OpStart})

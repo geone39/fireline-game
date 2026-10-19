@@ -57,7 +57,11 @@ type UnitDef struct {
 	MoveCells        int // 0 = stationary
 	RangeCells       int // effective range, >= 1 when Dmg > 0 (melee = 1)
 	MinRangeCells    int
-	Dmg              int // 0 = cannot attack
+	Dmg              int // 0 = cannot attack (unless Burst > 0)
+	SplashCells      int // splash radius of an attack (0 = single target)
+	Burst            int // one-shot detonation (u_breacher): replaces Dmg, the unit is destroyed after it
+	WallMult         int // Burst multiplier against walls / wire (content wall_mult), 0 = 1
+	VsMult           []VsMult
 	Carries          int // passenger slots (INF only)
 	Group            int // units per Deploy, 0/1 = single (u_paratrooper = 4)
 	Paradrop         bool
@@ -82,8 +86,43 @@ type BuildingDef struct {
 	RangeCells       int  // defence attack; 0 with Dmg == 0 = passive
 	MinRangeCells    int
 	Dmg              int
-	Vs               uint8 // mask of ClassBit the defence can shoot
+	Vs               uint8 // mask of ClassBit the defence can shoot; for traps: classes that trigger it
+	SplashCells      int   // blast radius (d_mine)
+	Trap             TrapKind
+	Burst            int // d_mine blast damage at the centre
+	MaxHPFlung       int // d_spring_trap: heaviest INF (max_hp) it throws
+	FlingCells       int // d_spring_trap: throw distance
 }
+
+// VsTag is a target group for a unit's damage multiplier (content `vs_mult`, spec 6.1).
+type VsTag uint8
+
+const (
+	VsWire     VsTag = iota + 1 // slowing passive obstacle (d_wire)
+	VsWall                      // anything that blocks movement among passive obstacles (walls, fences, tank traps)
+	VsBuilding                  // KindBuilding
+	VsDefence                   // KindDefence
+	VsINF
+	VsVEH
+	VsAIR
+	VsSEA
+)
+
+// VsMult scales the damage against a target group: Permille 1500 = x1.5. Several matching entries add up
+// their (Permille-1000) bonuses (spec 6.1: bonuses are summed, then one floor).
+type VsMult struct {
+	Tag      VsTag
+	Permille int
+}
+
+// TrapKind marks a trap that triggers when a unit steps on it (spec 8.4).
+type TrapKind uint8
+
+const (
+	TrapNone   TrapKind = iota
+	TrapMine            // d_mine: blast Burst + splash, consumed
+	TrapSpring          // d_spring_trap: throws a light INF unit backwards, consumed
+)
 
 // Rules is the content-derived constant set of a battle. It is carried inside the Snapshot, is read-only for
 // the engine and must not be mutated while a Battle uses it.
@@ -93,6 +132,7 @@ type Rules struct {
 	Maps              []MapDef
 	MaxTurns          int // battle.max_turns safety fuse
 	ParadropEdgeCells int // battle.paradrop_edge_cells
+	SplashFalloffPct  int // battle.splash_falloff_pct (0..100): damage loss at the splash edge
 	Units             []UnitDef
 	Buildings         []BuildingDef
 }
@@ -110,6 +150,9 @@ func (r *Rules) validate() error {
 	if r.ParadropEdgeCells < 0 {
 		return bad("paradrop_edge_cells < 0")
 	}
+	if r.SplashFalloffPct < 0 || r.SplashFalloffPct > 100 {
+		return bad("splash_falloff_pct %d", r.SplashFalloffPct)
+	}
 	seen := map[string]bool{}
 	for _, m := range r.Maps {
 		if seen["m:"+m.ID] {
@@ -125,8 +168,16 @@ func (r *Rules) validate() error {
 		if u.HP <= 0 || u.AP < 1 || u.MoveCells < 0 || u.RangeCells < 0 || u.MinRangeCells < 0 || u.Dmg < 0 || u.Carries < 0 || u.Group < 0 {
 			return bad("unit %q has invalid numbers", u.ID)
 		}
-		if u.Dmg > 0 && u.RangeCells < 1 {
+		if u.SplashCells < 0 || u.Burst < 0 || u.WallMult < 0 {
+			return bad("unit %q has invalid attack numbers", u.ID)
+		}
+		if (u.Dmg > 0 || u.Burst > 0) && u.RangeCells < 1 {
 			return bad("unit %q: attack needs range >= 1", u.ID)
+		}
+		for _, m := range u.VsMult {
+			if m.Tag < VsWire || m.Tag > VsSEA || m.Permille < 0 {
+				return bad("unit %q: bad vs_mult", u.ID)
+			}
 		}
 	}
 	for _, d := range r.Buildings {
@@ -142,6 +193,22 @@ func (r *Rules) validate() error {
 		}
 		if d.Dmg > 0 && d.RangeCells < 1 {
 			return bad("building %q: attack needs range >= 1", d.ID)
+		}
+		if d.SplashCells < 0 || d.Burst < 0 || d.MaxHPFlung < 0 || d.FlingCells < 0 {
+			return bad("building %q has invalid trap numbers", d.ID)
+		}
+		switch d.Trap {
+		case TrapNone:
+		case TrapMine:
+			if d.Burst < 1 || d.Vs == 0 {
+				return bad("mine %q needs burst and vs", d.ID)
+			}
+		case TrapSpring:
+			if d.MaxHPFlung < 1 || d.FlingCells < 1 || d.Vs == 0 {
+				return bad("spring trap %q needs max_hp_flung, fling_cells and vs", d.ID)
+			}
+		default:
+			return bad("building %q has trap kind %d", d.ID, d.Trap)
 		}
 	}
 	return nil

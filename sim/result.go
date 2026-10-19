@@ -60,7 +60,7 @@ func (b *Battle) Result() Result {
 	r.LootBasis.PercentDestroyed, r.LootBasis.Stars = r.Destruction, r.Stars
 	for i := range b.ents {
 		e := &b.ents[i]
-		if e.owner == ownerAttacker && !e.alive {
+		if e.owner == ownerAttacker && !e.alive && e.kind != KindHero { // a hero's death does not shrink the army (spec 9.2)
 			r.UnitsLost = addSlot(r.UnitsLost, e.contentID, e.level)
 		}
 	}

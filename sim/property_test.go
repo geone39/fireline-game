@@ -28,14 +28,14 @@ func (g gen) cell() Cell {
 	return cell(g.n(44), g.n(44))
 }
 
-var propBuildings = []string{"d_wall", "d_wall", "d_wall", "d_wire", "d_mine", "d_tank_trap", "d_mg_nest", "d_mortar", "b_hq", "b_vault", "x_statue", "d_bunker"}
-var propUnits = []string{"u_rifleman", "u_brawler", "u_sniper", "u_medic", "u_para", "v_apc", "v_tank", "u_drone", "s_gunboat", "s_lander", "v_turret"}
+var propBuildings = []string{"d_wall", "d_wall", "d_wall", "d_wire", "d_mine", "d_mine", "d_spring_trap", "d_fence", "d_tank_trap", "d_mg_nest", "d_mortar", "b_hq", "b_vault", "x_statue", "d_bunker"}
+var propUnits = []string{"u_rifleman", "u_brawler", "u_sniper", "u_medic", "u_para", "v_apc", "v_tank", "u_drone", "s_gunboat", "s_lander", "v_turret", "u_breacher", "u_grenadier", "u_flamer", "u_heavy", "v_buggy"}
 
 func (g gen) snapshot() Snapshot {
 	s := Snapshot{ContentVersion: "prop", BaseID: "p", Map: []string{"plain", "coastal"}[g.n(2)], Rules: fixtureRules()}
 	for tries := 0; tries < 60; tries++ {
 		id := propBuildings[g.n(len(propBuildings))]
-		pbld := PlacedBuilding{ID: id, Level: 1 + g.n(3), Pos: cell(2+g.n(38), 2+g.n(38)), Revealed: g.chance(30)}
+		pbld := PlacedBuilding{ID: id, Level: 1 + g.n(3), Pos: g.buildPos(), Revealed: g.chance(30)}
 		cand := s
 		cand.Buildings = append(append([]PlacedBuilding(nil), s.Buildings...), pbld)
 		if _, err := NewBattle(cand, 1); err == nil { // legal placement (inside the zone, no overlap, dry)
@@ -52,6 +52,17 @@ func (g gen) snapshot() Snapshot {
 		s.Garrison = append(s.Garrison, GarrisonUnit{"u_guard", 1 + g.n(2)})
 	}
 	return s
+}
+
+// buildPos favours the strip next to the landing rim so that the units meet traps and walls quickly.
+func (g gen) buildPos() Cell {
+	if g.chance(60) {
+		if g.chance(50) {
+			return cell(2+g.n(8), 2+g.n(38))
+		}
+		return cell(2+g.n(38), 2+g.n(8))
+	}
+	return cell(2+g.n(38), 2+g.n(38))
 }
 
 func (g gen) shuffled(s Snapshot) Snapshot {
@@ -95,7 +106,26 @@ func (g gen) next(b *Battle) Command {
 			return Command{Turn: turn, Op: Op(g.n(9)), Unit: anyID(), To: g.cell()}
 		}
 	}
+	if g.chance(45) { // a purposeful player: shoot what is in range, else walk towards the nearest target
+		if e := b.ent(ownUnit()); e != nil && e.ud != nil && e.alive && e.onField && e.apLeft > 0 {
+			if ts := b.targetsInRange(e); len(ts) > 0 && e.ud.canAttack() {
+				return Command{Turn: turn, Op: OpAttack, Unit: e.id, Target: ts[g.n(len(ts))]}
+			}
+			if p, _, ok := b.approach(e); ok && len(p) > 0 && e.ud.MoveCells > 0 {
+				return Command{Turn: turn, Op: OpMove, Unit: e.id, Path: p}
+			}
+		}
+	}
 	switch k := g.n(100); {
+	case k < 30: // Attack: mostly at something in range, sometimes at anything
+		u := ownUnit()
+		c := Command{Turn: turn, Op: OpAttack, Unit: u, Target: anyID()}
+		if e := b.ent(u); e != nil && e.ud != nil && g.chance(70) {
+			if ts := b.targetsInRange(e); len(ts) > 0 {
+				c.Target = ts[g.n(len(ts))]
+			}
+		}
+		return c
 	case k < 78:
 		u := ownUnit()
 		c := Command{Turn: turn, Op: OpMove, Unit: u}
@@ -104,10 +134,28 @@ func (g gen) next(b *Battle) Command {
 			return c
 		}
 		cur := e.pos
-		for steps := 1 + g.n(5); steps > 0; steps-- {
+		aim := e.pos // walk towards a random defender entity part of the time
+		if g.chance(50) {
+			if t := b.ent(EntityID(1 + g.n(max(1, nBuild(b))))); t != nil {
+				aim = t.pos
+			}
+		}
+		sign := func(v int) int {
+			if v < 0 {
+				return -1
+			}
+			if v > 0 {
+				return 1
+			}
+			return 0
+		}
+		for steps := 1 + g.n(max(1, e.ud.MoveCells)+g.n(2)); steps > 0; steps-- {
 			var to Cell
 			if g.chance(95) { // a legal-looking neighbour
 				d := dirs[g.n(8)]
+				if aim != e.pos && g.chance(80) {
+					d = [2]int{sign(int(aim.X) - int(cur.X)), sign(int(aim.Y) - int(cur.Y))}
+				}
 				to = cell(int(cur.X)+d[0], int(cur.Y)+d[1])
 				if b.inMap(to) && b.canStep(e, cur, to) != 0 {
 					continue
@@ -141,6 +189,12 @@ func nBuild(b *Battle) int {
 
 func checkInvariants(t *testing.T, b *Battle) {
 	t.Helper()
+	for i := range b.ents {
+		e := &b.ents[i]
+		if (e.hp == 0) != !e.alive || (!e.alive && ((e.ud != nil && e.onField) || e.aboard != 0)) {
+			t.Fatalf("entity %d: hp %d alive %v onField %v aboard %d", e.id, e.hp, e.alive, e.onField, e.aboard)
+		}
+	}
 	seenU := make(map[EntityID]bool) // test code: lookups only
 	for i := range b.ents {
 		e := &b.ents[i]
@@ -201,6 +255,8 @@ func replay(t *testing.T, snap Snapshot, cmds []Command, seed uint64) Result {
 func TestPropertyRunTwiceSameResult1000(t *testing.T) {
 	accepted, rejected := 0, 0
 	codes := map[RejectCode]int{}
+	evCount := map[EventKind]int{}
+	ends := map[EndReason]int{}
 	for seed := uint64(1); seed <= 1000; seed++ {
 		g := gen{NewRNG(seed * 7919)}
 		snap := g.snapshot()
@@ -209,10 +265,14 @@ func TestPropertyRunTwiceSameResult1000(t *testing.T) {
 			t.Fatalf("seed %d: %v", seed, err)
 		}
 		var cmds []Command
-		for i := 0; i < 120 && b.ph != phaseOver; i++ {
+		for i := 0; i < 300 && b.ph != phaseOver; i++ {
 			c := g.next(b)
-			if _, err := b.Apply(c); err != nil {
+			evs, err := b.Apply(c)
+			if err != nil {
 				t.Fatalf("seed %d: %v", seed, err)
+			}
+			for _, e := range evs {
+				evCount[e.Kind]++
 			}
 			cmds = append(cmds, c)
 			checkInvariants(t, b)
@@ -223,6 +283,7 @@ func TestPropertyRunTwiceSameResult1000(t *testing.T) {
 			codes[r.Code]++
 		}
 
+		ends[b.endReason]++
 		r1 := replay(t, snap, cmds, seed)
 		r2 := replay(t, snap, cmds, seed)
 		if !reflect.DeepEqual(r1, r2) || r1.StateHash != r2.StateHash {
@@ -251,5 +312,8 @@ func TestPropertyRunTwiceSameResult1000(t *testing.T) {
 	if accepted < 10000 || rejected < 10000 || len(codes) < 12 {
 		t.Fatalf("generator is too one-sided: accepted %d rejected %d codes %v", accepted, rejected, codes)
 	}
-	t.Logf("accepted %d, rejected %d, %d distinct codes", accepted, rejected, len(codes))
+	if evCount[EventAttacked] < 1000 || evCount[EventDestroyed] < 100 || evCount[EventKilled] < 30 || evCount[EventTrapTriggered] < 30 {
+		t.Fatalf("the generator does not reach combat: %v", evCount)
+	}
+	t.Logf("accepted %d, rejected %d, %d distinct codes, events %v, endings %v", accepted, rejected, len(codes), evCount, ends)
 }
