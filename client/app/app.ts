@@ -66,6 +66,11 @@ export interface App {
   dispose(): void;
 }
 
+/** Технические интервалы синхронизации таймеров (не игровые числа). */
+const TIMER_SYNC_MARGIN_MS = 300;
+const TIMER_SYNC_MIN_MS = 1000;
+const MAX_TIMEOUT_MS = 2 ** 31 - 1;
+
 export function createApp(d: AppDeps): App {
   const store = createStore<AppState>({ phase: 'booting', me: null, error: null, outdated: null });
   const tokens = createPersistentTokens(d.platform.storage);
@@ -186,13 +191,45 @@ export function createApp(d: AppDeps): App {
   let lastServerTime = base.model.store.getState().confirmed.serverTime;
   const serverNowMs = (): number => serverClock(base.model.store.getState().confirmed, receivedAt, now());
 
+  // Один отложенный таймер на ближайший finish_at (#60): по срабатыванию перезапрашиваем /v1/base (→ и /v1/me).
+  // Поправка на смещение часов — через server_time ответа (serverNowMs). Пересоздаётся при каждом подтверждённом состоянии.
+  let timerHandle: ReturnType<typeof setTimeout> | null = null;
+  const clearTimerHandle = (): void => {
+    if (timerHandle !== null) clearTimeout(timerHandle);
+    timerHandle = null;
+  };
+  function armTimerSync(): void {
+    clearTimerHandle();
+    if (store.getState().phase !== 'ready') return;
+    const timers = base.model.store.getState().confirmed.timers;
+    if (timers.length === 0) return;
+    const nextFinish = Math.min(...timers.map((t) => Date.parse(t.finish_at)).filter((n) => !Number.isNaN(n)));
+    if (!Number.isFinite(nextFinish)) return;
+    // запас: сервер завершает таймер лениво/по тику; минимальный интервал защищает от цикла при рассинхроне
+    const delay = Math.max(nextFinish - serverNowMs() + TIMER_SYNC_MARGIN_MS, TIMER_SYNC_MIN_MS);
+    timerHandle = setTimeout(() => {
+      timerHandle = null;
+      if (store.getState().phase !== 'ready') return;
+      base.model
+        .load()
+        .catch(() => undefined)
+        .finally(armTimerSync);
+    }, Math.min(delay, MAX_TIMEOUT_MS));
+  }
+
   // Кошельки меняются от команд базы (списание, сбор): после каждого подтверждения сервера обновляем me.
   const offBase = base.model.store.subscribe((s, prev) => {
     if (s.confirmed.serverTime !== lastServerTime) {
       lastServerTime = s.confirmed.serverTime;
       receivedAt = now();
     }
-    if (s.confirmed !== prev.confirmed && store.getState().phase === 'ready') void refreshMe();
+    if (s.confirmed !== prev.confirmed && store.getState().phase === 'ready') {
+      void refreshMe();
+      armTimerSync();
+    }
+  });
+  const offPhase = store.subscribe((s, prev) => {
+    if (s.phase !== prev.phase) armTimerSync();
   });
   const offLife = [
     d.platform.lifecycle.on('visible', () => {
@@ -212,7 +249,9 @@ export function createApp(d: AppDeps): App {
     refreshMe,
     serverNowMs,
     dispose() {
+      clearTimerHandle();
       offBase();
+      offPhase();
       offLife.forEach((f) => f());
     },
   };

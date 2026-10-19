@@ -1,6 +1,7 @@
 # CHANGELOG `client-core`
 
 ## Unreleased
+- fix(app): #60 — клиент синхронизирует базу по таймерам: один отложенный таймер на ближайший `finish_at` (с поправкой на `server_time`) → `GET /v1/base` + `/v1/me`; перевзвод после каждого подтверждённого состояния и смены фазы, отмена в `dispose()`. Строитель освобождается, уровень и «Улучшить» обновляются без перезагрузки; сохранение раскладки больше не шлёт устаревший `level`. Тесты: `client/app/timer-sync.test.ts` (истёк таймер, смещение часов ±1 ч, возврат вкладки, dispose). Запрос к qa — OQ-A7
 - feat(app): CLIENT-3b — редактор базы проверен end-to-end и закреплён интеграционными тестами (`client/app/editor.test.ts`: createApp + мок сервера + мок Renderer 0.2 + компоненты ui/base): постройка, улучшение, drag-drop → PUT /v1/base/layout, undo/redo, переключатель просмотр/правка
 - feat(app): отказы сервера (insufficient_resources, conflict, not_found, invalid, …) — понятный текст ru/en (`reason.*` в `client/app/i18n.ts`, новые строки — OQ-A1), показ 6 с и автоскрытие
 - fix(core): `store` сбрасывает `lastRejection` при новой команде (раньше «Не хватает ресурсов» висело до перезагрузки)
