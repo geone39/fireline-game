@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fireline — battle render (dev)</title>
+    <style>
+      html, body, #app { margin: 0; height: 100%; background: #111; }
+      #bar { position: fixed; top: 8px; left: 8px; display: flex; gap: 6px; z-index: 2; }
+      #bar button { font: 13px sans-serif; padding: 6px 10px; }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="bar">
+      <button id="play">Проиграть события</button>
+      <button id="skip">Пропустить</button>
+      <button id="reset">Сброс</button>
+      <span id="log" style="color:#ddd;font:13px sans-serif;align-self:center"></span>
+    </div>
+    <script type="module" src="/engine/battle-dev.ts"></script>
+  </body>
+</html>

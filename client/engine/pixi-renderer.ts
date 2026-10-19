@@ -18,13 +18,17 @@ import {
 import { sortByDepth } from './depth';
 import { diamond, footprintCenter, footprintDiamond, tileToScreen } from './iso';
 import { Interaction, selectedFootprint } from './interaction';
+import { BattleInput } from './battle-input';
+import { BattlePlayback } from './battle-playback';
+import type { BattleEvent, BattleWorldState } from './battle-types';
+import { BattleView } from './battle-view';
 import type {
   AtlasManifest,
+  BattleRenderer,
   Camera,
   Effect,
   InputEvent,
   InputHandler,
-  Renderer,
   WorldState,
 } from './renderer';
 
@@ -39,7 +43,7 @@ export interface PixiRendererOptions {
   resolveAssetUrl?: (path: string) => string;
 }
 
-export class PixiRenderer implements Renderer {
+export class PixiRenderer implements BattleRenderer {
   private readonly app = new Application();
   private readonly world = new Container();
   private readonly ground = new Graphics();
@@ -55,6 +59,14 @@ export class PixiRenderer implements Renderer {
   private hover: { x: number; y: number } | null = null;
   private groundKey = '';
   private interaction: Interaction | null = null;
+  private mode: 'base' | 'battle' = 'base';
+  private battle: BattleWorldState | null = null;
+  private battleInput: BattleInput | null = null;
+  private readonly battleView = new BattleView((type) => this.spriteFor(type));
+  private readonly playback = new BattlePlayback(() => {
+    this.redrawBattle();
+    this.dispatch({ type: 'battleEventsDone' });
+  });
 
   constructor(private readonly options: PixiRendererOptions = {}) {}
 
@@ -64,7 +76,7 @@ export class PixiRenderer implements Renderer {
     this.app.canvas.style.display = 'block';
     this.app.canvas.style.touchAction = 'none';
     this.itemsLayer.sortableChildren = true;
-    this.world.addChild(this.ground, this.itemsLayer, this.overlay);
+    this.world.addChild(this.ground, this.itemsLayer, this.overlay, this.battleView.container);
     this.app.stage.addChild(this.world);
     this.app.renderer.on('resize', () => this.setCamera(this.camera));
     this.bindInput(this.app.canvas);
@@ -73,6 +85,15 @@ export class PixiRenderer implements Renderer {
       setCamera: (c) => this.setCamera(c),
       getWorld: () => this.state,
       emit: (e) => this.dispatch(e),
+    });
+    this.battleInput = new BattleInput({
+      getCamera: () => this.camera,
+      setCamera: (c) => this.setCamera(c),
+      getState: () => this.playback.state,
+      emit: (e) => this.dispatch(e),
+    });
+    this.app.ticker.add((t) => {
+      if (this.mode === 'battle' && this.playback.tick(t.deltaMS)) this.redrawBattle();
     });
   }
 
@@ -85,15 +106,38 @@ export class PixiRenderer implements Renderer {
     for (const [name, a] of Object.entries(m.atlases)) {
       this.atlasTextures.set(name, (await Assets.load(resolve(a.image))) as Texture);
     }
-    if (this.state) this.render(this.state);
+    this.battleView.resetSprites();
+    if (this.mode === 'battle') this.redrawBattle();
+    else if (this.state) this.render(this.state);
   }
 
   render(state: WorldState): void {
     this.state = state;
+    this.setMode('base');
     this.drawGround(state);
     this.syncItems(state);
     this.drawOverlay();
     this.cull();
+  }
+
+  setBattle(state: BattleWorldState): void {
+    this.battle = state;
+    this.setMode('battle');
+    this.drawGround(state);
+    this.playback.setState(state);
+    this.redrawBattle();
+  }
+
+  playEvents(events: readonly BattleEvent[]): void {
+    this.playback.enqueue(events);
+  }
+
+  skipEvents(): void {
+    this.playback.skip();
+  }
+
+  setSkipAnimations(on: boolean): void {
+    this.playback.setInstant(on);
   }
 
   on(handler: InputHandler): () => void {
@@ -104,7 +148,7 @@ export class PixiRenderer implements Renderer {
   }
 
   setCamera(camera: Camera): void {
-    const size = this.state?.gridSize;
+    const size = this.gridSize();
     this.camera =
       size === undefined
         ? camera
@@ -116,7 +160,7 @@ export class PixiRenderer implements Renderer {
 
   /** Камера по центру карты. Вызывается один раз после первого render(). */
   centerCamera(zoom = 1): void {
-    const size = this.state?.gridSize ?? 0;
+    const size = this.gridSize() ?? 0;
     const c = (size - 1) / 2;
     this.setCamera(centerOn(c, c, zoom, { width: this.app.screen.width, height: this.app.screen.height }));
   }
@@ -130,12 +174,37 @@ export class PixiRenderer implements Renderer {
     this.app.destroy(true, { children: true });
   }
 
+  private gridSize(): number | undefined {
+    return (this.mode === 'battle' ? this.battle?.gridSize : this.state?.gridSize) ?? this.state?.gridSize;
+  }
+
+  private setMode(mode: 'base' | 'battle'): void {
+    if (this.mode === mode) return;
+    this.mode = mode;
+    this.hover = null;
+    const battle = mode === 'battle';
+    this.itemsLayer.visible = !battle;
+    this.overlay.visible = !battle;
+    this.battleView.show(battle);
+    this.groundKey = '';
+  }
+
+  private redrawBattle(): void {
+    const s = this.playback.state;
+    if (this.mode === 'battle' && s) this.battleView.draw(s, this.playback, this.hover);
+  }
+
   private dispatch(e: InputEvent): void {
     if (e.type === 'hover') {
       this.hover = e.tile;
-      this.drawOverlay();
+      if (this.mode === 'battle') this.redrawBattle();
+      else this.drawOverlay();
     }
     for (const h of this.handlers) h(e);
+  }
+
+  private input(): Interaction | BattleInput | null {
+    return this.mode === 'battle' ? this.battleInput : this.interaction;
   }
 
   private bindInput(canvas: HTMLCanvasElement): void {
@@ -146,30 +215,30 @@ export class PixiRenderer implements Renderer {
     canvas.addEventListener('pointerdown', (ev) => {
       canvas.setPointerCapture(ev.pointerId);
       const p = pos(ev);
-      this.interaction?.pointerDown(ev.pointerId, p.x, p.y);
+      this.input()?.pointerDown(ev.pointerId, p.x, p.y);
     });
     canvas.addEventListener('pointermove', (ev) => {
       const p = pos(ev);
-      this.interaction?.pointerMove(ev.pointerId, p.x, p.y);
+      this.input()?.pointerMove(ev.pointerId, p.x, p.y);
     });
     canvas.addEventListener('pointerup', (ev) => {
       const p = pos(ev);
-      this.interaction?.pointerUp(ev.pointerId, p.x, p.y);
+      this.input()?.pointerUp(ev.pointerId, p.x, p.y);
     });
-    canvas.addEventListener('pointercancel', (ev) => this.interaction?.pointerCancel(ev.pointerId));
-    canvas.addEventListener('pointerleave', () => this.interaction?.pointerLeave());
+    canvas.addEventListener('pointercancel', (ev) => this.input()?.pointerCancel(ev.pointerId));
+    canvas.addEventListener('pointerleave', () => this.input()?.pointerLeave());
     canvas.addEventListener(
       'wheel',
       (ev) => {
         ev.preventDefault();
         const p = pos(ev);
-        this.interaction?.wheel(ev.deltaY, p.x, p.y);
+        this.input()?.wheel(ev.deltaY, p.x, p.y);
       },
       { passive: false },
     );
   }
 
-  private drawGround(state: WorldState): void {
+  private drawGround(state: Pick<WorldState, 'gridSize' | 'water'>): void {
     const key = JSON.stringify([state.gridSize, state.water]);
     if (key === this.groundKey) return;
     this.groundKey = key;
@@ -231,6 +300,13 @@ export class PixiRenderer implements Renderer {
         };
       }
     });
+  }
+
+  /** Спрайт по id контента, если арт загружен; иначе undefined (рисуется заглушка-фигура). */
+  private spriteFor(type: string): Sprite | undefined {
+    const def = this.sprites.get(type);
+    if (!def || !this.atlasTextures.has(def.atlas)) return undefined;
+    return this.makeSprite(def);
   }
 
   private makeSprite(def: ArtSprite): Sprite {

@@ -1,7 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 import { indexSprites, parseArtManifest } from './atlas';
 import { mockBaseState } from './base-source';
-import type { InputEvent, InputHandler, Renderer, WorldState } from './renderer';
+import { sampleBattle, sampleEvents } from './battle-fixture';
+import type { BattleRenderer, InputEvent, InputHandler, Renderer, WorldState } from './renderer';
 import { artManifest, footprints, grid } from './test-content';
 
 export function mockRenderer(): Renderer & { emit(e: InputEvent): void } {
@@ -18,6 +19,44 @@ export function mockRenderer(): Renderer & { emit(e: InputEvent): void } {
     emit: (e) => handlers.forEach((h) => h(e)),
   };
 }
+
+export function mockBattleRenderer(): BattleRenderer & { emit(e: InputEvent): void } {
+  return {
+    ...mockRenderer(),
+    setBattle: vi.fn(),
+    playEvents: vi.fn(),
+    skipEvents: vi.fn(),
+    setSkipAnimations: vi.fn(),
+  };
+}
+
+describe('BattleRenderer contract (0.3)', () => {
+  it('a 0.2 consumer of Renderer accepts a BattleRenderer unchanged', () => {
+    const r: Renderer = mockBattleRenderer();
+    r.render({ gridSize: grid.size });
+    expect(r.render).toHaveBeenCalledTimes(1);
+  });
+  it('a consumer drives a turn: setBattle, input -> command, playEvents, done -> setBattle', () => {
+    const r = mockBattleRenderer();
+    let state = sampleBattle(grid.size, footprints);
+    const commands: string[] = [];
+    r.setBattle(state);
+    r.on((e) => {
+      if (e.type === 'battleTarget') {
+        commands.push(`attack:${e.id}`);
+        r.playEvents(sampleEvents());
+      } else if (e.type === 'battleEventsDone') {
+        state = { ...state, selectedId: null };
+        r.setBattle(state);
+      }
+    });
+    r.emit({ type: 'battleTarget', id: 3, x: 16, y: 24 });
+    r.emit({ type: 'battleEventsDone' });
+    expect(commands).toEqual(['attack:3']);
+    expect(r.playEvents).toHaveBeenCalledWith(sampleEvents());
+    expect(r.setBattle).toHaveBeenLastCalledWith(expect.objectContaining({ selectedId: null }));
+  });
+});
 
 describe('Renderer contract', () => {
   it('can be mocked and driven by a consumer (select -> render with selectedUid)', async () => {
