@@ -3,11 +3,12 @@
 // and time is counted in turns. Same (Snapshot, Commands, Seed, ContentVersion) MUST give a byte-identical
 // Result on every platform (server validation + client WASM). Rules: docs/design/battle-sim.md.
 //
-// Contract 0.2 declares the API only; the rules are not implemented yet (Run returns ErrNotImplemented).
+// Implemented so far (SIM-1): world, deployment, Move, pathfinding, target selection. Attack/Ability/Cast, the
+// defence phase and spells return ErrNotImplemented until SIM-2/3/5.
 package sim
 
 // EngineVersion identifies the rule set. Any rule change bumps it and regenerates the golden replays.
-const EngineVersion = "0.2.0"
+const EngineVersion = "0.2.1"
 
 // Game numbers (turn limit, time limit, splash falloff, ...) live in content/battle.yaml and are passed in by
 // the caller; there are deliberately no such constants here (AGENTS.md rule 3).
@@ -44,6 +45,9 @@ type Snapshot struct {
 	Spells         []ArmySlot
 	Hero           string // "" if none
 	HeroLevel      int
+	// Rules are the content-derived numbers (per-turn integers, spec 3.2) the caller loads from content/*.yaml;
+	// sim does no I/O (OQ-SIM3). Additive field of contract 0.2.1.
+	Rules Rules
 }
 
 // PlacedBuilding is a defender building; Pos is its top-left tile.

@@ -2,11 +2,13 @@ package sim
 
 import "errors"
 
-// ErrNotImplemented is returned while the 0.2 rules are not implemented yet (SIM-1..).
+// ErrNotImplemented is returned for rules that are not implemented yet: Attack/Ability/Cast and the defence
+// phase (SIM-2/3/5). A command that returns it changes nothing.
 var ErrNotImplemented = errors.New("sim: not implemented")
 
 // Run replays a full command log against the snapshot and returns the result.
-// Same arguments => identical Result on every platform.
+// Same arguments => identical Result on every platform. A log that ends without finishing the battle is
+// closed as EndLogEnd (the server refuses such client results).
 func Run(snap Snapshot, cmds []Command, seed uint64) (Result, error) {
 	b, err := NewBattle(snap, seed)
 	if err != nil {
@@ -17,27 +19,8 @@ func Run(snap Snapshot, cmds []Command, seed uint64) (Result, error) {
 			return Result{}, err
 		}
 	}
+	if b.ph != phaseOver {
+		b.finish(EndLogEnd)
+	}
 	return b.Result(), nil
-}
-
-// Battle is the incremental form of Run for the interactive client: same code, same rules.
-type Battle struct {
-	snap Snapshot
-	rng  *RNG
-}
-
-// NewBattle prepares a battle in phase 0 (deployment).
-func NewBattle(snap Snapshot, seed uint64) (*Battle, error) {
-	return nil, ErrNotImplemented
-}
-
-// Apply feeds one command and returns the animation events. A refused command is not an error:
-// it is recorded in Result.Rejected and leaves the state unchanged.
-func (b *Battle) Apply(cmd Command) ([]Event, error) {
-	return nil, ErrNotImplemented
-}
-
-// Result returns the outcome so far (final once the battle has ended).
-func (b *Battle) Result() Result {
-	return Result{EngineVersion: EngineVersion}
 }

@@ -1,6 +1,18 @@
 # Golden-реплеи sim (план)
 
-Файл `Gxx.json` = `{snapshot, commands, seed, content_version, engine_version, expect:{result, state_hash}}`. Пересоздаются только при повышении `EngineVersion` (отдельный коммит). Хеш сверяется на native и WASM. Реплеев пока нет (правила — SIM-1+); фикстура F01 — `docs/design/battle-sim.md` §12.
+Файл `Gxx.json` = `{snapshot, commands, seed, content_version, engine_version, expect:{result, state_hash}}`. Пересоздаются только при повышении `EngineVersion` (отдельный коммит). Хеш сверяется на native и WASM. Фикстура F01 — `docs/design/battle-sim.md` §12.
+
+**Состояние (SIM-1, EngineVersion 0.2.1):** файлы `G01…G05.json` лежат здесь и генерируются тестом `go test -run TestGolden -update` из сценариев `sim/golden_test.go` (только вместе с повышением `EngineVersion`, отдельным коммитом; CI сверяет `Result` и `StateHash`). Правила `Rules` встроены в каждый файл (тестовая фикстура, **не баланс**). В SIM-1 это сценарии без урона:
+
+| ID | Что проверяет (SIM-1) |
+|---|---|
+| G01 | F01-база на plain: высадка двух юнитов, 3 хода ходьбы по явным путям, `Retreat` на ходу 4 |
+| G02 | Местность `Move`: дрон над стенами, проволока (стоимость 2), танковый ёж (пехота проходит, техника нет), неявный `EndTurn` |
+| G03 | Отклонения: `bad_phase, bad_turn, no_stock, out_of_zone, cell_occupied, hero_limit, unknown_entity, not_owner, invalid_target, no_ap, bad_path, path_cost, battle_over` — состояние не меняется |
+| G04 | Особая высадка: десант группой по 4, герой L2, БТР `carries` (третий пассажир → `capacity`) |
+| G05 | `Retreat` в фазе 0 (`TurnsUsed=0`), следующая команда → `battle_over` |
+
+Таблица ниже — исходный план G01..G26; её ID **не совпадают** с файлами SIM-1 (OQ-SIM7), пересборка плана — при SIM-2.
 
 ASSUMPTION: распределение G01..G26 (AGENT.md требует 26) — предложение sim, уточняет balance/QA.
 

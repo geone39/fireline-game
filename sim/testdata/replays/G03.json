@@ -1,0 +1,888 @@
+{
+ "name": "G03",
+ "about": "rejected commands: bad_phase, bad_turn, no_stock, out_of_zone, cell_occupied, hero_limit, unknown_entity, not_owner, invalid_target, no_ap, bad_path, path_cost, battle_over",
+ "engine_version": "0.2.1",
+ "seed": 3,
+ "snapshot": {
+  "ContentVersion": "test-fixture",
+  "BaseID": "f01",
+  "Map": "plain",
+  "Buildings": [
+   {
+    "ID": "b_hq",
+    "Level": 1,
+    "Pos": {
+     "X": 20,
+     "Y": 10
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 12,
+     "Y": 10
+    },
+    "Revealed": false
+   }
+  ],
+  "Garrison": null,
+  "Army": [
+   {
+    "ID": "u_rifleman",
+    "Level": 1,
+    "Count": 5
+   },
+   {
+    "ID": "u_brawler",
+    "Level": 1,
+    "Count": 3
+   }
+  ],
+  "Spells": null,
+  "Hero": "h_commander",
+  "HeroLevel": 1,
+  "Rules": {
+   "GridW": 44,
+   "GridH": 44,
+   "BuildZone": {
+    "X": 2,
+    "Y": 2,
+    "W": 40,
+    "H": 40
+   },
+   "Maps": [
+    {
+     "ID": "plain",
+     "Water": null
+    },
+    {
+     "ID": "coastal",
+     "Water": [
+      {
+       "X": 40,
+       "Y": 0,
+       "W": 4,
+       "H": 44
+      },
+      {
+       "X": 36,
+       "Y": 28,
+       "W": 4,
+       "H": 12
+      },
+      {
+       "X": 34,
+       "Y": 34,
+       "W": 2,
+       "H": 6
+      }
+     ]
+    }
+   ],
+   "MaxTurns": 30,
+   "ParadropEdgeCells": 3,
+   "Units": [
+    {
+     "ID": "u_rifleman",
+     "Class": 0,
+     "Hero": false,
+     "HP": 50,
+     "HPGrowthPermille": 0,
+     "AP": 2,
+     "MoveCells": 3,
+     "RangeCells": 4,
+     "MinRangeCells": 0,
+     "Dmg": 10,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false
+    },
+    {
+     "ID": "u_brawler",
+     "Class": 0,
+     "Hero": false,
+     "HP": 100,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 4,
+     "RangeCells": 1,
+     "MinRangeCells": 0,
+     "Dmg": 30,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false
+    },
+    {
+     "ID": "u_sniper",
+     "Class": 0,
+     "Hero": false,
+     "HP": 30,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 9,
+     "MinRangeCells": 0,
+     "Dmg": 28,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false
+    },
+    {
+     "ID": "u_medic",
+     "Class": 0,
+     "Hero": false,
+     "HP": 60,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false
+    },
+    {
+     "ID": "u_para",
+     "Class": 0,
+     "Hero": false,
+     "HP": 50,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 4,
+     "MinRangeCells": 0,
+     "Dmg": 20,
+     "Carries": 0,
+     "Group": 4,
+     "Paradrop": true
+    },
+    {
+     "ID": "v_apc",
+     "Class": 1,
+     "Hero": false,
+     "HP": 700,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 3,
+     "RangeCells": 5,
+     "MinRangeCells": 0,
+     "Dmg": 16,
+     "Carries": 2,
+     "Group": 0,
+     "Paradrop": false
+    },
+    {
+     "ID": "v_tank",
+     "Class": 1,
+     "Hero": false,
+     "HP": 1100,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 7,
+     "MinRangeCells": 0,
+     "Dmg": 55,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false
+    },
+    {
+     "ID": "u_drone",
+     "Class": 2,
+     "Hero": false,
+     "HP": 70,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 5,
+     "RangeCells": 1,
+     "MinRangeCells": 0,
+     "Dmg": 40,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false
+    },
+    {
+     "ID": "s_gunboat",
+     "Class": 3,
+     "Hero": false,
+     "HP": 600,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 3,
+     "RangeCells": 8,
+     "MinRangeCells": 0,
+     "Dmg": 30,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false
+    },
+    {
+     "ID": "s_lander",
+     "Class": 3,
+     "Hero": false,
+     "HP": 900,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 3,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Carries": 3,
+     "Group": 0,
+     "Paradrop": false
+    },
+    {
+     "ID": "v_turret",
+     "Class": 1,
+     "Hero": false,
+     "HP": 10,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 0,
+     "RangeCells": 3,
+     "MinRangeCells": 0,
+     "Dmg": 5,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false
+    },
+    {
+     "ID": "h_commander",
+     "Class": 0,
+     "Hero": true,
+     "HP": 1600,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 5,
+     "MinRangeCells": 0,
+     "Dmg": 80,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false
+    },
+    {
+     "ID": "u_guard",
+     "Class": 0,
+     "Hero": false,
+     "HP": 40,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 3,
+     "MinRangeCells": 0,
+     "Dmg": 5,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false
+    }
+   ],
+   "Buildings": [
+    {
+     "ID": "b_hq",
+     "Kind": 0,
+     "W": 4,
+     "H": 4,
+     "HP": 800,
+     "HPGrowthPermille": 1220,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": true,
+     "Weight": 0,
+     "HQ": true,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 0
+    },
+    {
+     "ID": "b_vault",
+     "Kind": 0,
+     "W": 3,
+     "H": 3,
+     "HP": 500,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": true,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": true,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 0
+    },
+    {
+     "ID": "d_mg_nest",
+     "Kind": 1,
+     "W": 2,
+     "H": 2,
+     "HP": 60,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": true,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 7,
+     "MinRangeCells": 0,
+     "Dmg": 20,
+     "Vs": 5
+    },
+    {
+     "ID": "d_mortar",
+     "Kind": 1,
+     "W": 3,
+     "H": 3,
+     "HP": 600,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": true,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 10,
+     "MinRangeCells": 3,
+     "Dmg": 22,
+     "Vs": 1
+    },
+    {
+     "ID": "d_bunker",
+     "Kind": 1,
+     "W": 3,
+     "H": 3,
+     "HP": 1400,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": true,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 2,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 0
+    },
+    {
+     "ID": "d_wall",
+     "Kind": 2,
+     "W": 1,
+     "H": 1,
+     "HP": 900,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": false,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 0
+    },
+    {
+     "ID": "d_wire",
+     "Kind": 2,
+     "W": 1,
+     "H": 1,
+     "HP": 90,
+     "HPGrowthPermille": 0,
+     "Block": 1,
+     "SlowPct": 50,
+     "Counted": false,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 0
+    },
+    {
+     "ID": "d_tank_trap",
+     "Kind": 2,
+     "W": 1,
+     "H": 1,
+     "HP": 600,
+     "HPGrowthPermille": 0,
+     "Block": 2,
+     "SlowPct": 0,
+     "Counted": false,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 0
+    },
+    {
+     "ID": "d_mine",
+     "Kind": 2,
+     "W": 1,
+     "H": 1,
+     "HP": 1,
+     "HPGrowthPermille": 0,
+     "Block": 1,
+     "SlowPct": 0,
+     "Counted": false,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": true,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 0
+    },
+    {
+     "ID": "x_statue",
+     "Kind": 0,
+     "W": 2,
+     "H": 2,
+     "HP": 1,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": false,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": true,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 0
+    }
+   ]
+  }
+ },
+ "commands": [
+  {
+   "turn": 0,
+   "op": "move",
+   "unit": 3,
+   "path": [
+    {
+     "X": 2,
+     "Y": 10
+    }
+   ]
+  },
+  {
+   "turn": 1,
+   "op": "deploy",
+   "id": "u_rifleman",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 10
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_rifleman",
+   "level": 1,
+   "to": {
+    "X": 5,
+    "Y": 10
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_sniper",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 10
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_rifleman",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 10
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_rifleman",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 10
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "h_commander",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 5
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "h_commander",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 6
+   }
+  },
+  {
+   "turn": 0,
+   "op": "load",
+   "unit": 3,
+   "target": 99
+  },
+  {
+   "turn": 0,
+   "op": "load",
+   "unit": 3,
+   "target": 1
+  },
+  {
+   "turn": 0,
+   "op": "load",
+   "unit": 3,
+   "target": 3
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_brawler",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 12
+   }
+  },
+  {
+   "turn": 0,
+   "op": "start"
+  },
+  {
+   "turn": 1,
+   "op": "deploy",
+   "id": "u_rifleman",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 14
+   }
+  },
+  {
+   "turn": 1,
+   "op": "move",
+   "unit": 99,
+   "path": [
+    {
+     "X": 2,
+     "Y": 10
+    }
+   ]
+  },
+  {
+   "turn": 1,
+   "op": "move",
+   "unit": 1,
+   "path": [
+    {
+     "X": 2,
+     "Y": 10
+    }
+   ]
+  },
+  {
+   "turn": 1,
+   "op": "move",
+   "unit": 3,
+   "path": [
+    {
+     "X": 3,
+     "Y": 10
+    }
+   ]
+  },
+  {
+   "turn": 1,
+   "op": "move",
+   "unit": 3,
+   "path": [
+    {
+     "X": 2,
+     "Y": 10
+    },
+    {
+     "X": 3,
+     "Y": 10
+    },
+    {
+     "X": 4,
+     "Y": 10
+    },
+    {
+     "X": 5,
+     "Y": 10
+    }
+   ]
+  },
+  {
+   "turn": 1,
+   "op": "move",
+   "unit": 5,
+   "path": [
+    {
+     "X": 1,
+     "Y": 11
+    },
+    {
+     "X": 1,
+     "Y": 10
+    }
+   ]
+  },
+  {
+   "turn": 1,
+   "op": "move",
+   "unit": 3,
+   "path": [
+    {
+     "X": 2,
+     "Y": 10
+    }
+   ]
+  },
+  {
+   "turn": 1,
+   "op": "move",
+   "unit": 5,
+   "path": [
+    {
+     "X": 2,
+     "Y": 12
+    },
+    {
+     "X": 3,
+     "Y": 12
+    }
+   ]
+  },
+  {
+   "turn": 1,
+   "op": "move",
+   "unit": 5,
+   "path": [
+    {
+     "X": 4,
+     "Y": 12
+    }
+   ]
+  },
+  {
+   "turn": 3,
+   "op": "move",
+   "unit": 5,
+   "path": [
+    {
+     "X": 4,
+     "Y": 12
+    }
+   ]
+  },
+  {
+   "turn": 1,
+   "op": "end_turn"
+  },
+  {
+   "turn": 1,
+   "op": "move",
+   "unit": 5,
+   "path": [
+    {
+     "X": 4,
+     "Y": 12
+    }
+   ]
+  },
+  {
+   "turn": 2,
+   "op": "move",
+   "unit": 5,
+   "path": [
+    {
+     "X": 4,
+     "Y": 12
+    },
+    {
+     "X": 5,
+     "Y": 12
+    },
+    {
+     "X": 6,
+     "Y": 12
+    }
+   ]
+  },
+  {
+   "turn": 2,
+   "op": "retreat"
+  },
+  {
+   "turn": 2,
+   "op": "move",
+   "unit": 5,
+   "path": [
+    {
+     "X": 7,
+     "Y": 12
+    }
+   ]
+  }
+ ],
+ "expect": {
+  "Stars": 0,
+  "Destruction": 0,
+  "StarFlags": 0,
+  "HQDestroyed": false,
+  "TurnsUsed": 2,
+  "EndReason": 4,
+  "LootBasis": {
+   "Storages": null,
+   "PercentDestroyed": 0,
+   "Stars": 0
+  },
+  "UnitsLost": null,
+  "SpellsUsed": null,
+  "HeroDamageTaken": 0,
+  "HeroSurvived": true,
+  "Rejected": [
+   {
+    "Index": 0,
+    "Code": 1
+   },
+   {
+    "Index": 1,
+    "Code": 2
+   },
+   {
+    "Index": 2,
+    "Code": 9
+   },
+   {
+    "Index": 3,
+    "Code": 15
+   },
+   {
+    "Index": 5,
+    "Code": 10
+   },
+   {
+    "Index": 7,
+    "Code": 16
+   },
+   {
+    "Index": 8,
+    "Code": 3
+   },
+   {
+    "Index": 9,
+    "Code": 4
+   },
+   {
+    "Index": 10,
+    "Code": 13
+   },
+   {
+    "Index": 13,
+    "Code": 1
+   },
+   {
+    "Index": 14,
+    "Code": 3
+   },
+   {
+    "Index": 15,
+    "Code": 4
+   },
+   {
+    "Index": 16,
+    "Code": 7
+   },
+   {
+    "Index": 17,
+    "Code": 8
+   },
+   {
+    "Index": 18,
+    "Code": 10
+   },
+   {
+    "Index": 21,
+    "Code": 5
+   },
+   {
+    "Index": 22,
+    "Code": 2
+   },
+   {
+    "Index": 24,
+    "Code": 2
+   },
+   {
+    "Index": 27,
+    "Code": 17
+   }
+  ],
+  "EngineVersion": "0.2.1",
+  "StateHash": 12433805806271501279
+ },
+ "state_hash_hex": "ac8dc080f10093df"
+}
