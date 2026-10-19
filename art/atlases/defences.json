@@ -1,0 +1,333 @@
+{
+ "frames": {
+  "d_aa_0": {
+   "frame": {
+    "h": 96,
+    "w": 128,
+    "x": 579,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 96,
+    "w": 128
+   },
+   "spriteSourceSize": {
+    "h": 96,
+    "w": 128,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "d_at_cannon_0": {
+   "frame": {
+    "h": 96,
+    "w": 128,
+    "x": 708,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 96,
+    "w": 128
+   },
+   "spriteSourceSize": {
+    "h": 96,
+    "w": 128,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "d_bunker_0": {
+   "frame": {
+    "h": 136,
+    "w": 192,
+    "x": 0,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 136,
+    "w": 192
+   },
+   "spriteSourceSize": {
+    "h": 136,
+    "w": 192,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "d_coastal_0": {
+   "frame": {
+    "h": 136,
+    "w": 192,
+    "x": 193,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 136,
+    "w": 192
+   },
+   "spriteSourceSize": {
+    "h": 136,
+    "w": 192,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "d_fence_0": {
+   "frame": {
+    "h": 46,
+    "w": 64,
+    "x": 516,
+    "y": 137
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 46,
+    "w": 64
+   },
+   "spriteSourceSize": {
+    "h": 46,
+    "w": 64,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "d_flame_trap_0": {
+   "frame": {
+    "h": 96,
+    "w": 128,
+    "x": 837,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 96,
+    "w": 128
+   },
+   "spriteSourceSize": {
+    "h": 96,
+    "w": 128,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "d_jammer_0": {
+   "frame": {
+    "h": 96,
+    "w": 128,
+    "x": 0,
+    "y": 137
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 96,
+    "w": 128
+   },
+   "spriteSourceSize": {
+    "h": 96,
+    "w": 128,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "d_mg_nest_0": {
+   "frame": {
+    "h": 96,
+    "w": 128,
+    "x": 129,
+    "y": 137
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 96,
+    "w": 128
+   },
+   "spriteSourceSize": {
+    "h": 96,
+    "w": 128,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "d_mine_0": {
+   "frame": {
+    "h": 40,
+    "w": 64,
+    "x": 711,
+    "y": 137
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 40,
+    "w": 64
+   },
+   "spriteSourceSize": {
+    "h": 40,
+    "w": 64,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "d_mortar_0": {
+   "frame": {
+    "h": 136,
+    "w": 192,
+    "x": 386,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 136,
+    "w": 192
+   },
+   "spriteSourceSize": {
+    "h": 136,
+    "w": 192,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "d_sniper_tower_0": {
+   "frame": {
+    "h": 96,
+    "w": 128,
+    "x": 258,
+    "y": 137
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 96,
+    "w": 128
+   },
+   "spriteSourceSize": {
+    "h": 96,
+    "w": 128,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "d_spring_trap_0": {
+   "frame": {
+    "h": 40,
+    "w": 64,
+    "x": 776,
+    "y": 137
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 40,
+    "w": 64
+   },
+   "spriteSourceSize": {
+    "h": 40,
+    "w": 64,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "d_tank_trap_0": {
+   "frame": {
+    "h": 46,
+    "w": 64,
+    "x": 581,
+    "y": 137
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 46,
+    "w": 64
+   },
+   "spriteSourceSize": {
+    "h": 46,
+    "w": 64,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "d_tesla_0": {
+   "frame": {
+    "h": 96,
+    "w": 128,
+    "x": 387,
+    "y": 137
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 96,
+    "w": 128
+   },
+   "spriteSourceSize": {
+    "h": 96,
+    "w": 128,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "d_wall_0": {
+   "frame": {
+    "h": 46,
+    "w": 64,
+    "x": 646,
+    "y": 137
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 46,
+    "w": 64
+   },
+   "spriteSourceSize": {
+    "h": 46,
+    "w": 64,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "d_wire_0": {
+   "frame": {
+    "h": 40,
+    "w": 64,
+    "x": 841,
+    "y": 137
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 40,
+    "w": 64
+   },
+   "spriteSourceSize": {
+    "h": 40,
+    "w": 64,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  }
+ },
+ "meta": {
+  "format": "RGBA8888",
+  "image": "defences.png",
+  "scale": "1",
+  "size": {
+   "h": 256,
+   "w": 1024
+  }
+ }
+}

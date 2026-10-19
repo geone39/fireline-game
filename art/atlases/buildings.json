@@ -1,0 +1,373 @@
+{
+ "frames": {
+  "b_alloy_depot_0": {
+   "frame": {
+    "h": 96,
+    "w": 128,
+    "x": 772,
+    "y": 491
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 96,
+    "w": 128
+   },
+   "spriteSourceSize": {
+    "h": 96,
+    "w": 128,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "b_alloy_foundry_0": {
+   "frame": {
+    "h": 136,
+    "w": 192,
+    "x": 514,
+    "y": 177
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 136,
+    "w": 192
+   },
+   "spriteSourceSize": {
+    "h": 136,
+    "w": 192,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "b_barracks_0": {
+   "frame": {
+    "h": 136,
+    "w": 192,
+    "x": 707,
+    "y": 177
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 136,
+    "w": 192
+   },
+   "spriteSourceSize": {
+    "h": 136,
+    "w": 192,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "b_camp_0": {
+   "frame": {
+    "h": 176,
+    "w": 256,
+    "x": 0,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 176,
+    "w": 256
+   },
+   "spriteSourceSize": {
+    "h": 176,
+    "w": 256,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "b_cash_mine_0": {
+   "frame": {
+    "h": 136,
+    "w": 192,
+    "x": 0,
+    "y": 354
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 136,
+    "w": 192
+   },
+   "spriteSourceSize": {
+    "h": 136,
+    "w": 192,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "b_command_0": {
+   "frame": {
+    "h": 136,
+    "w": 192,
+    "x": 193,
+    "y": 354
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 136,
+    "w": 192
+   },
+   "spriteSourceSize": {
+    "h": 136,
+    "w": 192,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "b_defense_barracks_0": {
+   "frame": {
+    "h": 136,
+    "w": 192,
+    "x": 386,
+    "y": 354
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 136,
+    "w": 192
+   },
+   "spriteSourceSize": {
+    "h": 136,
+    "w": 192,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "b_factory_0": {
+   "frame": {
+    "h": 176,
+    "w": 256,
+    "x": 257,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 176,
+    "w": 256
+   },
+   "spriteSourceSize": {
+    "h": 176,
+    "w": 256,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "b_fuel_refinery_0": {
+   "frame": {
+    "h": 136,
+    "w": 192,
+    "x": 579,
+    "y": 354
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 136,
+    "w": 192
+   },
+   "spriteSourceSize": {
+    "h": 136,
+    "w": 192,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "b_fuel_tank_0": {
+   "frame": {
+    "h": 136,
+    "w": 192,
+    "x": 772,
+    "y": 354
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 136,
+    "w": 192
+   },
+   "spriteSourceSize": {
+    "h": 136,
+    "w": 192,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "b_garage_0": {
+   "frame": {
+    "h": 136,
+    "w": 192,
+    "x": 0,
+    "y": 491
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 136,
+    "w": 192
+   },
+   "spriteSourceSize": {
+    "h": 136,
+    "w": 192,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "b_hq_0": {
+   "frame": {
+    "h": 176,
+    "w": 256,
+    "x": 514,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 176,
+    "w": 256
+   },
+   "spriteSourceSize": {
+    "h": 176,
+    "w": 256,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "b_laboratory_0": {
+   "frame": {
+    "h": 176,
+    "w": 256,
+    "x": 0,
+    "y": 177
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 176,
+    "w": 256
+   },
+   "spriteSourceSize": {
+    "h": 176,
+    "w": 256,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "b_market_0": {
+   "frame": {
+    "h": 136,
+    "w": 192,
+    "x": 193,
+    "y": 491
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 136,
+    "w": 192
+   },
+   "spriteSourceSize": {
+    "h": 136,
+    "w": 192,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "b_radar_0": {
+   "frame": {
+    "h": 96,
+    "w": 128,
+    "x": 0,
+    "y": 628
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 96,
+    "w": 128
+   },
+   "spriteSourceSize": {
+    "h": 96,
+    "w": 128,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "b_shipyard_0": {
+   "frame": {
+    "h": 176,
+    "w": 256,
+    "x": 257,
+    "y": 177
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 176,
+    "w": 256
+   },
+   "spriteSourceSize": {
+    "h": 176,
+    "w": 256,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "b_support_bay_0": {
+   "frame": {
+    "h": 136,
+    "w": 192,
+    "x": 386,
+    "y": 491
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 136,
+    "w": 192
+   },
+   "spriteSourceSize": {
+    "h": 136,
+    "w": 192,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "b_vault_0": {
+   "frame": {
+    "h": 136,
+    "w": 192,
+    "x": 579,
+    "y": 491
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 136,
+    "w": 192
+   },
+   "spriteSourceSize": {
+    "h": 136,
+    "w": 192,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  }
+ },
+ "meta": {
+  "format": "RGBA8888",
+  "image": "buildings.png",
+  "scale": "1",
+  "size": {
+   "h": 1024,
+   "w": 1024
+  }
+ }
+}

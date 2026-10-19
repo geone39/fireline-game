@@ -1,0 +1,133 @@
+{
+ "frames": {
+  "c_adrenaline_0": {
+   "frame": {
+    "h": 48,
+    "w": 48,
+    "x": 0,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 48,
+    "w": 48
+   },
+   "spriteSourceSize": {
+    "h": 48,
+    "w": 48,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "c_airstrike_0": {
+   "frame": {
+    "h": 48,
+    "w": 48,
+    "x": 49,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 48,
+    "w": 48
+   },
+   "spriteSourceSize": {
+    "h": 48,
+    "w": 48,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "c_breach_0": {
+   "frame": {
+    "h": 48,
+    "w": 48,
+    "x": 98,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 48,
+    "w": 48
+   },
+   "spriteSourceSize": {
+    "h": 48,
+    "w": 48,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "c_emp_0": {
+   "frame": {
+    "h": 48,
+    "w": 48,
+    "x": 147,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 48,
+    "w": 48
+   },
+   "spriteSourceSize": {
+    "h": 48,
+    "w": 48,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "c_medkit_0": {
+   "frame": {
+    "h": 48,
+    "w": 48,
+    "x": 196,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 48,
+    "w": 48
+   },
+   "spriteSourceSize": {
+    "h": 48,
+    "w": 48,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "c_smoke_0": {
+   "frame": {
+    "h": 48,
+    "w": 48,
+    "x": 245,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 48,
+    "w": 48
+   },
+   "spriteSourceSize": {
+    "h": 48,
+    "w": 48,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  }
+ },
+ "meta": {
+  "format": "RGBA8888",
+  "image": "spells.png",
+  "scale": "1",
+  "size": {
+   "h": 64,
+   "w": 1024
+  }
+ }
+}

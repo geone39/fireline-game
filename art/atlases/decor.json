@@ -1,0 +1,113 @@
+{
+ "frames": {
+  "o_rock_0": {
+   "frame": {
+    "h": 42,
+    "w": 64,
+    "x": 195,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 42,
+    "w": 64
+   },
+   "spriteSourceSize": {
+    "h": 42,
+    "w": 64,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "o_wreck_0": {
+   "frame": {
+    "h": 42,
+    "w": 64,
+    "x": 260,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 42,
+    "w": 64
+   },
+   "spriteSourceSize": {
+    "h": 42,
+    "w": 64,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "x_flag_0": {
+   "frame": {
+    "h": 44,
+    "w": 64,
+    "x": 0,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 44,
+    "w": 64
+   },
+   "spriteSourceSize": {
+    "h": 44,
+    "w": 64,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "x_flowerbed_0": {
+   "frame": {
+    "h": 44,
+    "w": 64,
+    "x": 65,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 44,
+    "w": 64
+   },
+   "spriteSourceSize": {
+    "h": 44,
+    "w": 64,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  },
+  "x_statue_0": {
+   "frame": {
+    "h": 44,
+    "w": 64,
+    "x": 130,
+    "y": 0
+   },
+   "rotated": false,
+   "sourceSize": {
+    "h": 44,
+    "w": 64
+   },
+   "spriteSourceSize": {
+    "h": 44,
+    "w": 64,
+    "x": 0,
+    "y": 0
+   },
+   "trimmed": false
+  }
+ },
+ "meta": {
+  "format": "RGBA8888",
+  "image": "decor.png",
+  "scale": "1",
+  "size": {
+   "h": 64,
+   "w": 1024
+  }
+ }
+}
