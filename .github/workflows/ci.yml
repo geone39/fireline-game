@@ -1,5 +1,9 @@
 name: ci
 on: [push, pull_request]
+# Новый пуш в ту же ветку/PR отменяет устаревший запуск (на main — не отменяем, нужен каждый коммит).
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -20,7 +24,7 @@ jobs:
       - run: make check
         env:
           REQUIRE_DOCKER: "1"
-      # next stages (enable as modules land): wasm build, e2e (Playwright), replay-regression, load smoke (k6)
+      # next stages (enable as modules land): replay-regression, load smoke (k6)
 
   server:
     runs-on: ubuntu-latest
@@ -44,3 +48,82 @@ jobs:
           cache: npm
           cache-dependency-path: client/package-lock.json
       - run: make client
+
+  # Сборка sim.wasm + паритет G01..G20 native/WASM (node). Параллельно с остальными, основной job не удлиняет.
+  wasm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: server/go.mod
+          cache-dependency-path: sim/go.mod
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: make wasm
+      - name: sim.wasm size
+        run: |
+          raw=$(wc -c < sim/wasm/dist/sim.wasm); gz=$(gzip -9c sim/wasm/dist/sim.wasm | wc -c)
+          echo "sim.wasm: $raw bytes, gzip: $gz bytes"
+          echo "### sim.wasm: $raw bytes (gzip $gz)" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sim-wasm
+          path: |
+            sim/wasm/dist/sim.wasm
+            sim/wasm/dist/wasm_exec.js
+          retention-days: 7
+
+  # Playwright против docker compose (postgres + server + client). Тест known-bugs помечен test.fail — зелёный.
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compose up (healthchecks)
+        run: docker compose -f deploy/docker-compose.yml up -d --build --wait --wait-timeout 300
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tests/e2e/package-lock.json
+      - run: npm ci
+        working-directory: tests/e2e
+      - name: Playwright version
+        id: pw
+        working-directory: tests/e2e
+        run: echo "version=$(npx playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+      - name: Cache Playwright browsers
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}
+      - name: Install Chromium (with system deps)
+        if: steps.pw-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+        working-directory: tests/e2e
+      - name: Install system deps only (browser from cache)
+        if: steps.pw-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+        working-directory: tests/e2e
+      - run: npx playwright test -c ../../.github/e2e/playwright.ci.config.ts
+        working-directory: tests/e2e
+      - name: Compose logs
+        if: failure()
+        run: docker compose -f deploy/docker-compose.yml logs --no-color > compose.log || true
+      - name: Upload e2e artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-failure
+          path: |
+            tests/e2e/playwright-report
+            tests/e2e/test-results
+            tests/e2e/screenshots
+            compose.log
+          retention-days: 7
+      - name: Compose down
+        if: always()
+        run: docker compose -f deploy/docker-compose.yml down -v
