@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strconv"
 	"syscall"
 	"time"
@@ -17,6 +18,8 @@ import (
 	"github.com/geone39/fireline/server/auth"
 	"github.com/geone39/fireline/server/db"
 	"github.com/geone39/fireline/server/gateway"
+	"github.com/geone39/fireline/server/svc/base"
+	"github.com/geone39/fireline/server/svc/economy"
 )
 
 // Token lifetimes are fixed by docs/01-architecture.md §8.
@@ -51,6 +54,28 @@ func envFloat(key string, def float64) (float64, error) {
 	return f, nil
 }
 
+// loadBase reads the content the base module needs. LoadPriceBook needs
+// content/building_costs.yaml (OQ-B6), so the server does not start without it.
+func loadBase(store *db.Store, dir string) (*gateway.BaseModule, error) {
+	econ, err := economy.Load(filepath.Join(dir, "economy.yaml"))
+	if err != nil {
+		return nil, err
+	}
+	cat, err := base.LoadCatalog(dir)
+	if err != nil {
+		return nil, err
+	}
+	grid, err := base.LoadGrid(dir, "")
+	if err != nil {
+		return nil, err
+	}
+	prices, err := base.LoadPriceBook(dir)
+	if err != nil {
+		return nil, err
+	}
+	return gateway.NewBaseModule(gateway.BaseConfig{Store: store, Econ: econ, Cat: cat, Grid: grid, Prices: prices})
+}
+
 func run(log zerolog.Logger) error {
 	dsn := os.Getenv("DATABASE_URL")
 	secret := os.Getenv("JWT_SECRET")
@@ -82,18 +107,25 @@ func run(log zerolog.Logger) error {
 			return err
 		}
 	}
-	content, err := gateway.LoadContent(env("CONTENT_DIR", "../content"), os.Getenv("CONTENT_BUNDLE_URL"))
+	contentDir := env("CONTENT_DIR", "../content")
+	content, err := gateway.LoadContent(contentDir, os.Getenv("CONTENT_BUNDLE_URL"))
 	if err != nil {
 		return err
 	}
 	log.Info().Str("content_version", content.Version()).Msg("content loaded")
 
+	baseMod, err := loadBase(store, contentDir)
+	if err != nil {
+		return err
+	}
 	srv := gateway.New(gateway.Deps{
 		Config: gateway.Config{
 			IPRateRPS: ipRPS, IPRateBurst: int(ipRPS * 2),
 			UserRateRPS: userRPS, UserRateBurst: int(userRPS * 2),
 		},
-		Auth:    &auth.Service{Store: store, Signer: &auth.Signer{Secret: []byte(secret), AccessTTL: accessTTL, RefreshTTL: refreshTTL}},
+		Auth: &auth.Service{Store: store, Signer: &auth.Signer{Secret: []byte(secret), AccessTTL: accessTTL, RefreshTTL: refreshTTL},
+			Provision: baseMod.Provision},
+		Base:    baseMod,
 		Store:   store,
 		Idem:    store,
 		Content: content,

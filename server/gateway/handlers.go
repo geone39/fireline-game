@@ -80,8 +80,7 @@ func (s *Server) handleRefresh(w http.ResponseWriter, r *http.Request) {
 }
 
 // builder is a placeholder shape for the builders list of GET /v1/me.
-// ASSUMPTION: the real data (count, busy timers) comes from svc/base; until it is wired
-// the list is empty. Fields are additive-only.
+// Data comes from svc/base (BaseModule.builders); without a base module the list is empty. Fields are additive-only.
 type builder struct {
 	ID        string     `json:"id"`
 	BusyUntil *time.Time `json:"busy_until"`
@@ -120,11 +119,18 @@ func (s *Server) handleMe(w http.ResponseWriter, r *http.Request) {
 		s.internal(w, r, err)
 		return
 	}
+	builders := []builder{}
+	if s.base != nil {
+		if builders, err = s.base.builders(r.Context(), id); err != nil {
+			s.internal(w, r, err)
+			return
+		}
+	}
 	s.writeJSON(w, http.StatusOK, meResponse{
 		Profile: profile{ID: p.ID.String(), Nickname: p.Nickname, HQLevel: p.HQLevel, Trophies: p.Trophies,
 			League: p.League, ShieldUntil: p.ShieldUntil, CreatedAt: p.CreatedAt},
 		Wallets:  wallets,
-		Builders: []builder{},
+		Builders: builders,
 	})
 }
 

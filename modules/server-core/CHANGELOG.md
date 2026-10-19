@@ -1,6 +1,13 @@
 # CHANGELOG `server-core`
 
 ## Unreleased
+- SERVER-3: `base.Mount` подключён под `/v1/base` (`GET /base`, `POST /base/commands`, `PUT /base/layout`) внутри авторизованной группы: Bearer, Idempotency-Key, rate limit, `X-Content-Version`; `server_time`/`content_version` и формат ошибок общие. `X-Content-Version` теперь ставится middleware на всех авторизованных ответах.
+- migrations: `00003_defence_snapshots` (OQ-B7) — `defence_snapshots` по docs/04-data-model.md, `UNIQUE(player_id, base_version)`, иммутабельна (триггер на UPDATE). `SnapshotSink` реализован через `db.Store.InsertSnapshot` в транзакции `PUT /v1/base/layout`.
+- auth: `Service.Provision` — хук в той же транзакции, что и upsert гостя; `cmd/api` подключает `BaseModule.Provision` = стартовая `base_state` + `Ledger.GrantStartTx` (OQ-E4). Ошибка откатывает создание игрока (атомарно); повторный логин идемпотентен и «долечивает» ранее созданных гостей.
+- `GET /v1/me`: `builders` теперь из base (по слоту `{id:"bN", busy_until, target_id}`).
+- `cmd/api` читает `building_costs.yaml` (`LoadPriceBook`): без файла (ECON-4) сервер не стартует. Интеграционные тесты используют фикстуру PriceBook и от файла не зависят.
+- ASSUMPTION: стартовая раскладка — только HQ L1 по центру сетки (в content её нет, OQ-S6); `InitBase` не имеет tx-варианта, поэтому тот же INSERT выполняется в `Provision`.
+- contract-change (отдельный коммит, на утверждение владельцем): формы ответов `/v1/base*` в `docs/03-api.md`.
 - SERVER-2: `POST /v1/auth/refresh` (ротация: старый jti revoked атомарно, повтор отозванного/просроченного/неизвестного -> `unauthorized`); закрывает OQ-S1/S2 по реализации.
 - gateway: карта статусов по docs/03-api.md (`invalid` всегда 400, в т.ч. неверный метод и слишком большое тело); `X-Content-Version` проверяется и на GET; `X-Content-Version` в заголовке каждого ответа.
 - migrations: `00002_collector_pools` (OQ-E1) — аддитивная, `collector_pools(player_id, resource, amount, updated_at)`, PK(player_id, resource), CASCADE по игроку.

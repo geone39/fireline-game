@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 
 	"github.com/geone39/fireline/server/db"
 )
@@ -34,6 +35,10 @@ type Tokens struct {
 type Service struct {
 	Store  *db.Store
 	Signer *Signer
+	// Provision, when set, runs in the same transaction as the player upsert on every
+	// guest login (e.g. start base + start grant). It must be idempotent; an error
+	// aborts the login and rolls the player creation back.
+	Provision func(ctx context.Context, tx pgx.Tx, player uuid.UUID) error
 }
 
 // Guest creates or returns a guest player. deviceID is a client-generated random secret;
@@ -45,12 +50,31 @@ func (s *Service) Guest(ctx context.Context, deviceID string) (db.Player, Tokens
 		return db.Player{}, Tokens{}, "", ErrInvalidDeviceID
 	}
 	nick := "Guest-" + uuid.NewString()[:6]
-	p, err := s.Store.UpsertPlayer(ctx, ProviderGuest, deviceID, nick)
+	p, err := s.upsertProvisioned(ctx, deviceID, nick)
 	if err != nil {
 		return db.Player{}, Tokens{}, "", err
 	}
 	t, err := s.issuePair(ctx, p.ID)
 	return p, t, deviceID, err
+}
+
+func (s *Service) upsertProvisioned(ctx context.Context, deviceID, nick string) (db.Player, error) {
+	if s.Provision == nil {
+		return s.Store.UpsertPlayer(ctx, ProviderGuest, deviceID, nick)
+	}
+	tx, err := s.Store.Pool.Begin(ctx)
+	if err != nil {
+		return db.Player{}, err
+	}
+	defer func() { _ = tx.Rollback(ctx) }()
+	p, err := s.Store.UpsertPlayerTx(ctx, tx, ProviderGuest, deviceID, nick)
+	if err != nil {
+		return db.Player{}, err
+	}
+	if err := s.Provision(ctx, tx, p.ID); err != nil {
+		return db.Player{}, err
+	}
+	return p, tx.Commit(ctx)
 }
 
 func (s *Service) issuePair(ctx context.Context, player uuid.UUID) (Tokens, error) {

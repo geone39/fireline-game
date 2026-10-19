@@ -40,6 +40,9 @@ type Deps struct {
 	// ExtraAuthedRoutes lets other modules (and tests) mount routes behind
 	// auth + rate limit + content check + idempotency.
 	ExtraAuthedRoutes func(r chi.Router)
+
+	// Base, when set, mounts /v1/base* and fills builders in GET /v1/me.
+	Base *BaseModule
 }
 
 // Server is the HTTP gateway.
@@ -54,12 +57,13 @@ type Server struct {
 	ipLimits   *limiterSet
 	userLimits *limiterSet
 	extra      func(r chi.Router)
+	base       *BaseModule
 	metrics    *metrics
 }
 
 // New builds a Server.
 func New(d Deps) *Server {
-	s := &Server{cfg: d.Config, auth: d.Auth, store: d.Store, idem: d.Idem, content: d.Content, log: d.Log, nowFn: d.Now, extra: d.ExtraAuthedRoutes}
+	s := &Server{cfg: d.Config, auth: d.Auth, store: d.Store, idem: d.Idem, content: d.Content, log: d.Log, nowFn: d.Now, extra: d.ExtraAuthedRoutes, base: d.Base}
 	var pool *pgxpool.Pool
 	if d.Store != nil {
 		pool = d.Store.Pool
@@ -108,8 +112,11 @@ func (s *Server) Handler() http.Handler {
 		r.Get("/content/manifest", s.handleManifest)
 
 		r.Group(func(r chi.Router) {
-			r.Use(s.authenticate, s.userRateLimit, s.contentCheck, s.idempotency)
+			r.Use(s.contentHeader, s.authenticate, s.userRateLimit, s.contentCheck, s.idempotency)
 			r.Get("/me", s.handleMe)
+			if s.base != nil {
+				s.base.routes(s)(r)
+			}
 			if s.extra != nil {
 				s.extra(r)
 			}
@@ -222,6 +229,15 @@ func (s *Server) contentCheck(next http.Handler) http.Handler {
 				map[string]any{"content_version": s.content.Version(), "bundle_url": s.content.bundleURL})
 			return
 		}
+		next.ServeHTTP(w, r)
+	})
+}
+
+// contentHeader puts X-Content-Version on every authenticated response, including the
+// ones written by mounted modules (svc/base writes its own bodies).
+func (s *Server) contentHeader(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set(headerContentVer, s.content.Version())
 		next.ServeHTTP(w, r)
 	})
 }

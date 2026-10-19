@@ -36,7 +36,20 @@ func scanPlayer(row pgx.Row) (Player, error) {
 // UpsertPlayer returns the player for (provider, extID), creating it with the given
 // nickname if it does not exist, and refreshes last_seen.
 func (s *Store) UpsertPlayer(ctx context.Context, provider, extID, nickname string) (Player, error) {
-	return scanPlayer(s.Pool.QueryRow(ctx, `
+	return upsertPlayer(ctx, s.Pool, provider, extID, nickname)
+}
+
+// UpsertPlayerTx is UpsertPlayer inside the caller's transaction.
+func (s *Store) UpsertPlayerTx(ctx context.Context, tx pgx.Tx, provider, extID, nickname string) (Player, error) {
+	return upsertPlayer(ctx, tx, provider, extID, nickname)
+}
+
+type queryRower interface {
+	QueryRow(ctx context.Context, sql string, args ...any) pgx.Row
+}
+
+func upsertPlayer(ctx context.Context, q queryRower, provider, extID, nickname string) (Player, error) {
+	return scanPlayer(q.QueryRow(ctx, `
 		INSERT INTO players (id, auth_provider, ext_id, nickname)
 		VALUES ($1, $2, $3, $4)
 		ON CONFLICT (auth_provider, ext_id) DO UPDATE SET last_seen = now()

@@ -26,6 +26,14 @@ HTTP-статусы: `invalid` 400, `unauthorized` 401, `not_found` 404, `confli
 | GET | /v1/events/stream | SSE: `defended`, `building_done`, `training_done` |
 | GET | /v1/content/manifest | текущая версия bundle + хеши |
 
+## Базa: `/v1/base*` (формы ответов, SERVER-3)
+`BaseState` (ответ `GET /v1/base`, `POST /v1/base/commands`, `PUT /v1/base/layout`) + `server_time`, `content_version`:
+`{version, layout:{items:[{uid,type,level,x,y,rot}]}, timers:[{id,kind,target_id,finish_at,to_level}], builders:{total,busy}, collectors:{<resource>:<accrued>}, replayed?, results?:[{op,uid,replayed}]}`; `PUT /v1/base/layout` добавляет `unchanged`.
+`POST /v1/base/commands`: тело — массив `[{op,args}]` или `{commands:[...]}`; поля команды (`uid`, `type`, `x`, `y`, `rot`, `to`) допустимы и на верхнем уровне. Пакет атомарен; нужен `Idempotency-Key`.
+`PUT /v1/base/layout`: `{layout:{items:[...]}}` или `{items:[...]}`; меняются только позиции/повороты существующих объектов; при изменении версия растёт и пишется иммутабельный defence snapshot.
+Ошибки базы: `details.reason` (код правила), `details.uid?`, `details.index?` (номер команды); `invalid` 400, `not_found` 404 (нет базы), `conflict` 409 (uid занят, все билдеры заняты), `insufficient_resources` 422.
+`GET /v1/me`: `builders:[{id,busy_until,target_id?}]` — по элементу на слот билдера.
+
 ## Примеры
 `POST /v1/raids/start` → `{raid_id, expires_at, seed, content_version, snapshot:{...}, rules:{max_ticks:1800, deploy_zone:"outside_buildings+1"}}`
 `POST /v1/raids/{id}/finish` ← `{commands:[{t:12,op:"deploy",id:"u_rifleman",x:3200,y:5100}], result_hash:"..."}` → `{stars:2, loot:{cash:1840,fuel:910}, trophies:+27, replay_id:"..."}`
