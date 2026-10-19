@@ -72,6 +72,17 @@ describe('ApiClient', () => {
     expect(hdr(f.mock.calls[2]!, 'Idempotency-Key')).toBe(hdr(f.mock.calls[0]!, 'Idempotency-Key'));
   });
 
+  it('reads the real server shape of /auth/refresh: {player_id, tokens}', async () => {
+    const f = vi
+      .fn()
+      .mockImplementationOnce(() => err(401, 'unauthorized'))
+      .mockImplementationOnce(() => json(200, { player_id: 'p', tokens: tok(2) }))
+      .mockImplementation(() => json(200, { ok: true }));
+    const { api, tokens } = make(f);
+    await api.get('/v1/me');
+    expect(tokens.get()).toEqual(tok(2));
+  });
+
   it('shares one refresh between concurrent 401s', async () => {
     let refreshes = 0;
     const f = vi.fn().mockImplementation((url: string, init: RequestInit) => {

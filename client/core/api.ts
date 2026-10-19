@@ -127,8 +127,9 @@ export class ApiClient {
     const cur = this.o.tokens.get();
     if (!cur) return this.lost('no session');
     try {
-      const next = await this.once<Tokens>('POST', '/v1/auth/refresh', { refresh_token: cur.refresh_token }, this.newKey(), true);
-      this.o.tokens.set(next); // старый refresh отозван сервером — сохраняем новую пару
+      const res = await this.once<Tokens | { tokens: Tokens }>('POST', '/v1/auth/refresh', { refresh_token: cur.refresh_token }, this.newKey(), true);
+      // Сервер отвечает {player_id, tokens:{...}} (как /auth/guest); плоская форма допускается для обратной совместимости.
+      this.o.tokens.set('tokens' in res ? res.tokens : res); // старый refresh отозван сервером — сохраняем новую пару
     } catch (e) {
       if (e instanceof ApiError && e.code === 'unauthorized') return this.lost(e.message);
       throw e;
