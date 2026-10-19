@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "content/building_costs.yaml",
+  "type": "object",
+  "required": ["schema", "cost_growth", "time_growth", "speedup_gems", "cancel_refund_pct", "buildings"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": 1},
+    "cost_growth": {"type": "number", "minimum": 1},
+    "time_growth": {"type": "number", "minimum": 1},
+    "speedup_gems": {"type": "object", "required": ["factor", "exponent"], "additionalProperties": false,
+      "properties": {"factor": {"type": "number", "exclusiveMinimum": 0}, "exponent": {"type": "number", "exclusiveMinimum": 0}}},
+    "cancel_refund_pct": {"type": "integer", "minimum": 0, "maximum": 100},
+    "buildings": {"type": "object", "minProperties": 1, "propertyNames": {"pattern": "^[a-z]_[a-z0-9_]+$"},
+      "additionalProperties": {"$ref": "#/definitions/entry"}}
+  },
+  "definitions": {
+    "entry": {"type": "object", "required": ["cost", "time_s"], "additionalProperties": false,
+      "properties": {
+        "cost": {"type": "object", "minProperties": 1, "propertyNames": {"enum": ["cash", "fuel", "alloy"]},
+          "additionalProperties": {"type": "integer", "minimum": 0}},
+        "time_s": {"type": "integer", "minimum": 1},
+        "cost_growth": {"type": "number", "minimum": 1},
+        "time_growth": {"type": "number", "minimum": 1},
+        "max_level": {"type": "integer", "minimum": 1}
+      }}
+  }
+}

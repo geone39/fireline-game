@@ -1,0 +1,51 @@
+# content/building_costs.yaml — owner: module `economy` (ECON-4). Price and build time of every buildable type.
+# Read by server/svc/base (LoadPriceBook); schema: content/schema/building_costs.schema.json; checked by tools/econ_sim.py --check.
+# Level n costs ceil(cost * cost_growth^(n-1)) and takes ceil(time_s * time_growth^(n-1)) seconds (n=1 = initial build).
+# Max level comes from `levels` in buildings.yaml; defences have none there, so they carry max_level here.
+# Rationale and the calibration against the pacing targets: docs/design/economy.md ("Цены и время по зданиям").
+schema: 1
+cost_growth: 2.05      # = economy.yaml costs.cash.growth (the bill per HQ level grows by this factor)
+time_growth: 1.6       # = economy.yaml costs.time_growth_per_level
+speedup_gems: {factor: 4, exponent: 0.8}   # gems = ceil(hours_left^0.8 * 4) (docs/design/ux-onboarding.md)
+cancel_refund_pct: 50                      # cancel of a running build returns 50% of what was paid
+# Only cash (and alloy for the tesla) is spent on structures: fuel stays with army/research (economy.md).
+buildings:
+  # HQ: the price of level n is paid when upgrading from n-1; time is the serial bottleneck (~25% of the days spent at the previous HQ level).
+  b_hq:               {cost: {cash: 200},  time_s: 13500}
+  # resources and storage
+  b_cash_mine:        {cost: {cash: 20},   time_s: 9000}
+  b_fuel_refinery:    {cost: {cash: 20},   time_s: 9000}
+  b_alloy_foundry:    {cost: {cash: 60},   time_s: 27000}
+  b_vault:            {cost: {cash: 16},   time_s: 7200}
+  b_fuel_tank:        {cost: {cash: 16},   time_s: 7200}
+  b_alloy_depot:      {cost: {cash: 30},   time_s: 13500}
+  # military
+  b_barracks:         {cost: {cash: 30},   time_s: 13500}
+  b_factory:          {cost: {cash: 80},   time_s: 36000}
+  b_shipyard:         {cost: {cash: 100},  time_s: 45000}
+  b_laboratory:       {cost: {cash: 60},   time_s: 27000}
+  b_camp:             {cost: {cash: 20},   time_s: 9000}
+  b_garage:           {cost: {cash: 40},   time_s: 18000}
+  b_support_bay:      {cost: {cash: 60},   time_s: 27000}
+  b_command:          {cost: {cash: 120},  time_s: 54000}
+  b_defense_barracks: {cost: {cash: 80},   time_s: 36000}
+  b_radar:            {cost: {cash: 80},   time_s: 36000}
+  b_market:           {cost: {cash: 60},   time_s: 27000}
+  # defences: level-1 price = `cost` in defences.yaml, time = 1 s per cash, upgrades grow slower than buildings (1.15)
+  d_mg_nest:          {cost: {cash: 600},  time_s: 600,  cost_growth: 1.15, max_level: 10}
+  d_sniper_tower:     {cost: {cash: 1100}, time_s: 1100, cost_growth: 1.15, max_level: 10}
+  d_mortar:           {cost: {cash: 1500}, time_s: 1500, cost_growth: 1.15, max_level: 10}
+  d_at_cannon:        {cost: {cash: 2000}, time_s: 2000, cost_growth: 1.15, max_level: 10}
+  d_aa:               {cost: {cash: 1800}, time_s: 1800, cost_growth: 1.15, max_level: 10}
+  d_flame_trap:       {cost: {cash: 2400}, time_s: 2400, cost_growth: 1.15, max_level: 10}
+  d_bunker:           {cost: {cash: 3000}, time_s: 3000, cost_growth: 1.15, max_level: 10}
+  d_jammer:           {cost: {cash: 2800}, time_s: 2800, cost_growth: 1.15, max_level: 10}
+  d_coastal:          {cost: {cash: 3200}, time_s: 3200, cost_growth: 1.15, max_level: 10}
+  d_tesla:            {cost: {cash: 5200, alloy: 40}, time_s: 5200, cost_growth: 1.15, max_level: 6}
+  # passive defences: built in bulk (up to 250 walls), so near-instant build, gentle growth
+  d_wire:             {cost: {cash: 40},   time_s: 1,  cost_growth: 1.3, time_growth: 1.25, max_level: 3}
+  d_fence:            {cost: {cash: 60},   time_s: 1,  cost_growth: 1.3, time_growth: 1.25, max_level: 3}
+  d_wall:             {cost: {cash: 400},  time_s: 30, cost_growth: 1.3, time_growth: 1.25, max_level: 12}
+  d_tank_trap:        {cost: {cash: 250},  time_s: 30, cost_growth: 1.3, time_growth: 1.25, max_level: 5}
+  d_mine:             {cost: {cash: 150},  time_s: 1,  cost_growth: 1.3, time_growth: 1.25, max_level: 5}      # ASSUMPTION: defences.yaml has no `cost` for it
+  d_spring_trap:      {cost: {cash: 300},  time_s: 1,  cost_growth: 1.3, time_growth: 1.25, max_level: 3}      # ASSUMPTION: same

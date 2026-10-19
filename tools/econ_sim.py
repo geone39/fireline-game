@@ -106,6 +106,84 @@ def simulate(profile, seed=1):
             day_at[L] = day; L += 1; progress_c = progress_f = 0.0
     return day_at
 
+def _load(name):
+    import os, yaml
+    return yaml.safe_load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "content", name), encoding="utf-8"))
+
+def price_book():
+    """content/building_costs.yaml -> (file, {id: (cost, time_s, cost_growth, time_growth, max_level)}); the single source of prices."""
+    f = _load("building_costs.yaml")
+    book = {i: (e["cost"], e["time_s"], e.get("cost_growth", f["cost_growth"]), e.get("time_growth", f["time_growth"]), e.get("max_level"))
+            for i, e in f["buildings"].items()}
+    return f, book
+
+def structure_bills(f=None, book=None):
+    """Cash and builder-seconds paid while sitting at each HQ level L if every active structure is kept at its level cap.
+    Rules (mirrored in docs/design/economy.md): a type is listed in buildings.yaml/defences.yaml; level cap at HQ L is
+    min(levels, L - unlock_hq + 1); HQ pays the price of level L+1; new copies pay levels 1..cap, existing copies the new levels.
+    Walls/wire/fences/mines/traps (passive_obstacles) are bulk items bought as needed and are not in the bill."""
+    if book is None: f, book = price_book()
+    b, d = _load("buildings.yaml"), _load("defences.yaml")
+    defs = [x for g in ("core", "resources", "military") for x in b[g]] + d["active"]
+    def count(x, L):
+        if x["id"] == "b_hq": return 1
+        n = 0
+        for k, v in sorted((x.get("max_by_hq") or x.get("max_count_by_hq")).items()):
+            if k <= L: n = v
+        return n
+    def lv_max(x):
+        return x.get("levels") or book[x["id"]][4] or 1
+    def cap(x, L):
+        if L < x.get("unlock_hq", 1): return 0
+        return min(L, HQ_MAX) if x["id"] == "b_hq" else min(lv_max(x), L - x.get("unlock_hq", 1) + 1)
+    cash, secs = {}, {}
+    for L in range(1, HQ_MAX + 1):
+        c = t = 0
+        for x in defs:
+            cost, t1, cg, tg, _ = book[x["id"]]
+            if x["id"] == "b_hq":
+                if L < HQ_MAX: c += cost["cash"] * cg ** L; t += t1 * tg ** L
+                continue
+            nL, nP = count(x, L), (count(x, L - 1) if L > 1 else 0)
+            cL, cP = cap(x, L), (cap(x, L - 1) if L > 1 else 0)
+            lv = list(range(cP + 1, cL + 1)) * nP + list(range(1, cL + 1)) * (nL - nP)
+            for n in lv:
+                c += cost.get("cash", 0) * cg ** (n - 1); t += t1 * tg ** (n - 1)
+        cash[L], secs[L] = c, t
+    return cash, secs
+
+def check_building_costs():
+    """content/building_costs.yaml vs schema, catalog and pacing: every buildable type priced, shared growth knobs equal
+    economy.yaml, structure bill within 40-140% of the cash bill and builder time within 50-170% of the builder budget."""
+    import os, json
+    errs = []
+    f, book = price_book()
+    try:
+        import jsonschema
+        jsonschema.validate(f, json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "content", "schema", "building_costs.schema.json"))))
+    except ImportError: pass
+    except jsonschema.ValidationError as e: errs.append(f"building_costs.yaml schema: {e.message}")
+    b, d = _load("buildings.yaml"), _load("defences.yaml")
+    want = {x["id"] for g in ("core", "resources", "military") for x in b[g]} | {x["id"] for g in ("passive_obstacles", "active") for x in d[g]}
+    for i in sorted(want - set(book)): errs.append(f"building_costs.yaml: no price for {i}")
+    for i in sorted(set(book) - want): errs.append(f"building_costs.yaml: unknown type {i}")
+    lv = {x["id"]: x.get("levels") for g in ("core", "resources", "military") for x in b[g]}
+    for i, (cost, t, cg, tg, ml) in book.items():
+        if not lv.get(i) and not ml: errs.append(f"building_costs.yaml: {i} has no levels in buildings.yaml and no max_level")
+    y = _load("economy.yaml")
+    if abs(f["cost_growth"] - y["costs"]["cash"]["growth"]) > 1e-9: errs.append("building_costs cost_growth != economy.yaml costs.cash.growth")
+    if abs(f["time_growth"] - y["costs"]["time_growth_per_level"]) > 1e-9: errs.append("building_costs time_growth != economy.yaml time_growth_per_level")
+    cash, secs = structure_bills(f, book)
+    for L in range(1, HQ_MAX + 1):
+        r = cash[L] / cost_cash(L)
+        if not 0.4 <= r <= 1.4: errs.append(f"HQ{L}: structure cash bill {cash[L]:,.0f} is {r:.2f}x of the cash bill (want 0.4-1.4)")
+        if L < HQ_MAX:
+            tr = secs[L] / (TARGET_DAYS[L] * BUILDERS[L] * 0.75 * 86400)
+            if not 0.5 <= tr <= 1.7: errs.append(f"HQ{L}: build time {secs[L]/86400:.1f} builder-days is {tr:.2f}x of the builder budget (want 0.5-1.7)")
+            hq_t = book["b_hq"][1] * book["b_hq"][3] ** L
+            if hq_t > 0.4 * TARGET_DAYS[L] * 86400: errs.append(f"HQ{L}: HQ upgrade takes {hq_t/86400:.1f} d, over 40% of the days spent at this level")
+    return errs
+
 def report():
     cal = calibrate()
     out = dict(calibration=cal, split=SPLIT, sim={})
@@ -144,6 +222,7 @@ def check(o):
         if START_GRANT[k] > storage(1): errs.append(f"start_grant.{k} exceeds HQ1 storage")
         if START_GRANT[k] > 0.75 * bill: errs.append(f"start_grant.{k} > 75% of HQ1 bill")
     if START_GRANT["cash"] < ONBOARD_CASH or START_GRANT["fuel"] < ONBOARD_FUEL: errs.append("start_grant below onboarding spend")
+    errs += check_building_costs()
     return errs
 
 if __name__ == "__main__":
@@ -151,6 +230,10 @@ if __name__ == "__main__":
     print("HQ | days | cash total | fuel total | cash/d | fuel/d | collectors x rate/h | storage | loot cap")
     for r in o["calibration"]:
         print(f'{r["hq"]:>2} | {r["days"]:>4} | {r["cash_total"]:>10,} | {r["fuel_total"]:>10,} | {r["need_cash_day"]:>6,} | {r["need_fuel_day"]:>6,} | {r["collectors"]} x {r["rate_h"]:>6,} | {r["storage"]:>7,} | {r["loot_cap"]:>7,}')
+    cash, secs = structure_bills()
+    print("\nHQ | structure cash bill | vs cash bill | builder-days | vs builder budget   (content/building_costs.yaml)")
+    for L in range(1, HQ_MAX + 1):
+        print(f"{L:>2} | {cash[L]:>19,.0f} | {cash[L]/cost_cash(L):>11.2f}x | {secs[L]/86400:>12.1f} | {secs[L]/(TARGET_DAYS[L]*BUILDERS[L]*0.75*86400):>10.2f}x")
     print("\nTarget cumulative days (casual):", o["target_cum"])
     for prof, d in o["sim"].items(): print(f"sim {prof:8s}: day reaching HQ(L+1) =", d)
     if "--json" in sys.argv: json.dump(o, open(sys.argv[sys.argv.index("--json")+1], "w"), ensure_ascii=False, indent=1)
