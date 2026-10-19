@@ -38,6 +38,7 @@ type Config struct {
 		ShareByResource map[string]int `yaml:"production_share_pct"`
 		OfflineCapPct   int64          `yaml:"offline_accrual_cap_pct_of_storage"`
 	} `yaml:"passive"`
+	StartGrantAmounts map[string]int64 `yaml:"start_grant"`
 }
 
 // Parse decodes and validates economy.yaml bytes.
@@ -58,6 +59,11 @@ func Parse(b []byte) (*Config, error) {
 		return nil, fmt.Errorf("economy: invalid passive rate/storage")
 	case p.OfflineCapPct < 1 || p.OfflineCapPct > 100:
 		return nil, fmt.Errorf("economy: offline_accrual_cap_pct_of_storage must be 1..100")
+	}
+	for r, a := range c.StartGrantAmounts {
+		if _, ok := c.Resources[r]; !ok || a < 0 {
+			return nil, fmt.Errorf("economy: bad start_grant for %q", r)
+		}
 	}
 	for r, pct := range p.ShareByResource {
 		if _, ok := c.Resources[r]; !ok || pct < 0 {

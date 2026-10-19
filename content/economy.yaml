@@ -36,3 +36,9 @@ campaign:
   bots_never_gain_loot_from_player: true
 daily_budget_target_pct: {passive: 50, raids: 38, campaign: 12}
 pacing_targets_days_cumulative: {casual: {2: 1, 5: 25, 8: 93, 10: 185}, active: {2: 1, 5: 21, 8: 73, 10: 142}}
+start_grant:   # one-off wallet grant for a new guest; Ledger idemKey "start_grant:<playerID>". Rationale: docs/design/economy.md
+  cash: 1500     # = HQ1 storage cap; 75% of HQ1 bill (2000): MG nest 600 + first collectors/barracks without waiting
+  fuel: 600      # 50% of HQ1 bill (1200): 5 riflemen (125) + first lab/upgrade step, still needs the collectors
+  gems: 0        # premium is earned (campaign/quests) or bought, never given at start
+  alloy: 0       # unlocks at HQ4
+  trophies: 0

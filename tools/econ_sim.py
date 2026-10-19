@@ -34,6 +34,10 @@ LOOT_PCT = 0.075           # % of victim's available per full 3-star win; scales
 LOOT_CAP_PER_HQ = lambda L: round(storage(L) * 0.35, -2)
 STAR_MULT = {0: 0.0, 1: 0.40, 2: 0.70, 3: 1.00}
 CAMPAIGN_MULT = 1.6        # campaign pays this multiple per "attack-equivalent" but with an energy gate
+# one-off wallet grant to a new guest (idem key start_grant:<playerID>); mirrored in content/economy.yaml start_grant
+# onboarding spend (docs/design/ux-onboarding.md steps 1-7): MG nest 600 cash; 5 riflemen 125 fuel; HQ1->2 step + 2nd collector/barracks margin
+ONBOARD_CASH, ONBOARD_FUEL = 1200, 500
+START_GRANT = dict(cash=1500, fuel=600, gems=0, alloy=0, trophies=0)
 CAMPAIGN_ENERGY_PER_DAY = 3  # stages per day cap (slows player on purpose)
 SHIELD_HOURS = {1: 16, 2: 12, 3: 8}   # shield after being raided with 1/2/3 stars lost
 RAID_COOLDOWN_SAME_TARGET_H = 24      # same attacker->target cooldown
@@ -61,7 +65,7 @@ def simulate(profile, seed=1):
     rnd = random.Random(seed)
     p = PROFILES[profile]
     day = 0; L = 1; progress_c = 0.0; progress_f = 0.0
-    bank_c = bank_f = 0.0
+    bank_c = float(START_GRANT['cash']); bank_f = float(START_GRANT['fuel'])   # new guest starts with the grant
     builder_days_needed = None
     hist = {}
     spent_c = spent_f = 0.0
@@ -132,6 +136,14 @@ def check(o):
         want = r["base"] if L == 1 else round(r["base"] * r["growth"] ** (L - 1), -1)
         if want != collectors(L)[1]: errs.append(f"yaml rate != sim at HQ{L}")
         if round(st["base"] * st["growth"] ** (L - 1), -2) != storage(L): errs.append(f"yaml storage != sim at HQ{L}")
+    # start_grant: yaml == sim, fits HQ1 storage, leaves a real HQ1 bill (<= 75%) and covers the onboarding spend
+    g = yaml.safe_load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "content", "economy.yaml"), encoding="utf-8")).get("start_grant", {})
+    for k in ("cash", "fuel", "gems", "alloy", "trophies"):
+        if g.get(k, 0) != START_GRANT[k]: errs.append(f"yaml start_grant.{k} != sim")
+    for k, bill in (("cash", cost_cash(1)), ("fuel", cost_fuel(1))):
+        if START_GRANT[k] > storage(1): errs.append(f"start_grant.{k} exceeds HQ1 storage")
+        if START_GRANT[k] > 0.75 * bill: errs.append(f"start_grant.{k} > 75% of HQ1 bill")
+    if START_GRANT["cash"] < ONBOARD_CASH or START_GRANT["fuel"] < ONBOARD_FUEL: errs.append("start_grant below onboarding spend")
     return errs
 
 if __name__ == "__main__":
