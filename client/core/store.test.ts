@@ -50,6 +50,18 @@ describe('game store', () => {
     expect(st.lastRejection?.code).toBe('insufficient_resources');
   });
 
+  it('clears the previous rejection when a new command is queued', async () => {
+    const send = vi.fn().mockRejectedValueOnce(new ApiError('insufficient_resources', 409, 'no cash')).mockResolvedValue(undefined);
+    const s = make(send);
+    s.enqueue(cmd('a'));
+    await s.flush();
+    expect(s.getState().lastRejection?.code).toBe('insufficient_resources');
+    s.enqueue(cmd('b'));
+    expect(s.getState().lastRejection).toBeNull();
+    await s.flush();
+    expect(s.getState().lastRejection).toBeNull();
+  });
+
   it('rollback of a failed batch re-projects commands queued meanwhile', async () => {
     const send = vi.fn().mockRejectedValueOnce(new ApiError('conflict', 409, 'x')).mockResolvedValue(undefined);
     const s = make(send);

@@ -74,8 +74,12 @@ function useRenderer(app: App, content: Content, onCamera: () => void) {
   return { host, renderer };
 }
 
+/** Сколько показывать отказ сервера (insufficient_resources, conflict, …), мс. Чисто UI-тайминг. */
+export const REJECTION_TTL_MS = 6000;
+
 export function BaseScreen(p: { app: App; content: Content; t: T }): VNode {
   const [, setTick] = useState(0);
+  const [hidden, setHidden] = useState<unknown>(null);
   const bump = (): void => setTick((n) => n + 1);
   const { host, renderer } = useRenderer(p.app, p.content, bump);
   // Перерисовка: изменения слайса/редактора + секундный тик для таймеров. Свой хук вместо useBaseViewModel
@@ -88,7 +92,15 @@ export function BaseScreen(p: { app: App; content: Content; t: T }): VNode {
       clearInterval(id);
     };
   }, [p.app]);
-  const vm = p.app.base.viewModel();
+  // Отказ сервера показываем недолго: слайс хранит последний отказ до следующей команды.
+  const rejection = p.app.base.model.store.getState().lastRejection;
+  useEffect(() => {
+    if (!rejection) return;
+    const id = setTimeout(() => setHidden(rejection), REJECTION_TTL_MS);
+    return () => clearTimeout(id);
+  }, [rejection]);
+  const vm0 = p.app.base.viewModel();
+  const vm = rejection && rejection === hidden ? { ...vm0, rejection: null } : vm0;
   const hud = selectHud({
     me: p.app.store.getState().me,
     world: p.app.base.model.store.getState().view,

@@ -97,7 +97,8 @@ export function createGameStore<W>(o: GameStoreOptions<W>): GameStore<W> {
   function enqueue(cmd: Command) {
     const q: QueuedCommand = { op: cmd.op, args: cmd.args, id: ++seq, queuedAt: now() };
     const s = store.getState();
-    store.setState({ pending: [...s.pending, q], view: o.apply(s.view, q) });
+    // новая команда — новый контекст: прошлый отказ больше не показываем
+    store.setState({ pending: [...s.pending, q], view: o.apply(s.view, q), lastRejection: null });
   }
 
   async function flush() {

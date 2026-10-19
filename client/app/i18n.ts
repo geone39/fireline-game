@@ -22,6 +22,11 @@ export const APP_STRINGS: Record<Lang, Record<string, string>> = {
     'hud.trophies': 'Кубки',
     'hud.hq': 'Штаб {n}',
     'hud.ready': 'готово',
+    'reason.not_found': 'База не найдена или объект уже удалён',
+    'reason.unauthorized': 'Сессия истекла, войдите заново',
+    'reason.rate_limited': 'Слишком часто, подождите немного',
+    'reason.shielded': 'Действие недоступно под щитом',
+    'reason.cooldown': 'Подождите, действие на перезарядке',
   },
   en: {
     'app.loading': 'Loading…',
@@ -41,6 +46,11 @@ export const APP_STRINGS: Record<Lang, Record<string, string>> = {
     'hud.trophies': 'Trophies',
     'hud.hq': 'HQ {n}',
     'hud.ready': 'ready',
+    'reason.not_found': 'Base or object not found',
+    'reason.unauthorized': 'Session expired, please sign in again',
+    'reason.rate_limited': 'Too many requests, wait a moment',
+    'reason.shielded': 'Not available while shielded',
+    'reason.cooldown': 'On cooldown, try again later',
   },
 };
 
