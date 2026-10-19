@@ -112,6 +112,28 @@ def report():
         out["sim"][prof] = simulate(prof)
     return out
 
+def check(o):
+    """Acceptance checks (exit 1 on failure): casual within +-20% of targets, active <= 1.35x faster than casual,
+    and content/economy.yaml passive tables agree with the constants above (the Go server reads the yaml)."""
+    import os, yaml
+    errs = []
+    cas, act = o["sim"]["casual"], o["sim"]["active"]
+    for L, tgt in o["target_cum"].items():
+        if L < 3: continue   # first levels are 1-3 days: whole-day rounding dominates, see docs/design/economy.md
+        if abs(cas[L] - tgt) > 0.2 * tgt: errs.append(f"casual HQ{L}: {cas[L]}d vs target {tgt}d (>20%)")
+    for L in cas:
+        if L >= 3 and cas[L] / act[L] > 1.35: errs.append(f"active only {cas[L]/act[L]:.2f}x faster at HQ{L} (>1.35x)")
+    y = yaml.safe_load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "content", "economy.yaml"), encoding="utf-8"))["passive"]
+    c = y["collectors_count"]
+    for L in range(1, HQ_MAX + 1):
+        if min(c["base"] + L // c["hq_divisor"], c["max"]) != collectors(L)[0]: errs.append(f"yaml collectors_count != sim at HQ{L}")
+    r, st = y["rate_per_hour_each"], y["storage_per_resource"]
+    for L in range(1, HQ_MAX + 1):
+        want = r["base"] if L == 1 else round(r["base"] * r["growth"] ** (L - 1), -1)
+        if want != collectors(L)[1]: errs.append(f"yaml rate != sim at HQ{L}")
+        if round(st["base"] * st["growth"] ** (L - 1), -2) != storage(L): errs.append(f"yaml storage != sim at HQ{L}")
+    return errs
+
 if __name__ == "__main__":
     o = report()
     print("HQ | days | cash total | fuel total | cash/d | fuel/d | collectors x rate/h | storage | loot cap")
@@ -120,3 +142,9 @@ if __name__ == "__main__":
     print("\nTarget cumulative days (casual):", o["target_cum"])
     for prof, d in o["sim"].items(): print(f"sim {prof:8s}: day reaching HQ(L+1) =", d)
     if "--json" in sys.argv: json.dump(o, open(sys.argv[sys.argv.index("--json")+1], "w"), ensure_ascii=False, indent=1)
+    if "--check" in sys.argv:
+        e = check(o)
+        ratio = {L: round(o["sim"]["casual"][L] / o["sim"]["active"][L], 2) for L in o["sim"]["casual"]}
+        print("casual/active speed ratio per HQ:", ratio)
+        print("CHECK:", ("FAIL" + chr(10) + "  " + (chr(10) + "  ").join(e)) if e else "OK")
+        sys.exit(1 if e else 0)

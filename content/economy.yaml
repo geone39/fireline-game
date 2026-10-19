@@ -13,9 +13,10 @@ costs:   # total bill per HQ level (informs per-building tables); formula = base
   fuel: {base: 1200, growth: 2.10}
   time_growth_per_level: 1.6
 passive:
-  collectors_count: "min(2 + L // 2, 6)"
-  rate_per_hour_each: {base: 40, growth: 1.62}
-  storage_per_resource: {base: 1500, growth: 2.0}
+  collectors_count: {base: 2, hq_divisor: 2, max: 6}   # min(base + L // hq_divisor, max)
+  rate_per_hour_each: {base: 40, growth: 1.62, round_to: 10}      # base * growth^(L-1), rounded to round_to (L=1: base)
+  storage_per_resource: {base: 1500, growth: 2.0, round_to: 100}
+  production_share_pct: {cash: 100, fuel: 55}   # collectors yield cash at full rate, fuel at this % of it
   offline_accrual_cap_pct_of_storage: 50   # collector's own pool; forces return visits 2-3x/day
 raids:
   loot_pct_of_victim_stock_full_win: 0.225   # LOOT_PCT 0.075 * 3 ; applies to lootable stock only
