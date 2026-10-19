@@ -1,7 +1,7 @@
 # AGENT.md — модуль `economy`
 **Цель:** Темп прогресса, цены, лут, лимиты анти-абьюза, леджер.
 
-**OWNS (правишь только это):** `content/economy.yaml`, `tools/econ_sim.py`, `docs/design/economy.md`, `server/svc/economy`
+**OWNS (правишь только это):** `content/economy.yaml`, `content/building_costs.yaml` (+ его схема `content/schema/building_costs.schema.json`), `tools/econ_sim.py`, `docs/design/economy.md`, `server/svc/economy`
 **READS (читаешь, не правишь):** `content/*`
 **Вход:** Цели темпа (design), метрики (ops)
 **Выход:** Таблицы цен/времени, econ_report.json, Ledger

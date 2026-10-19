@@ -1,7 +1,7 @@
 # AGENT.md — модуль `content`
 **Цель:** Каталог данных и схемы; сборка bundle.
 
-**OWNS (правишь только это):** `content/**` (кроме `content/economy.yaml` — он принадлежит модулю `economy`), `tools/validate_content.py`, `tools/contentc (план)`
+**OWNS (правишь только это):** `content/**` (кроме `content/economy.yaml`, `content/building_costs.yaml` и `content/schema/building_costs.schema.json` — они принадлежат модулю `economy`), `tools/validate_content.py`, `tools/contentc (план)`
 **READS (читаешь, не правишь):** `docs/design/**`
 **Вход:** Требования design, числа от economy/balance
 **Выход:** content/*.yaml, schema/*.json, bundle manifest {version, sha256, files}
