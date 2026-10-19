@@ -42,10 +42,17 @@ type entity struct {
 	inside    EntityID // bunker holding a garrison unit
 	cargo     []EntityID
 	revealed  bool
-	slot      int // army slot index for losses, -1 for hero / defender
-	ud        *UnitDef
-	bd        *BuildingDef
+	damaged   bool // has lost hit points at least once (bunker trigger, spec 7.2)
+	heat      int  // consecutive turns of fire (overheat, spec 7.3); the cool-down is counted in cd
+	// disabledUntil is the last turn the entity is jammed on (spec 7.5); 0 = never. Set by SIM-5 (jam, EMP).
+	disabledUntil int
+	slot          int // army slot index for losses, -1 for hero / defender
+	ud            *UnitDef
+	bd            *BuildingDef
 }
+
+// disabled reports whether the entity is jammed during turn t (spec 7.5).
+func (e *entity) disabled(t int) bool { return e.disabledUntil >= t }
 
 func (e *entity) class() UnitClass {
 	if e.ud != nil {

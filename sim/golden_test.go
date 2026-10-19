@@ -177,7 +177,8 @@ func scenarios() []scenario {
 		snap: f01Snapshot(), seed: 5, wantRejects: 1, cmds: []Command{
 			dep("u_rifleman", 1, 10), {Op: OpRetreat}, dep("u_brawler", 1, 12),
 		}})
-	return append(all, scenariosSim2()...)
+	all = append(all, scenariosSim2()...)
+	return append(all, scenariosSim3()...)
 }
 
 func goldenDir() string { return filepath.Join("testdata", "replays") }
@@ -204,7 +205,7 @@ func TestGolden(t *testing.T) {
 		}
 	}
 	files, err := filepath.Glob(filepath.Join(goldenDir(), "G*.json"))
-	if err != nil || len(files) < 12 {
+	if err != nil || len(files) < 20 {
 		t.Fatalf("golden replays missing: %v %v", files, err)
 	}
 	for _, f := range files {

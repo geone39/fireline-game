@@ -101,8 +101,9 @@ func (b *Battle) stateHash() uint64 {
 		h.i(e.hp)
 		h.i(e.apLeft)
 		h.i(e.cd)
-		h.i(0) // effects (SIM-2+)
-		h.i(0) // heat (SIM-2+)
+		h.i(e.disabledUntil) // effects: jam / EMP (SIM-5)
+		h.i(e.heat)          // overheat; the cool-down is in cd
+		h.t(e.damaged)
 		h.t(e.alive)
 		h.t(e.onField)
 		h.i(int(e.aboard))

@@ -28,7 +28,7 @@ func (g gen) cell() Cell {
 	return cell(g.n(44), g.n(44))
 }
 
-var propBuildings = []string{"d_wall", "d_wall", "d_wall", "d_wire", "d_mine", "d_mine", "d_spring_trap", "d_fence", "d_tank_trap", "d_mg_nest", "d_mortar", "b_hq", "b_vault", "x_statue", "d_bunker"}
+var propBuildings = []string{"d_wall", "d_wall", "d_wall", "d_wire", "d_mine", "d_mine", "d_spring_trap", "d_fence", "d_tank_trap", "d_mg_nest", "d_mortar", "b_hq", "b_vault", "x_statue", "d_bunker", "d_bunker", "d_flame_trap", "d_tesla"}
 var propUnits = []string{"u_rifleman", "u_brawler", "u_sniper", "u_medic", "u_para", "v_apc", "v_tank", "u_drone", "s_gunboat", "s_lander", "v_turret", "u_breacher", "u_grenadier", "u_flamer", "u_heavy", "v_buggy"}
 
 func (g gen) snapshot() Snapshot {
@@ -48,8 +48,8 @@ func (g gen) snapshot() Snapshot {
 	if g.chance(50) {
 		s.Hero, s.HeroLevel = "h_commander", 1+g.n(3)
 	}
-	for k := g.n(4); k > 0; k-- {
-		s.Garrison = append(s.Garrison, GarrisonUnit{"u_guard", 1 + g.n(2)})
+	for k := g.n(8); k > 0; k-- {
+		s.Garrison = append(s.Garrison, GarrisonUnit{[]string{"u_guard", "u_scout"}[g.n(2)], 1 + g.n(2)})
 	}
 	return s
 }
@@ -312,7 +312,7 @@ func TestPropertyRunTwiceSameResult1000(t *testing.T) {
 	if accepted < 10000 || rejected < 10000 || len(codes) < 12 {
 		t.Fatalf("generator is too one-sided: accepted %d rejected %d codes %v", accepted, rejected, codes)
 	}
-	if evCount[EventAttacked] < 1000 || evCount[EventDestroyed] < 100 || evCount[EventKilled] < 30 || evCount[EventTrapTriggered] < 30 {
+	if evCount[EventAttacked] < 1000 || evCount[EventDestroyed] < 100 || evCount[EventKilled] < 30 || evCount[EventTrapTriggered] < 15 || evCount[EventReleased] < 100 || evCount[EventEffectTick] < 20 {
 		t.Fatalf("the generator does not reach combat: %v", evCount)
 	}
 	t.Logf("accepted %d, rejected %d, %d distinct codes, events %v, endings %v", accepted, rejected, len(codes), evCount, ends)

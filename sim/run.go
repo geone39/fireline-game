@@ -2,8 +2,7 @@ package sim
 
 import "errors"
 
-// ErrNotImplemented is returned for rules that are not implemented yet: Attack/Ability/Cast and the defence
-// phase (SIM-2/3/5). A command that returns it changes nothing.
+// ErrNotImplemented is returned for rules that are not implemented yet: Ability/Cast (SIM-5). A command that returns it changes nothing.
 var ErrNotImplemented = errors.New("sim: not implemented")
 
 // Run replays a full command log against the snapshot and returns the result.

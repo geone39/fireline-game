@@ -92,6 +92,13 @@ type BuildingDef struct {
 	Burst            int // d_mine blast damage at the centre
 	MaxHPFlung       int // d_spring_trap: heaviest INF (max_hp) it throws
 	FlingCells       int // d_spring_trap: throw distance
+	// Defence phase (SIM-3, contract 0.2.3, additive; zero = "none").
+	TriggerCells      int // d_bunker: an attacker within this many cells of the footprint releases the garrison (0 = the longest range among the garrison units, spec 7.2)
+	DotDmg            int // d_wire: damage per defence phase to every attacker INF unit standing on it (dot_dps x turn_s, whole)
+	OverheatFireTurns int // d_flame_trap: consecutive turns of fire before it overheats (0 = never)
+	CoolTurns         int // d_flame_trap: turns without fire after overheating
+	Chain             int // d_tesla: the arc hits up to Chain targets (<= 1 = single target)
+	ChainCells        int // d_tesla: reach of each jump to the next target
 }
 
 // VsTag is a target group for a unit's damage multiplier (content `vs_mult`, spec 6.1).
@@ -196,6 +203,15 @@ func (r *Rules) validate() error {
 		}
 		if d.SplashCells < 0 || d.Burst < 0 || d.MaxHPFlung < 0 || d.FlingCells < 0 {
 			return bad("building %q has invalid trap numbers", d.ID)
+		}
+		if d.TriggerCells < 0 || d.DotDmg < 0 || d.OverheatFireTurns < 0 || d.CoolTurns < 0 || d.Chain < 0 || d.ChainCells < 0 {
+			return bad("building %q has invalid defence numbers", d.ID)
+		}
+		if d.OverheatFireTurns > 0 && d.CoolTurns < 1 {
+			return bad("building %q: overheat needs cool_turns", d.ID)
+		}
+		if d.Chain > 1 && d.ChainCells < 1 {
+			return bad("building %q: chain needs chain_cells", d.ID)
 		}
 		switch d.Trap {
 		case TrapNone:

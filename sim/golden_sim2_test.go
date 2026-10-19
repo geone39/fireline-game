@@ -104,6 +104,7 @@ func scenariosSim2() []scenario {
 	{
 		s := f01Snapshot()
 		s.Buildings = []PlacedBuilding{pb("d_wall", 10, 10), pb("d_fence", 10, 11), pb("d_wall", 10, 12), pb("d_mg_nest", 14, 10)}
+		tweakBuilding(&s, "d_mg_nest", func(d *BuildingDef) { d.Dmg = 4 }) // SIM-3: the nest now shoots; keep the units alive
 		s.Army = []ArmySlot{{"u_breacher", 1, 1}, {"u_rifleman", 1, 1}}
 		// ids: wall 1, nest 2, fence 3, wall 4; breacher 5, rifleman 6
 		all = append(all, scenario{name: "G11", about: "u_breacher: burst 16 x wall_mult 40 destroys the fence, the walls next to it take 60%, the breacher is lost; the rifleman walks through the open cell and shoots the nest",

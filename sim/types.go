@@ -3,13 +3,13 @@
 // and time is counted in turns. Same (Snapshot, Commands, Seed, ContentVersion) MUST give a byte-identical
 // Result on every platform (server validation + client WASM). Rules: docs/design/battle-sim.md.
 //
-// Implemented so far (SIM-1/2): world, deployment, Move, pathfinding, target selection, Attack with damage /
-// splash / destruction, hidden traps, stars and loot basis. Ability/Cast and the defence phase return
-// ErrNotImplemented / do nothing until SIM-3/5.
+// Implemented so far (SIM-1/2/3): world, deployment, Move, pathfinding, target selection, Attack with damage /
+// splash / destruction, hidden traps, stars and loot basis, the defence phase (bunker release, wire, building
+// fire with overheat and chains, garrison AI). Ability/Cast return ErrNotImplemented until SIM-5.
 package sim
 
 // EngineVersion identifies the rule set. Any rule change bumps it and regenerates the golden replays.
-const EngineVersion = "0.2.2"
+const EngineVersion = "0.2.3"
 
 // Game numbers (turn limit, time limit, splash falloff, ...) live in content/battle.yaml and are passed in by
 // the caller; there are deliberately no such constants here (AGENTS.md rule 3).

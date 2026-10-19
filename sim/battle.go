@@ -110,11 +110,14 @@ func (b *Battle) checkEnd() EndReason {
 	return EndNoUnits
 }
 
-// endTurn closes the player phase of turn t. The defence phase (spec 7) is SIM-3: until then it is a no-op.
-// Then either the max_turns fuse ends the battle or turn t+1 starts.
+// endTurn closes the player phase of turn t and runs the defence phase (spec 7, defence.go). Then either the
+// battle ended during the defence, or the max_turns fuse ends it, or turn t+1 starts.
 func (b *Battle) endTurn() []Event {
 	ev := []Event{{Kind: EventTurnEnded, Value: b.turn}}
-	// SIM-3: defence phase goes here (triggers, zone effects, buildings, garrison, timers).
+	ev = append(ev, b.defencePhase()...)
+	if b.ph == phaseOver {
+		return ev
+	}
 	if b.turn >= b.rules.MaxTurns {
 		b.finish(EndTurnLimit)
 		return append(ev, Event{Kind: EventBattleEnded, Value: int(EndTurnLimit)})

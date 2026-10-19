@@ -1,7 +1,7 @@
 {
  "name": "G12",
  "about": "traps: mine blast 18/10 with falloff (air spared), spring trap throws the medic over the wall and not the heavy, the fragile APC dies on a mine and unloads its riflemen, the vault takes 110 permille",
- "engine_version": "0.2.2",
+ "engine_version": "0.2.3",
  "seed": 12,
  "snapshot": {
   "ContentVersion": "test-fixture",
@@ -505,6 +505,25 @@
      "Carries": 0,
      "Group": 0,
      "Paradrop": false
+    },
+    {
+     "ID": "u_scout",
+     "Class": 0,
+     "Hero": false,
+     "HP": 40,
+     "HPGrowthPermille": 0,
+     "AP": 2,
+     "MoveCells": 3,
+     "RangeCells": 3,
+     "MinRangeCells": 0,
+     "Dmg": 6,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false
     }
    ],
    "Buildings": [
@@ -532,7 +551,13 @@
      "Trap": 0,
      "Burst": 0,
      "MaxHPFlung": 0,
-     "FlingCells": 0
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0
     },
     {
      "ID": "b_vault",
@@ -558,7 +583,13 @@
      "Trap": 0,
      "Burst": 0,
      "MaxHPFlung": 0,
-     "FlingCells": 0
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0
     },
     {
      "ID": "d_mg_nest",
@@ -584,7 +615,13 @@
      "Trap": 0,
      "Burst": 0,
      "MaxHPFlung": 0,
-     "FlingCells": 0
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0
     },
     {
      "ID": "d_mortar",
@@ -610,7 +647,13 @@
      "Trap": 0,
      "Burst": 0,
      "MaxHPFlung": 0,
-     "FlingCells": 0
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0
     },
     {
      "ID": "d_bunker",
@@ -636,7 +679,77 @@
      "Trap": 0,
      "Burst": 0,
      "MaxHPFlung": 0,
-     "FlingCells": 0
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0
+    },
+    {
+     "ID": "d_flame_trap",
+     "Kind": 1,
+     "W": 2,
+     "H": 2,
+     "HP": 380,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": true,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 3,
+     "MinRangeCells": 0,
+     "Dmg": 15,
+     "Vs": 1,
+     "SplashCells": 1,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 3,
+     "CoolTurns": 2,
+     "Chain": 0,
+     "ChainCells": 0
+    },
+    {
+     "ID": "d_tesla",
+     "Kind": 1,
+     "W": 2,
+     "H": 2,
+     "HP": 800,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": true,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 7,
+     "MinRangeCells": 0,
+     "Dmg": 12,
+     "Vs": 3,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 4,
+     "ChainCells": 3
     },
     {
      "ID": "d_wall",
@@ -662,7 +775,13 @@
      "Trap": 0,
      "Burst": 0,
      "MaxHPFlung": 0,
-     "FlingCells": 0
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0
     },
     {
      "ID": "d_wire",
@@ -688,7 +807,13 @@
      "Trap": 0,
      "Burst": 0,
      "MaxHPFlung": 0,
-     "FlingCells": 0
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 4,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0
     },
     {
      "ID": "d_tank_trap",
@@ -714,7 +839,13 @@
      "Trap": 0,
      "Burst": 0,
      "MaxHPFlung": 0,
-     "FlingCells": 0
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0
     },
     {
      "ID": "d_mine",
@@ -740,7 +871,13 @@
      "Trap": 1,
      "Burst": 18,
      "MaxHPFlung": 0,
-     "FlingCells": 0
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0
     },
     {
      "ID": "d_spring_trap",
@@ -766,7 +903,13 @@
      "Trap": 2,
      "Burst": 0,
      "MaxHPFlung": 60,
-     "FlingCells": 3
+     "FlingCells": 3,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0
     },
     {
      "ID": "d_fence",
@@ -792,7 +935,13 @@
      "Trap": 0,
      "Burst": 0,
      "MaxHPFlung": 0,
-     "FlingCells": 0
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0
     },
     {
      "ID": "x_statue",
@@ -818,7 +967,13 @@
      "Trap": 0,
      "Burst": 0,
      "MaxHPFlung": 0,
-     "FlingCells": 0
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0
     }
    ]
   }
@@ -1145,8 +1300,8 @@
   "HeroDamageTaken": 0,
   "HeroSurvived": false,
   "Rejected": null,
-  "EngineVersion": "0.2.2",
-  "StateHash": 9128827164537591840
+  "EngineVersion": "0.2.3",
+  "StateHash": 13186267998193184022
  },
- "state_hash_hex": "7eb01bf086331820"
+ "state_hash_hex": "b6ff08e16967ed16"
 }

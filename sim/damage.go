@@ -107,6 +107,7 @@ func (b *Battle) hurt(by EntityID, v *entity, dmg int) []Event {
 		return nil
 	}
 	v.hp -= dmg
+	v.damaged = true
 	if v.kind == KindHero && v.owner == ownerAttacker {
 		b.heroDmg += dmg
 	}
@@ -188,10 +189,16 @@ func (b *Battle) cmdAttack(c Command) ([]Event, RejectCode) {
 	if d > u.ud.RangeCells || !lineOfFire(u.pos, t.pos) {
 		return nil, RejectOutOfRange
 	}
+	return b.shoot(u, t), 0
+}
+
+// shoot is one attack action of a unit (player or garrison): 1 AP, damage with splash, a bomber is spent by its
+// own blast. The caller has checked legality.
+func (b *Battle) shoot(u, t *entity) []Event {
 	u.apLeft--
 	evs := b.blast(u, t, aimCell(u, t), u.ud.SplashCells, func(v *entity) int { return shotDamage(u, v) }, nil)
-	if u.ud.Burst > 0 && u.alive { // the bomber is spent by its own blast
+	if u.ud.Burst > 0 && u.alive {
 		evs = append(evs, b.kill(u.id, u)...)
 	}
-	return evs, 0
+	return evs
 }
