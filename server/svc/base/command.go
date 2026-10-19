@@ -1,5 +1,7 @@
 package base
 
+import "encoding/json"
+
 // Op is a BaseCommand operation (CONTRACT.md).
 type Op string
 
@@ -13,9 +15,12 @@ const (
 	OpClearObstacle Op = "clear_obstacle"
 )
 
-// Command is one entry of POST /v1/base/commands. Only build and move are
-// evaluated by this package for now; the other ops are typed but return
-// CodeNotImplemented.
+// Command is one entry of POST /v1/base/commands. Rules.Apply evaluates only the
+// placement ops (build, move); the other ops need prices and timers and go through
+// Engine.Plan, so Rules.Apply returns CodeNotImplemented for them.
+//
+// On the wire the fields may sit at the top level or inside `args` ({op,args} in
+// docs/03-api.md); see UnmarshalJSON.
 type Command struct {
 	Op   Op     `json:"op"`
 	UID  string `json:"uid"`
@@ -23,6 +28,27 @@ type Command struct {
 	X    int    `json:"x"`
 	Y    int    `json:"y"`
 	Rot  int    `json:"rot"`
+	// To is the target level of an upgrade (optional; makes a retried upgrade a no-op).
+	To int `json:"to,omitempty"`
+}
+
+// UnmarshalJSON accepts both {op,uid,...} and {op,args:{uid,...}}; args wins.
+func (c *Command) UnmarshalJSON(b []byte) error {
+	type plain Command
+	var w struct {
+		plain
+		Args *plain `json:"args"`
+	}
+	if err := json.Unmarshal(b, &w); err != nil {
+		return err
+	}
+	*c = Command(w.plain)
+	if w.Args != nil {
+		op := c.Op
+		*c = Command(*w.Args)
+		c.Op = op
+	}
+	return nil
 }
 
 // Result reports what Apply did. Replayed=true means the command was already

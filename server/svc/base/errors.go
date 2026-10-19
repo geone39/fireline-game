@@ -23,9 +23,17 @@ const (
 	CodeNotPlaceable   Code = "not_placeable"
 	CodeNotImplemented Code = "not_implemented"
 	CodeBadCommand     Code = "bad_command"
+	CodeNoPrice        Code = "no_price"
+	CodeNoBuilder      Code = "no_free_builder"
+	CodeMaxLevel       Code = "max_level"
+	CodeBusy           Code = "busy"
+	CodeHQGate         Code = "hq_gate"
+	CodeInsufficient   Code = "insufficient_resources"
+	CodeLayoutChanged  Code = "layout_mismatch"
 )
 
-// Error is a validation failure. API mapping: CodeConflict -> `conflict`,
+// Error is a validation failure. API mapping (see APICode): CodeConflict -> `conflict`,
+// CodeInsufficient -> `insufficient_resources`, CodeNotFound -> `not_found`,
 // everything else -> `invalid`.
 type Error struct {
 	Code Code
@@ -42,4 +50,17 @@ func (e *Error) Error() string {
 
 func fail(c Code, uid, format string, a ...any) *Error {
 	return &Error{Code: c, UID: uid, Msg: fmt.Sprintf(format, a...)}
+}
+
+// APICode maps a rule violation to the error code of docs/03-api.md.
+func APICode(c Code) string {
+	switch c {
+	case CodeConflict, CodeBusy, CodeNoBuilder:
+		return "conflict"
+	case CodeInsufficient:
+		return "insufficient_resources"
+	case CodeNotFound:
+		return "not_found"
+	}
+	return "invalid"
 }

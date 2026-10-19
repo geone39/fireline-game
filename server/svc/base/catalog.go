@@ -48,6 +48,11 @@ type Def struct {
 	Limits []LimitStep
 	// DefaultSize is true when content has no size and the loader substituted 1x1.
 	DefaultSize bool
+	// Levels is the highest level from content (0 = content gives no level cap).
+	Levels int
+	// ClearCost and Reward are the obstacle clearing price and payout (resource -> amount).
+	ClearCost map[string]int64
+	Reward    map[string]int64
 }
 
 // Catalog is the read-only set of definitions.
@@ -100,13 +105,16 @@ func (b *blockField) UnmarshalYAML(n *yaml.Node) error {
 }
 
 type rawDef struct {
-	ID            string      `yaml:"id"`
-	Size          []int       `yaml:"size"`
-	UnlockHQ      int         `yaml:"unlock_hq"`
-	RequiresWater bool        `yaml:"requires_water"`
-	Blocks        *blockField `yaml:"blocks"`
-	MaxByHQ       map[int]int `yaml:"max_by_hq"`
-	MaxCountByHQ  map[int]int `yaml:"max_count_by_hq"`
+	ID            string           `yaml:"id"`
+	Size          []int            `yaml:"size"`
+	UnlockHQ      int              `yaml:"unlock_hq"`
+	RequiresWater bool             `yaml:"requires_water"`
+	Blocks        *blockField      `yaml:"blocks"`
+	MaxByHQ       map[int]int      `yaml:"max_by_hq"`
+	MaxCountByHQ  map[int]int      `yaml:"max_count_by_hq"`
+	Levels        int              `yaml:"levels"`
+	ClearCost     map[string]int64 `yaml:"clear_cost"`
+	Reward        map[string]int64 `yaml:"reward"`
 }
 
 type buildingsFile struct {
@@ -176,7 +184,8 @@ func (r rawDef) resolve(k Kind, defBlock Block) (Def, error) {
 	if r.ID == "" {
 		return Def{}, fmt.Errorf("base: entry without id")
 	}
-	d := Def{ID: r.ID, Kind: k, UnlockHQ: r.UnlockHQ, RequiresWater: r.RequiresWater, Block: defBlock}
+	d := Def{ID: r.ID, Kind: k, UnlockHQ: r.UnlockHQ, RequiresWater: r.RequiresWater, Block: defBlock,
+		Levels: r.Levels, ClearCost: r.ClearCost, Reward: r.Reward}
 	switch len(r.Size) {
 	case 0:
 		d.W, d.H, d.DefaultSize = 1, 1, true
