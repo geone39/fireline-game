@@ -3,12 +3,12 @@ schema: 1
 core:
   - {id: b_hq, name_key: b.hq, role: "Штаб. Уничтожение = 1 звезда из 3. Определяет лимиты построек. Хранит 'пайку' ресурсов (10%) недоступную для лута", size: [4,4], hp_l1: 800, hp_growth: 1.22, levels: 10, stars_on_destroy: 1}
 resources:
-  - {id: b_cash_mine,    name_key: b.cash_mine,  produces: cash,  size: [3,3], levels: 10, unlock_hq: 1}
-  - {id: b_fuel_refinery,name_key: b.refinery,   produces: fuel,  size: [3,3], levels: 10, unlock_hq: 1}
-  - {id: b_alloy_foundry,name_key: b.foundry,    produces: alloy, size: [3,3], levels: 8,  unlock_hq: 4}
-  - {id: b_vault,        name_key: b.vault,      stores: cash,    size: [3,3], levels: 10, unlock_hq: 1}
-  - {id: b_fuel_tank,    name_key: b.fuel_tank,  stores: fuel,    size: [3,3], levels: 10, unlock_hq: 1}
-  - {id: b_alloy_depot,  name_key: b.depot,      stores: alloy,   size: [2,2], levels: 8,  unlock_hq: 4}
+  - {id: b_cash_mine,    name_key: b.cash_mine,  produces: cash,  size: [3,3], levels: 10, unlock_hq: 1, max_by_hq: {1: 2, 2: 3, 4: 4, 6: 5, 8: 6}}
+  - {id: b_fuel_refinery,name_key: b.refinery,   produces: fuel,  size: [3,3], levels: 10, unlock_hq: 1, max_by_hq: {1: 2, 2: 3, 4: 4, 6: 5, 8: 6}}
+  - {id: b_alloy_foundry,name_key: b.foundry,    produces: alloy, size: [3,3], levels: 8,  unlock_hq: 4, max_by_hq: {4: 1, 6: 2, 8: 3}}
+  - {id: b_vault,        name_key: b.vault,      stores: cash,    size: [3,3], levels: 10, unlock_hq: 1, max_by_hq: {1: 1, 4: 2, 7: 3}}
+  - {id: b_fuel_tank,    name_key: b.fuel_tank,  stores: fuel,    size: [3,3], levels: 10, unlock_hq: 1, max_by_hq: {1: 1, 4: 2, 7: 3}}
+  - {id: b_alloy_depot,  name_key: b.depot,      stores: alloy,   size: [2,2], levels: 8,  unlock_hq: 4, max_by_hq: {4: 1, 7: 2}}
 military:
   - {id: b_barracks,   name_key: b.barracks,   role: "Казарма: обучает пехоту. Очередь = 1 здание на 1 тренировку (до 4 зданий)", size: [3,3], levels: 12, unlock_hq: 1, max_by_hq: {1: 1, 3: 2, 6: 3, 8: 4}}
   - {id: b_factory,    name_key: b.factory,    role: "Завод техники: Хамви, БТР, танки, самоходки", size: [4,4], levels: 6, unlock_hq: 3, max_by_hq: {3: 1, 8: 2}}
@@ -22,9 +22,9 @@ military:
   - {id: b_radar,      name_key: b.radar,      role: "Радар: показывает всю оборону и ловушки врага ПЕРЕД боем (разведка), в обороне - выдаёт 'подсветку' цели по атакующим", size: [2,2], levels: 5, unlock_hq: 6, max_by_hq: {6: 1}}
   - {id: b_market,     name_key: b.market,     role: "Рынок: ежедневный обмен 1 ресурса на другой с комиссией 25%", size: [3,3], levels: 5, unlock_hq: 4, max_by_hq: {4: 1}}
 decor:     # cosmetic only, paid with gems or earned; no gameplay stats
-  - {id: x_flag, name_key: x.flag}
-  - {id: x_statue, name_key: x.statue}
-  - {id: x_flowerbed, name_key: x.flowerbed}
+  - {id: x_flag, name_key: x.flag, size: [1,1]}
+  - {id: x_statue, name_key: x.statue, size: [2,2]}
+  - {id: x_flowerbed, name_key: x.flowerbed, size: [2,2]}
 obstacles: # spawn on base periodically; clearing gives small cash/gems reward (retention hook)
-  - {id: o_rock, name_key: o.rock, clear_cost: {cash: 200}, reward: {gems: 1}, respawn_hours: 48}
-  - {id: o_wreck, name_key: o.wreck, clear_cost: {cash: 600}, reward: {gems: 2, alloy: 5}, respawn_hours: 96}
+  - {id: o_rock, name_key: o.rock, size: [1,1], clear_cost: {cash: 200}, reward: {gems: 1}, respawn_hours: 48}
+  - {id: o_wreck, name_key: o.wreck, size: [2,2], clear_cost: {cash: 600}, reward: {gems: 2, alloy: 5}, respawn_hours: 96}

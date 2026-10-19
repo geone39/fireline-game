@@ -42,6 +42,33 @@ for ch in camp["chapters"]:
     fc = ch.get("first_clear", {})
     for k in ("unit_unlock", "hero"):
         if k in fc and fc[k] not in ids: err.append(f"campaign {ch['id']}: unknown {fc[k]}")
+# base grid / terrain
+grid = load("base_grid.yaml")
+if jsonschema:
+    try: jsonschema.validate(grid, json.load(open(os.path.join(root, "schema", "base_grid.schema.json"))))
+    except jsonschema.ValidationError as e: err.append(f"base_grid.yaml: {e.message}")
+gw, gh = grid["grid"]["w"], grid["grid"]["h"]
+bz = grid["build_zone"]
+if bz["x"] + bz["w"] > gw or bz["y"] + bz["h"] > gh: err.append("base_grid.yaml: build_zone outside grid")
+if grid["default_map"] not in grid["maps"]: err.append("base_grid.yaml: default_map not in maps")
+for mk, m in grid["maps"].items():
+    nk = m.get("name_key")
+    if not nk: err.append(f"base_grid.yaml: map {mk}: missing name_key")
+    elif nk in name_keys: err.append(f"base_grid.yaml: map {mk}: name_key {nk} already used by {name_keys[nk]}")
+    else: name_keys[nk] = f"map:{mk}"
+    for r in m.get("water", []):
+        if len(r) == 4 and (r[2] < 1 or r[3] < 1 or r[0] + r[2] > gw or r[1] + r[3] > gh): err.append(f"base_grid.yaml: map {mk}: water rect {r} outside grid")
+# placement data: every placeable has a size; limits are monotone and start at unlock_hq
+for key in ("resources", "military", "decor", "obstacles"):
+    for b in bld[key]:
+        sz = b.get("size")
+        if not (isinstance(sz, list) and len(sz) == 2 and all(isinstance(v, int) and v > 0 for v in sz)): err.append(f"{b['id']}: missing/invalid size")
+        lim = b.get("max_by_hq")
+        if key in ("resources", "military") and b.get("unlock_hq") and not lim: err.append(f"{b['id']}: missing max_by_hq")
+        if lim:
+            ks = sorted(lim)
+            if ks[0] != b.get("unlock_hq"): err.append(f"{b['id']}: max_by_hq must start at unlock_hq {b.get('unlock_hq')}")
+            if [lim[k] for k in ks] != sorted(lim[k] for k in ks): err.append(f"{b['id']}: max_by_hq not non-decreasing")
 # strings: every name_key must exist in every language, no orphans, no empty values
 langs = sorted(d for d in os.listdir(os.path.join(root, "strings")) if os.path.isdir(os.path.join(root, "strings", d)))
 for want in ("ru", "en"):

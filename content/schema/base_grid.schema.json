@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "content/base_grid.yaml",
+  "type": "object",
+  "required": ["schema", "grid", "build_zone", "default_map", "maps"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": 1},
+    "grid": {"$ref": "#/definitions/size"},
+    "build_zone": {"type": "object", "required": ["x", "y", "w", "h"], "additionalProperties": false,
+      "properties": {"x": {"type": "integer", "minimum": 0}, "y": {"type": "integer", "minimum": 0},
+                     "w": {"type": "integer", "minimum": 1}, "h": {"type": "integer", "minimum": 1}}},
+    "default_map": {"type": "string"},
+    "maps": {"type": "object", "minProperties": 1, "propertyNames": {"pattern": "^[a-z][a-z0-9_]*$"},
+      "additionalProperties": {"type": "object", "required": ["name_key", "water"], "additionalProperties": false,
+        "properties": {"name_key": {"type": "string", "minLength": 1},
+                       "water": {"type": "array", "items": {"type": "array", "minItems": 4, "maxItems": 4,
+                                 "items": {"type": "integer", "minimum": 0}}}}}}
+  },
+  "definitions": {
+    "size": {"type": "object", "required": ["w", "h"], "additionalProperties": false,
+      "properties": {"w": {"type": "integer", "minimum": 1}, "h": {"type": "integer", "minimum": 1}}}
+  }
+}

@@ -87,3 +87,6 @@ strings:
   ch.2: "Coastline"
   ch.3: "Industrial Belt"
   ch.4: "Commander's Fortress"
+  map.plain: "Plains"
+  map.coastal: "Coastal"
+  map.canyon: "Canyon"

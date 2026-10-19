@@ -1,0 +1,12 @@
+# content/base_grid.yaml — base grid size and terrain (water) per map. Tiles are (x,y), origin top-left, x to the right.
+# Source: docs/01 §7, docs/design/base-building.md. Rects are [x, y, w, h] in tiles.
+schema: 1
+grid: {w: 44, h: 44}
+# Buildable area. ASSUMPTION (OQ-B1): the doc says "44x44, build zone 40x40, 4-tile rim" which does not add up
+# (40 + 2*4 = 48); we take a 2-tile rim per side (44 = 2 + 40 + 2). Not enforced by svc/base yet.
+build_zone: {x: 2, y: 2, w: 40, h: 40}
+default_map: plain
+maps:   # map choice changes visuals and shipyard availability only (water tiles)
+  plain:   {name_key: map.plain,   water: []}
+  coastal: {name_key: map.coastal, water: [[40, 0, 4, 44], [36, 28, 4, 12], [34, 34, 2, 6]]}
+  canyon:  {name_key: map.canyon,  water: []}
