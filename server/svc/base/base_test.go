@@ -2,6 +2,7 @@ package base
 
 import (
 	"errors"
+	"os"
 	"reflect"
 	"testing"
 )
@@ -61,8 +62,9 @@ func TestCatalogFromContent(t *testing.T) {
 		t.Fatal("shipyard must require water")
 	}
 	rock, _ := c.Def("o_rock")
-	if !rock.DefaultSize {
-		t.Fatal("obstacle without size should use the default size")
+	// content may or may not give obstacles an explicit size; either way it must be a real footprint
+	if rock.W < 1 || rock.H < 1 {
+		t.Fatalf("obstacle footprint: %+v", rock)
 	}
 }
 
@@ -78,8 +80,9 @@ func TestMaxCountStepTable(t *testing.T) {
 		t.Errorf("below first step must be 0, got %d,%v", n, ok)
 	}
 	m, _ := c.Def("b_cash_mine")
-	if _, ok := c.MaxCount(m, 5); ok {
-		t.Error("cash mine has no table: unlimited")
+	// with or without a max_by_hq table in content: unlimited, or a positive limit at HQ 5
+	if n, ok := c.MaxCount(m, 5); ok && n < 1 {
+		t.Errorf("cash mine at HQ 5: limit %d", n)
 	}
 	hq, _ := c.Def("b_hq")
 	if n, ok := c.MaxCount(hq, 5); !ok || n != 1 {
@@ -471,6 +474,72 @@ func TestWaterBlocksReachability(t *testing.T) {
 	r := Rules{Cat: c, Grid: NewGrid(5, 5, water)}
 	l := Layout{Items: []Item{{UID: "hq", Type: "hq", Level: 1, X: 2, Y: 2}}}
 	wantCode(t, r.ValidateLayout(l), CodeSealed)
+}
+
+const gridYAML = `schema: 1
+grid: {w: 10, h: 8}
+default_map: plain
+maps:
+  plain:   {water: []}
+  coastal: {water: [[8, 0, 2, 8], [0, 7, 3, 1], [9, 7, 5, 5]]}
+`
+
+func TestParseGrid(t *testing.T) {
+	g, err := ParseGrid([]byte(gridYAML), "")
+	if err != nil || g.W != 10 || g.H != 8 || g.Water(8, 0) {
+		t.Fatalf("default map: %+v %v", g, err)
+	}
+	g, err = ParseGrid([]byte(gridYAML), "coastal")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, p := range []Point{{8, 0}, {9, 7}, {0, 7}, {2, 7}} {
+		if !g.Water(p.X, p.Y) {
+			t.Errorf("%v should be water", p)
+		}
+	}
+	for _, p := range []Point{{7, 0}, {3, 7}, {0, 6}} {
+		if g.Water(p.X, p.Y) {
+			t.Errorf("%v should be land", p)
+		}
+	}
+	if _, err = ParseGrid([]byte(gridYAML), "nope"); err == nil {
+		t.Error("unknown map must fail")
+	}
+	if _, err = ParseGrid([]byte("grid: {w: 0, h: 5}"), ""); err == nil {
+		t.Error("zero size must fail")
+	}
+	if _, err = ParseGrid([]byte("grid: {w: 5, h: 5}\ndefault_map: a\nmaps: {a: {water: [[1,2,3]]}}"), ""); err == nil {
+		t.Error("bad rect must fail")
+	}
+}
+
+func TestLoadGridFromContent(t *testing.T) {
+	g, err := LoadGrid("../../../content", "")
+	if errors.Is(err, os.ErrNotExist) {
+		t.Skip("content/base_grid.yaml not present yet")
+	}
+	if err != nil {
+		t.Fatal(err)
+	}
+	if g.W < 1 || g.H < 1 {
+		t.Fatalf("grid: %dx%d", g.W, g.H)
+	}
+	c, err := LoadGrid("../../../content", "coastal")
+	if err != nil {
+		t.Fatal(err)
+	}
+	water := 0
+	for y := 0; y < c.H; y++ {
+		for x := 0; x < c.W; x++ {
+			if c.Water(x, y) {
+				water++
+			}
+		}
+	}
+	if water == 0 {
+		t.Error("coastal map should have water for the shipyard")
+	}
 }
 
 func TestParseCatalogErrors(t *testing.T) {

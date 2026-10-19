@@ -6,7 +6,7 @@ import "sort"
 type Point struct{ X, Y int }
 
 // Grid is the base terrain: dimensions and water tiles. Dimensions are supplied by
-// the caller (they are not part of content/*.yaml yet, see docs/open-questions.md OQ-B1).
+// the caller; production code gets them from content/base_grid.yaml via LoadGrid.
 type Grid struct {
 	W, H  int
 	water []bool
