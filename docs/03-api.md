@@ -1,10 +1,12 @@
 # 03. API v1 (REST JSON, `Authorization: Bearer`, `Idempotency-Key` для мутаций)
-Ошибки: `{error:{code,message,details}}`; коды: `invalid`, `insufficient_resources`, `conflict`, `shielded`, `cooldown`, `content_outdated`, `rate_limited`, `internal`.
-Все ответы содержат `server_time` и `content_version`; при несовпадении версии клиента → `content_outdated` + URL bundle.
+Ошибки: `{error:{code,message,details}}`; коды: `invalid`, `unauthorized`, `not_found`, `insufficient_resources`, `conflict`, `shielded`, `cooldown`, `content_outdated`, `rate_limited`, `internal`.
+HTTP-статусы: `invalid` 400, `unauthorized` 401, `not_found` 404, `conflict` и `content_outdated` 409, `rate_limited` 429, `internal` 500; прочие бизнес-коды (`insufficient_resources`, `shielded`, `cooldown`) — 409 или 422 по решению модуля, но стабильно для кода.
+Все ответы содержат `server_time` и `content_version`; клиент передаёт свою версию контента заголовком `X-Content-Version`; при несовпадении → `content_outdated` + URL bundle.
 
 | Метод | Путь | Назначение |
 |---|---|---|
 | POST | /v1/auth/guest | создать/войти гостем → tokens |
+| POST | /v1/auth/refresh | `{refresh_token}` → новая пара tokens; старый refresh (jti) помечается revoked (ротация; повторное использование отозванного → `unauthorized`) |
 | POST | /v1/auth/link | привязать провайдера (vk/telegram/google) |
 | GET | /v1/me | профиль, кошельки, билдеры, щит, лига |
 | GET | /v1/base | текущая раскладка + таймеры (ленивый пересчёт) |

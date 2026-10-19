@@ -1,6 +1,7 @@
 # CHANGELOG `server-core`
 
 ## Unreleased
+- contract-change 0.2: в `docs/03-api.md` добавлены `unauthorized`/`not_found`, `X-Content-Version`, `POST /v1/auth/refresh`; реализация — SERVER-2.
 - SERVER-1: каркас Go-сервера `server/` (go.mod, chi, pgx/v5, goose, zerolog), `cmd/api`.
 - gateway: request-id, access log, recover, rate limit (IP + пользователь), Idempotency-Key для мутаций, проверка `X-Content-Version`, единый формат ошибок, `server_time` и `content_version` во всех ответах.
 - auth: `POST /v1/auth/guest`, JWT HS256 (access 15 мин, refresh 30 д, refresh хранится в `refresh_tokens`).
