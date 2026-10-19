@@ -31,7 +31,17 @@
 | `POSTGRES_PORT` | `5432` | Порт PG на хосте |
 | `SERVER_PORT` | `8080` | Порт сервера на хосте |
 | `CLIENT_PORT` | `5173` | Порт Vite dev на хосте |
+| `FIRELINE_API_PROXY` | `http://server:8080` | Передаётся клиенту, см. ниже |
+| `VITE_API_URL`, `VITE_CONTENT_VERSION` | пусто | Передаются клиенту, см. ниже |
 
-## Клиент
+Контейнер `client` монтирует `../client` → `/app`, а также `../content` → `/content` и `../art` → `/art` (read-only): клиент импортирует `../../content/*` и `../../art/*` относительно `/app`. Healthcheck клиента — `wget http://127.0.0.1:5173/`; `server` — `/healthz`, `postgres` — `pg_isready`. Запуск: `docker compose -f deploy/docker-compose.yml up --build`, приложение на `http://localhost:${CLIENT_PORT}`.
 
-Клиент (`client/`) в R1 не читает переменных окружения.
+## Клиент (`client/`, Vite)
+
+| Переменная | По умолчанию | Описание |
+|---|---|---|
+| `FIRELINE_API_PROXY` | `http://server:8080` в контейнере (`/.dockerenv`), иначе `http://localhost:8080` | Куда vite dev проксирует `/v1` (только dev-сервер, в бандл не попадает) |
+| `VITE_API_URL` | пусто | База API; пусто = тот же origin (через прокси) |
+| `VITE_CONTENT_VERSION` | пусто | Хеш контента для заголовка `X-Content-Version`; пусто = сервер пропускает проверку |
+
+Секретов `VITE_*` быть не должно: они попадают в клиентский бандл.
