@@ -20,7 +20,7 @@ design (docs/) — источник требований для всех, код
 | `campaign` | `content/campaign/**`, `server/svc/campaign`, UI | формат раскладки бота | sim |
 | `server-core` | `server/gateway`, `server/db`, миграции | OpenAPI `docs/03-api.md` | игровая логика |
 | `client-engine` | `client/engine/**` | `Renderer` интерфейс, ассет-манифест | сервер |
-| `client-core` | `client/core/**`, `client/platform/**` | `PlatformAdapter`, store | рендер |
+| `client-core` | `client/core/**`, `client/platform/**`, `client/app/**` (шелл, HUD, bootstrap) | `PlatformAdapter`, store | рендер |
 | `art` | `art/**` (брифы, атласы, шрифты) | манифест ассетов, спеки размеров | код |
 | `audio` | `audio/**` | манифест звуков | код |
 | `qa` | `tests/e2e/**`, `tools/simbattle` | отчёты | продакшн-код |
