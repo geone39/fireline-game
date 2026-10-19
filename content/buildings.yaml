@@ -26,5 +26,5 @@ decor:     # cosmetic only, paid with gems or earned; no gameplay stats
   - {id: x_statue, name_key: x.statue}
   - {id: x_flowerbed, name_key: x.flowerbed}
 obstacles: # spawn on base periodically; clearing gives small cash/gems reward (retention hook)
-  - {id: o_rock, clear_cost: {cash: 200}, reward: {gems: 1}, respawn_hours: 48}
-  - {id: o_wreck, clear_cost: {cash: 600}, reward: {gems: 2, alloy: 5}, respawn_hours: 96}
+  - {id: o_rock, name_key: o.rock, clear_cost: {cash: 200}, reward: {gems: 1}, respawn_hours: 48}
+  - {id: o_wreck, name_key: o.wreck, clear_cost: {cash: 600}, reward: {gems: 2, alloy: 5}, respawn_hours: 96}
