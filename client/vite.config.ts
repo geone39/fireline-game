@@ -5,6 +5,6 @@ export default defineConfig({
   plugins: [preact()],
   test: {
     environment: 'node',
-    include: ['engine/**/*.test.ts'],
+    include: ['engine/**/*.test.ts', 'core/**/*.test.ts', 'platform/**/*.test.ts'],
   },
 });

@@ -13,5 +13,5 @@
     "isolatedModules": true,
     "types": ["vite/client"]
   },
-  "include": ["engine", "vite.config.ts"]
+  "include": ["engine", "core", "platform","vite.config.ts"]
 }
