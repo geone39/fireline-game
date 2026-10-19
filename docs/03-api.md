@@ -35,5 +35,6 @@ HTTP-статусы: `invalid` 400, `unauthorized` 401, `not_found` 404, `confli
 `GET /v1/me`: `builders:[{id,busy_until,target_id?}]` — по элементу на слот билдера.
 
 ## Примеры
-`POST /v1/raids/start` → `{raid_id, expires_at, seed, content_version, snapshot:{...}, rules:{max_ticks:1800, deploy_zone:"outside_buildings+1"}}`
-`POST /v1/raids/{id}/finish` ← `{commands:[{t:12,op:"deploy",id:"u_rifleman",x:3200,y:5100}], result_hash:"..."}` → `{stars:2, loot:{cash:1840,fuel:910}, trophies:+27, replay_id:"..."}`
+`POST /v1/raids/start` → `{raid_id, expires_at, seed, content_version, engine_version, snapshot:{...}, rules:{max_turns, time_limit_s, deploy_zone:"outside_build_zone"}}` (`snapshot` — клиентский вид **без скрытых ловушек**, OQ-7.8; `time_limit_s` и `max_turns` берутся из `content/battle.yaml`; по `expires_at = now + time_limit_s` сервер обрывает бой)
+`POST /v1/raids/{id}/finish` ← `{commands:[{turn:0,op:"deploy",id:"u_rifleman",level:1,to:{x:1,y:10}}, {turn:1,op:"move",unit:3,path:[{x:2,y:10},{x:3,y:10}]}, {turn:1,op:"attack",unit:3,target:1}, {turn:1,op:"end_turn"}], result_hash:"..."}` → `{stars:2, destruction:63, end_reason:"retreat", loot:{cash:1840,fuel:910}, trophies:+27, replay_id:"..."}`
+Команды: `op` ∈ `deploy|load|start|move|attack|ability|cast|end_turn|retreat`; поля `turn, unit, target, id, level, to{x,y}, path[{x,y}]` (см. `modules/sim/CONTRACT.md` 0.2). Клетки — целые координаты сетки. Сервер пересчитывает бой по полному снимку; если у клиентского журнала есть отклонённые команды (`rejected`) или нет завершения — клиентский результат отвергается, засчитывается пересчёт (OQ-7.7). Истёкший `time_limit_s` засчитывается как `retreat` по сыгранным ходам.
