@@ -1,0 +1,54 @@
+# tools/simbattle/strategies.yaml — составы стратегий QA-ботов (не баланс игры). Проценты — доля бюджета пула housing;
+# недоступные (по HQ / зданию / карте) юниты пропускаются, их доля уходит остальным. pct получает +-20% jitter от seed.
+# mode — как бот выбирает цели: nearest | hq | fav (по полю fav юнита из troops.yaml).
+schema: 1
+strategies:
+  - id: rifle_mass
+    name: Массовая пехота
+    mode: nearest
+    camp: [{unit: u_rifleman, pct: 100}]
+  - id: direct
+    name: Прямая атака
+    mode: nearest
+    camp: [{unit: u_rifleman, pct: 50}, {unit: u_brawler, pct: 50}]
+  - id: hq_rush
+    name: Обход к HQ
+    mode: hq
+    camp: [{unit: u_dasher, pct: 25}, {unit: u_rifleman, pct: 30}, {unit: u_breacher, pct: 20}, {unit: u_brawler, pct: 25}]
+    hero: [h_ghost, h_commander]
+  - id: ranged
+    name: Дальний бой
+    mode: fav
+    camp: [{unit: u_sniper, pct: 35}, {unit: u_grenadier, pct: 25}, {unit: u_medic, pct: 10}, {unit: u_rifleman, pct: 30}]
+    garage: [{unit: v_mortar, pct: 100}]
+    spells: [{id: c_medkit, count: 2}]
+  - id: armor
+    name: Техника и танки
+    mode: fav
+    requires: [v_humvee]
+    camp: [{unit: u_rifleman, pct: 100}]
+    garage: [{unit: v_tank, pct: 45}, {unit: v_humvee, pct: 25}, {unit: v_apc, pct: 20}, {unit: v_engineer, pct: 10}]
+    riders: u_rifleman
+    spells: [{id: c_airstrike, count: 1}]
+  - id: mixed
+    name: Смешанный состав
+    mode: fav
+    camp: [{unit: u_rifleman, pct: 25}, {unit: u_brawler, pct: 15}, {unit: u_breacher, pct: 10}, {unit: u_sniper, pct: 10}, {unit: u_grenadier, pct: 10}, {unit: u_flamer, pct: 10}, {unit: u_medic, pct: 5}, {unit: u_heavy, pct: 10}, {unit: u_saboteur, pct: 5}]
+    garage: [{unit: v_tank, pct: 60}, {unit: v_humvee, pct: 40}]
+    spells: [{id: c_airstrike, count: 2}, {id: c_breach, count: 1}, {id: c_medkit, count: 1}, {id: c_adrenaline, count: 1}, {id: c_emp, count: 1}]
+    hero: [h_commander, h_ghost, h_engineer]
+  - id: airborne
+    name: Десант и дроны
+    mode: fav
+    requires: [u_drone]
+    camp: [{unit: u_drone, pct: 50}, {unit: u_paratrooper, pct: 40}, {unit: u_rifleman, pct: 10}]
+    spells: [{id: c_smoke, count: 2}]
+    hero: [h_ghost, h_commander]
+  - id: naval
+    name: Флот и морской десант
+    mode: fav
+    naval: true
+    requires: [s_gunboat]
+    camp: [{unit: u_rifleman, pct: 100}]
+    garage: [{unit: s_gunboat, pct: 40}, {unit: s_lander, pct: 40}, {unit: s_destroyer, pct: 20}]
+    riders: u_rifleman

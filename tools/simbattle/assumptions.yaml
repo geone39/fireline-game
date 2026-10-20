@@ -1,0 +1,26 @@
+# tools/simbattle/assumptions.yaml — допущения QA-бота, которых нет в content/ (AGENTS.md п.8: ASSUMPTION).
+# Это НЕ числа баланса игры: они задают, как симулятор формирует армию и какой считать победой. Переопределяются
+# флагом -assumptions <file>. Каждое допущение продублировано в README и PR (список OQ-QA2-*).
+schema: 1
+housing:                  # OQ-QA2-1: лимит армии. Контент даёт только "4 лагеря x 20 на L1 -> до 280 housing к HQ10" (buildings.yaml)
+  camp_l1: 20             #   вместимость одного лагеря на 1-м уровне
+  camp_max: 70            #   ... и на максимальном (280 / 4 лагеря); между ними линейно по уровню лагеря
+  garage_l1: 20           # OQ-QA2-1: техника и корабли берутся из "слотов гаража"; в контенте вместимость гаража не задана,
+  garage_max: 70          #   берём ту же шкалу, что у лагеря
+  spells_per_support_bay: 10   # OQ-QA2-1: вместимость Центра поддержки (в контенте нет); housing заклинаний — из troops.yaml
+levels:                   # OQ-QA2-2: уровни юнитов/героя/заклинаний атакующего
+  policy: parity          #   parity — уровень = HQ (как уровни построек эталона = min(HQ, предел типа));
+                          #   research — по узлам research.yaml, доступным при уровне лаборатории эталона;
+                          #   one — всё 1-го уровня
+  unit_cap: 10
+battle:
+  turn_cap: 25            # OQ-QA2-3: 300 с лимита боя / ~12 с на ход (OQ-CONTENT4-1) = 25 ходов; затем бот делает Retreat как сервер
+  stuck_turns: 3          #   ходов подряд без единого действия -> Retreat (причина "stuck")
+garrison:                 # OQ-QA2-4: источника гарнизона для эталонов нет (OQ-RAID0-6)
+  policy: rifle           #   rifle — каждый бункер полон стрелков; none — пустые бункеры
+  unit: u_rifleman
+win:
+  min_stars: 1            # OQ-QA2-5: "победа" = не менее 1 звезды (как в рейтинговой системе "победа/поражение" raids-pvp §7)
+targets:                  # docs/01-architecture.md §11 и modules/qa/CONTRACT.md
+  win_rate_min_pct: 30
+  win_rate_max_pct: 65
