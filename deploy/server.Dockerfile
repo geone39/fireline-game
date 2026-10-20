@@ -1,6 +1,8 @@
 # Build context: repository root (see deploy/docker-compose.yml).
 FROM golang:1.26-alpine AS build
 WORKDIR /src/server
+# server/go.mod: replace github.com/OWNER/fireline/sim => ../sim (RAID-0); sim has no third-party deps.
+COPY sim/ /src/sim/
 COPY server/go.mod server/go.sum ./
 RUN go mod download
 COPY server/ ./
