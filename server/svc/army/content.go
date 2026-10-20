@@ -37,6 +37,12 @@ type Node struct {
 	ToLevel int
 	Perk    string // perk key; empty for unit/spell nodes
 	Value   int    // perk value (bool perks: 1 for true)
+
+	Lab      int      // minimum laboratory level
+	Requires []string // explicit prerequisites; empty = every lower node of the same item
+	Soon     bool     // shown as "coming soon", cannot be started
+	Fuel     int64    // price from tiers[tier]
+	Hours    int64    // duration from tiers[tier]
 }
 
 // Content is everything the service reads from content/*.yaml.
@@ -51,6 +57,9 @@ type Content struct {
 	RefundUnstart  int64
 	RefundStarted  int64
 	nodes          map[string]Node
+	nodeOrder      []string // research.yaml order
+	LabBuilding    string
+	LabRefund      int64
 }
 
 type armyFile struct {
@@ -65,8 +74,10 @@ type armyFile struct {
 	Queue     struct {
 		MaxOrders int `yaml:"max_orders_per_building"`
 	} `yaml:"queue"`
-	RefundUnstarted int64 `yaml:"cancel_refund_unstarted_pct"`
-	RefundStarted   int64 `yaml:"cancel_refund_started_pct"`
+	RefundUnstarted int64  `yaml:"cancel_refund_unstarted_pct"`
+	RefundStarted   int64  `yaml:"cancel_refund_started_pct"`
+	LabBuilding     string `yaml:"lab_building"`
+	LabRefund       int64  `yaml:"lab_cancel_refund_pct"`
 }
 
 type rawUnit struct {
@@ -87,12 +98,20 @@ type troopsFile struct {
 }
 
 type researchFile struct {
+	Tiers map[int]struct {
+		Fuel  int64 `yaml:"fuel"`
+		Hours int64 `yaml:"hours"`
+	} `yaml:"tiers"`
 	Nodes []struct {
-		ID      string `yaml:"id"`
-		Unit    string `yaml:"unit"`
-		Spell   string `yaml:"spell"`
-		ToLevel int    `yaml:"to_level"`
-		Perk    *struct {
+		ID       string   `yaml:"id"`
+		Unit     string   `yaml:"unit"`
+		Spell    string   `yaml:"spell"`
+		ToLevel  int      `yaml:"to_level"`
+		Tier     int      `yaml:"tier"`
+		Lab      int      `yaml:"lab"`
+		Requires []string `yaml:"requires"`
+		Soon     bool     `yaml:"soon"`
+		Perk     *struct {
 			Key   string `yaml:"key"`
 			Value any    `yaml:"value"`
 		} `yaml:"perk"`
@@ -112,7 +131,10 @@ func ParseContent(armyY, troopsY, buildingsY, researchY []byte) (*Content, error
 	if af.Queue.MaxOrders < 1 {
 		return nil, fmt.Errorf("army: army.yaml: queue.max_orders_per_building must be >= 1")
 	}
-	for _, p := range []int64{af.RefundUnstarted, af.RefundStarted} {
+	if af.LabBuilding == "" {
+		return nil, fmt.Errorf("army: army.yaml: lab_building is required")
+	}
+	for _, p := range []int64{af.RefundUnstarted, af.RefundStarted, af.LabRefund} {
 		if p < 0 || p > 100 {
 			return nil, fmt.Errorf("army: army.yaml: refund percents must be 0..100")
 		}
@@ -121,7 +143,7 @@ func ParseContent(armyY, troopsY, buildingsY, researchY []byte) (*Content, error
 		units: map[string]Unit{}, poolByBuilding: map[string]string{}, buildingByPool: af.PoolBuilding,
 		capacity: map[string][]int{}, PerkKey: af.HousingPerk.Key, perkPools: map[string]bool{},
 		MaxOrders: af.Queue.MaxOrders, RefundUnstart: af.RefundUnstarted, RefundStarted: af.RefundStarted,
-		nodes: map[string]Node{},
+		nodes: map[string]Node{}, LabBuilding: af.LabBuilding, LabRefund: af.LabRefund,
 	}
 	for pool, b := range af.PoolBuilding {
 		c.poolByBuilding[b] = pool
@@ -200,7 +222,15 @@ func ParseContent(armyY, troopsY, buildingsY, researchY []byte) (*Content, error
 		return nil, fmt.Errorf("army: research.yaml: %w", err)
 	}
 	for _, n := range rf.Nodes {
-		nd := Node{ID: n.ID, Item: n.Unit + n.Spell, ToLevel: n.ToLevel}
+		nd := Node{ID: n.ID, Item: n.Unit + n.Spell, ToLevel: n.ToLevel, Lab: n.Lab, Requires: n.Requires, Soon: n.Soon}
+		tier, ok := rf.Tiers[n.Tier]
+		if n.ID == "" || !ok || tier.Fuel < 1 || tier.Hours < 1 || n.Lab < 1 {
+			return nil, fmt.Errorf("army: research.yaml: node %q needs id, lab >= 1 and a known tier", n.ID)
+		}
+		if _, dup := c.nodes[n.ID]; dup {
+			return nil, fmt.Errorf("army: research.yaml: duplicate node %q", n.ID)
+		}
+		nd.Fuel, nd.Hours = tier.Fuel, tier.Hours
 		if n.Perk != nil {
 			nd.Perk = n.Perk.Key
 			switch v := n.Perk.Value.(type) {
@@ -213,6 +243,19 @@ func ParseContent(armyY, troopsY, buildingsY, researchY []byte) (*Content, error
 			}
 		}
 		c.nodes[nd.ID] = nd
+		c.nodeOrder = append(c.nodeOrder, nd.ID)
+	}
+	for _, nd := range c.nodes {
+		for _, r := range nd.Requires {
+			if _, ok := c.nodes[r]; !ok {
+				return nil, fmt.Errorf("army: research.yaml: %s requires unknown node %q", nd.ID, r)
+			}
+		}
+		if nd.Item != "" {
+			if _, ok := c.units[nd.Item]; !ok {
+				return nil, fmt.Errorf("army: research.yaml: %s: unknown item %q", nd.ID, nd.Item)
+			}
+		}
 	}
 	return c, nil
 }

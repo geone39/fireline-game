@@ -67,14 +67,16 @@ type Slot struct {
 
 // world is the player's army-relevant state as of one moment.
 type world struct {
-	c        *Content
-	hq       int
-	built    map[string]base.Item // built items by uid, at their current level
-	pending  map[string]base.Item // items still under their first construction
-	stock    map[string]int       // units and spells at home
-	done     map[string]bool      // finished research nodes
-	orders   []order              // sorted by (building, seq)
-	deployed []deployment
+	c         *Content
+	hq        int
+	built     map[string]base.Item // built items by uid, at their current level
+	pending   map[string]base.Item // items still under their first construction
+	stock     map[string]int       // units and spells at home
+	done      map[string]bool      // finished research nodes
+	orders    []order              // sorted by (building, seq)
+	deployed  []deployment
+	lab       *activeResearch // research in flight, nil if the lab is idle
+	newlyDone []string        // nodes that became done and are not yet stored as such
 }
 
 // level is the research-derived level of a unit or spell (army-lab.md §2.1).

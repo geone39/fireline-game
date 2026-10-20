@@ -40,12 +40,20 @@ type Deps struct {
 //	POST /army/train    {building_id, unit_id, count}
 //	POST /army/cancel   {order_id, count?}   (proposal, army-lab.md §8)
 //	POST /army/speedup  {building_id}        (proposal, army-lab.md §8)
+//	GET  /lab           LabState with finished research settled lazily
+//	POST /lab/research  {node_id}
+//	POST /lab/cancel    {}                   (proposal, army-lab.md §8)
+//	POST /lab/speedup   {}                   (proposal, army-lab.md §8)
 func Mount(r chi.Router, d Deps) {
 	h := &handler{d}
 	r.Get("/army", h.get)
 	r.Post("/army/train", h.train)
 	r.Post("/army/cancel", h.cancel)
 	r.Post("/army/speedup", h.speedup)
+	r.Get("/lab", h.lab)
+	r.Post("/lab/research", h.research)
+	r.Post("/lab/cancel", h.labCancel)
+	r.Post("/lab/speedup", h.labSpeedup)
 }
 
 type handler struct{ Deps }
@@ -132,7 +140,7 @@ func (h *handler) get(w http.ResponseWriter, r *http.Request) {
 }
 
 // mutate parses the Idempotency-Key and the JSON body, then runs f.
-func (h *handler) mutate(w http.ResponseWriter, r *http.Request, body any, f func(id uuid.UUID, key string) (State, error)) {
+func (h *handler) mutate(w http.ResponseWriter, r *http.Request, body any, f func(id uuid.UUID, key string) (any, error)) {
 	id, ok := h.player(w, r)
 	if !ok {
 		return
@@ -160,7 +168,7 @@ func (h *handler) mutate(w http.ResponseWriter, r *http.Request, body any, f fun
 
 func (h *handler) train(w http.ResponseWriter, r *http.Request) {
 	var req Request
-	h.mutate(w, r, &req, func(id uuid.UUID, key string) (State, error) {
+	h.mutate(w, r, &req, func(id uuid.UUID, key string) (any, error) {
 		return h.Service.Train(r.Context(), id, key, req)
 	})
 }
@@ -170,7 +178,7 @@ func (h *handler) cancel(w http.ResponseWriter, r *http.Request) {
 		OrderID string `json:"order_id"`
 		Count   int    `json:"count"`
 	}
-	h.mutate(w, r, &req, func(id uuid.UUID, key string) (State, error) {
+	h.mutate(w, r, &req, func(id uuid.UUID, key string) (any, error) {
 		return h.Service.Cancel(r.Context(), id, key, req.OrderID, req.Count)
 	})
 }
@@ -179,7 +187,43 @@ func (h *handler) speedup(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		BuildingID string `json:"building_id"`
 	}
-	h.mutate(w, r, &req, func(id uuid.UUID, key string) (State, error) {
+	h.mutate(w, r, &req, func(id uuid.UUID, key string) (any, error) {
 		return h.Service.Speedup(r.Context(), id, key, req.BuildingID)
+	})
+}
+
+func (h *handler) lab(w http.ResponseWriter, r *http.Request) {
+	id, ok := h.player(w, r)
+	if !ok {
+		return
+	}
+	st, err := h.Service.Lab(r.Context(), id)
+	if err != nil {
+		h.fromError(w, r, err)
+		return
+	}
+	h.json(w, http.StatusOK, st)
+}
+
+func (h *handler) research(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		NodeID string `json:"node_id"`
+	}
+	h.mutate(w, r, &req, func(id uuid.UUID, key string) (any, error) {
+		return h.Service.StartResearch(r.Context(), id, key, req.NodeID)
+	})
+}
+
+func (h *handler) labCancel(w http.ResponseWriter, r *http.Request) {
+	var req struct{}
+	h.mutate(w, r, &req, func(id uuid.UUID, key string) (any, error) {
+		return h.Service.CancelResearch(r.Context(), id, key)
+	})
+}
+
+func (h *handler) labSpeedup(w http.ResponseWriter, r *http.Request) {
+	var req struct{}
+	h.mutate(w, r, &req, func(id uuid.UUID, key string) (any, error) {
+		return h.Service.SpeedupResearch(r.Context(), id, key)
 	})
 }

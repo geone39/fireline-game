@@ -1,5 +1,6 @@
 # CHANGELOG `army`
 
 ## Unreleased
+- feat(army): ARMY-2 (#103) лаборатория в `server/svc/army` — `Service.Lab/StartResearch/CancelResearch/SpeedupResearch`, chi `GET /lab`, `POST /lab/research|cancel|speedup`; одно исследование за раз (`timers kind=research` + `research`), гейты `lab_level`/`lab_busy`/`prerequisite`/`locked`/`coming_soon` (`soon`), `requires` (иначе все младшие узлы предмета), fuel по `tiers` при постановке через `Ledger.ApplyTx` (атомарно, идемпотентно), ленивое завершение вперёд/назад, отмена с возвратом `lab_cancel_refund_pct`, ускорение за gems той же `SpeedupGems`, `Service.Perks` для raid; уровни юнитов/заклинаний и `army_housing_pct` берутся из завершённых узлов. Допущения — OQ-ARMY-12.
 - feat(army): ARMY-1 (#102) `server/svc/army` — очереди обучения по зданиям (`timers kind=train`, ленивый пересчёт вперёд/назад, офлайн-прогресс по секундам), housing по пулам unit/garage/spell из `capacity_by_level` зданий игрока и перка `army_housing_pct`, оплата при постановке через `Ledger.ApplyTx` (идемпотентно по `Idempotency-Key`), отмена с возвратом (100% не начатых / 50% начатого, ключи `army.yaml`), ускорение за gems (`base.PriceBook.SpeedupGems`), `ArmyState`, `FormArmy`/`Resolve`/`Release` (escrow рейда), chi `Mount` (`GET /army`, `POST /army/train|cancel|speedup`). Допущения и запросы — OQ-ARMY-11.
 - модуль заведён

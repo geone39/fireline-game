@@ -333,7 +333,7 @@ func (s *Service) load(ctx context.Context, tx pgx.Tx, player uuid.UUID, now tim
 		stock: map[string]int{}, done: map[string]bool{}}
 
 	rows, err := tx.Query(ctx, `SELECT id, kind, target_id, finish_at, payload FROM timers
-		WHERE player_id = $1 AND kind IN ('build', 'upgrade', 'train', 'deploy') ORDER BY finish_at, id`, player)
+		WHERE player_id = $1 AND kind IN ('build', 'upgrade', 'train', 'deploy', 'research') ORDER BY finish_at, id`, player)
 	if err != nil {
 		return nil, err
 	}
@@ -363,6 +363,12 @@ func (s *Service) load(ctx context.Context, tx pgx.Tx, player uuid.UUID, now tim
 			}
 			w.orders = append(w.orders, order{ID: id.String(), Building: target, Unit: p.Unit, Count: p.Count, Remaining: p.Remaining,
 				NextAt: time.Unix(p.NextAt, 0), Seq: p.Seq, Cost: p.Cost})
+		case "research":
+			var p researchPayload
+			if err := json.Unmarshal(payload, &p); err != nil {
+				return nil, fmt.Errorf("army: timer %s payload: %w", id, err)
+			}
+			w.lab = &activeResearch{Node: target, StartedAt: time.Unix(p.StartedAt, 0), FinishAt: finish, Paid: p.Paid}
 		case "deploy":
 			var p deployPayload
 			if err := json.Unmarshal(payload, &p); err != nil {
@@ -422,6 +428,9 @@ func (s *Service) load(ctx context.Context, tx pgx.Tx, player uuid.UUID, now tim
 		// A research whose timer ran out counts as done even before the lab persists it.
 		if state == "done" || (fin != nil && !fin.After(now)) {
 			w.done[id] = true
+			if state != "done" {
+				w.newlyDone = append(w.newlyDone, id)
+			}
 		}
 	}
 	if err := rr.Err(); err != nil {
@@ -430,6 +439,7 @@ func (s *Service) load(ctx context.Context, tx pgx.Tx, player uuid.UUID, now tim
 
 	w.sortOrders()
 	w.settle(now)
+	w.settleLab(now)
 	return w, nil
 }
 
@@ -481,8 +491,10 @@ func (s *Service) save(ctx context.Context, tx pgx.Tx, player uuid.UUID, w *worl
 			return err
 		}
 	}
-	_, err := tx.Exec(ctx, `DELETE FROM timers WHERE player_id = $1 AND kind IN ('train', 'deploy') AND id <> ALL($2)`, player, keep)
-	return err
+	if _, err := tx.Exec(ctx, `DELETE FROM timers WHERE player_id = $1 AND kind IN ('train', 'deploy') AND id <> ALL($2)`, player, keep); err != nil {
+		return err
+	}
+	return s.saveLab(ctx, tx, player, w)
 }
 
 func deployID(player uuid.UUID, raid string) uuid.UUID {
