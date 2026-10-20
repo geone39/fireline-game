@@ -1,6 +1,7 @@
 # CHANGELOG `sim`
 
 ## Unreleased
+- test: SIM-10 `TestBenchmarkThreshold` устойчив на шумном раннере: прогрев, лучший из 5 замеров, порог из `SIM_BENCH_MIN_TURNS_PER_S` (по умолчанию 500 локально, 350 при `CI` в окружении; источник порога, результат и цель ~2000 всегда в логе). `TestBenchmarkThresholdCatchesRegression`: искусственное замедление (3 мс/ход) должно уходить ниже CI-порога. Контракт и EngineVersion не менялись.
 - docs: DoD модуля обновлён (орк. решение владельца 2026-10-19): бенчмарк в ходах боя, порог регрессии 500 ходов/с, цель ~2000; план golden G01..G32; паритет native/WASM
 ### 0.2.7 — SIM-9: уровни заклинаний (EngineVersion 0.2.7)
 - **Additive contract-change 0.2.7:** `SpellDef.LevelGrowthPermille` (0 = нет роста, отрицательное → `ErrBadSnapshot`). `DmgTotal` airstrike и `HealTotal` medkit = `floor(base × M[L] / 1000)` через общий `scaledHP`; радиус и длительность не растут (ASSUMPTION, OQ-SIM15). Закрывает sim-часть OQ-ARMY-2.
