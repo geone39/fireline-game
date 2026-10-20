@@ -45,10 +45,12 @@ test('новый гость: стартовая база → стройка → 
     await expect(page.getByTestId('card-level')).toContainText('1/');
     await shot(page, info, '03-card');
     await page.getByTestId('card-upgrade').click();
-    await expect(page.getByTestId('card-timer')).toContainText('Улучшается');
-    const base = await api.base();
-    expect(base.timers).toEqual(expect.arrayContaining([expect.objectContaining({ kind: 'upgrade', target_id: wireUid, to_level: 2 })]));
-    expect((await api.me()).wallets.cash).toBeLessThan(860);
+    // улучшение проволоки — 2 с, промежуточный таймер непредсказуем (клиент сам обновляет базу по finish_at, #60):
+    // проверяем только итог — кошелёк списан, уровень вырос, таймер ушёл
+    await expect.poll(async () => (await api.me()).wallets.cash, { timeout: 15_000 }).toBeLessThan(860);
+    await expect
+      .poll(async () => (await api.base()).layout.items.find((i) => i.uid === wireUid)?.level, { timeout: 15_000 })
+      .toBe(2);
     await shot(page, info, '04-upgrade');
   });
 
@@ -56,6 +58,7 @@ test('новый гость: стартовая база → стройка → 
     // улучшение проволоки (2 с): ждём, пока клиент сам узнает об окончании (#60 исправлен), иначе PUT layout вернёт layout_mismatch
     await expect.poll(async () => (await api.base()).timers.some((t) => t.target_id === wireUid), { timeout: 15_000 }).toBe(false);
     await expect(page.getByTestId('hud-builders')).toContainText('1/2', { timeout: 15_000 }); // занят только строитель гнезда (10 мин)
+    await expect(page.locator(`[data-testid=timer-${wireUid}]`)).toHaveCount(0, { timeout: 15_000 });
     await page.getByTestId('toggle-edit').click();
     const from = project(26, 16);
     const to = project(30, 16);
@@ -72,8 +75,8 @@ test('новый гость: стартовая база → стройка → 
     const v0 = (await api.base()).version;
     await page.getByTestId('save').click();
     await expect(page.getByTestId('save')).toBeDisabled();
+    await expect.poll(async () => (await api.base()).version, { timeout: 15_000 }).toBeGreaterThan(v0);
     const base = await api.base();
-    expect(base.version).toBeGreaterThan(v0);
     expect(base.layout.items.find((i) => i.uid === nestUid)).toMatchObject({ x: 30, y: 16 });
     await page.getByTestId('toggle-edit').click();
   });

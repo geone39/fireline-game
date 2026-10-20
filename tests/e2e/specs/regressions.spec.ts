@@ -21,7 +21,10 @@ test('#60: после окончания стройки и улучшения к
 
   await test.step('улучшение (2 с): по окончании строитель свободен, уровень 2 в карточке', async () => {
     await page.getByTestId('card-upgrade').click();
-    await expect.poll(async () => (await api.base()).timers.length).toBe(1);
+    // промежуточный таймер (2 с) не проверяем — он может закончиться раньше опроса; ждём итог
+    await expect
+      .poll(async () => (await api.base()).layout.items.find((i) => i.type === 'd_wire')?.level, { timeout: 15_000 })
+      .toBe(2);
     await expect.poll(async () => (await api.base()).timers.length, { timeout: 15_000 }).toBe(0);
     await expect(page.getByTestId('hud-builders')).toContainText('2/2', { timeout: 15_000 });
     await expect(page.getByTestId('card-level')).toContainText('2/', { timeout: 15_000 });
