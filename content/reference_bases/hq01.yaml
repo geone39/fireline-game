@@ -1,0 +1,73 @@
+# content/reference_bases/hq01.yaml — reference base (эталон) for HQ1, map plain. CONTENT-5, issue #74.
+# Generated once from the placement rules (svc/base ValidateLayout); verified by tools/validate_content.py.
+# ASSUMPTION: item levels = min(HQ level, level cap of the type); counts = per-HQ limit (traps/wire/tank traps below the cap). See OQ-CONTENT5.
+schema: 1
+id: ref_hq01
+name_key: ref.hq01
+reference: true
+hq_level: 1
+map: plain
+layout:
+  items:
+    - {uid: b_hq_1, type: b_hq, level: 1, x: 20, y: 20, rot: 0}
+    - {uid: b_barracks_1, type: b_barracks, level: 1, x: 9, y: 24, rot: 0}
+    - {uid: b_camp_1, type: b_camp, level: 1, x: 20, y: 9, rot: 0}
+    - {uid: b_cash_mine_1, type: b_cash_mine, level: 1, x: 9, y: 20, rot: 0}
+    - {uid: b_cash_mine_2, type: b_cash_mine, level: 1, x: 31, y: 20, rot: 0}
+    - {uid: b_fuel_refinery_1, type: b_fuel_refinery, level: 1, x: 9, y: 12, rot: 0}
+    - {uid: b_fuel_refinery_2, type: b_fuel_refinery, level: 1, x: 31, y: 12, rot: 0}
+    - {uid: b_fuel_tank_1, type: b_fuel_tank, level: 1, x: 24, y: 23, rot: 0}
+    - {uid: b_vault_1, type: b_vault, level: 1, x: 24, y: 20, rot: 0}
+    - {uid: d_mg_nest_1, type: d_mg_nest, level: 1, x: 14, y: 28, rot: 0}
+    - {uid: d_fence_1, type: d_fence, level: 1, x: 17, y: 17, rot: 0}
+    - {uid: d_fence_2, type: d_fence, level: 1, x: 17, y: 27, rot: 0}
+    - {uid: d_fence_3, type: d_fence, level: 1, x: 18, y: 17, rot: 0}
+    - {uid: d_fence_4, type: d_fence, level: 1, x: 18, y: 27, rot: 0}
+    - {uid: d_fence_5, type: d_fence, level: 1, x: 19, y: 17, rot: 0}
+    - {uid: d_fence_6, type: d_fence, level: 1, x: 19, y: 27, rot: 0}
+    - {uid: d_fence_7, type: d_fence, level: 1, x: 20, y: 17, rot: 0}
+    - {uid: d_fence_8, type: d_fence, level: 1, x: 20, y: 27, rot: 0}
+    - {uid: d_fence_9, type: d_fence, level: 1, x: 21, y: 17, rot: 0}
+    - {uid: d_fence_10, type: d_fence, level: 1, x: 22, y: 17, rot: 0}
+    - {uid: d_fence_11, type: d_fence, level: 1, x: 23, y: 17, rot: 0}
+    - {uid: d_fence_12, type: d_fence, level: 1, x: 23, y: 27, rot: 0}
+    - {uid: d_fence_13, type: d_fence, level: 1, x: 24, y: 17, rot: 0}
+    - {uid: d_fence_14, type: d_fence, level: 1, x: 24, y: 27, rot: 0}
+    - {uid: d_fence_15, type: d_fence, level: 1, x: 25, y: 17, rot: 0}
+    - {uid: d_fence_16, type: d_fence, level: 1, x: 25, y: 27, rot: 0}
+    - {uid: d_fence_17, type: d_fence, level: 1, x: 26, y: 17, rot: 0}
+    - {uid: d_fence_18, type: d_fence, level: 1, x: 26, y: 27, rot: 0}
+    - {uid: d_fence_19, type: d_fence, level: 1, x: 27, y: 17, rot: 0}
+    - {uid: d_fence_20, type: d_fence, level: 1, x: 27, y: 27, rot: 0}
+    - {uid: d_fence_21, type: d_fence, level: 1, x: 17, y: 18, rot: 0}
+    - {uid: d_fence_22, type: d_fence, level: 1, x: 27, y: 18, rot: 0}
+    - {uid: d_fence_23, type: d_fence, level: 1, x: 17, y: 19, rot: 0}
+    - {uid: d_fence_24, type: d_fence, level: 1, x: 27, y: 19, rot: 0}
+    - {uid: d_fence_25, type: d_fence, level: 1, x: 17, y: 20, rot: 0}
+    - {uid: d_fence_26, type: d_fence, level: 1, x: 27, y: 20, rot: 0}
+    - {uid: d_fence_27, type: d_fence, level: 1, x: 17, y: 21, rot: 0}
+    - {uid: d_fence_28, type: d_fence, level: 1, x: 27, y: 21, rot: 0}
+    - {uid: d_fence_29, type: d_fence, level: 1, x: 17, y: 22, rot: 0}
+    - {uid: d_fence_30, type: d_fence, level: 1, x: 27, y: 22, rot: 0}
+    - {uid: d_fence_31, type: d_fence, level: 1, x: 17, y: 23, rot: 0}
+    - {uid: d_fence_32, type: d_fence, level: 1, x: 27, y: 23, rot: 0}
+    - {uid: d_fence_33, type: d_fence, level: 1, x: 17, y: 24, rot: 0}
+    - {uid: d_fence_34, type: d_fence, level: 1, x: 27, y: 24, rot: 0}
+    - {uid: d_fence_35, type: d_fence, level: 1, x: 17, y: 25, rot: 0}
+    - {uid: d_fence_36, type: d_fence, level: 1, x: 27, y: 25, rot: 0}
+    - {uid: d_fence_37, type: d_fence, level: 1, x: 17, y: 26, rot: 0}
+    - {uid: d_fence_38, type: d_fence, level: 1, x: 27, y: 26, rot: 0}
+    - {uid: d_wire_1, type: d_wire, level: 1, x: 21, y: 28, rot: 0}
+    - {uid: d_wire_2, type: d_wire, level: 1, x: 22, y: 28, rot: 0}
+    - {uid: d_wire_3, type: d_wire, level: 1, x: 20, y: 28, rot: 0}
+    - {uid: d_wire_4, type: d_wire, level: 1, x: 23, y: 28, rot: 0}
+    - {uid: d_wire_5, type: d_wire, level: 1, x: 19, y: 28, rot: 0}
+    - {uid: d_wire_6, type: d_wire, level: 1, x: 24, y: 28, rot: 0}
+    - {uid: d_wire_7, type: d_wire, level: 1, x: 25, y: 28, rot: 0}
+    - {uid: d_wire_8, type: d_wire, level: 1, x: 26, y: 28, rot: 0}
+    - {uid: d_wire_9, type: d_wire, level: 1, x: 21, y: 29, rot: 0}
+    - {uid: d_wire_10, type: d_wire, level: 1, x: 22, y: 29, rot: 0}
+    - {uid: d_wire_11, type: d_wire, level: 1, x: 20, y: 29, rot: 0}
+    - {uid: d_wire_12, type: d_wire, level: 1, x: 23, y: 29, rot: 0}
+    - {uid: d_wire_13, type: d_wire, level: 1, x: 19, y: 29, rot: 0}
+    - {uid: d_wire_14, type: d_wire, level: 1, x: 24, y: 29, rot: 0}

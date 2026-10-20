@@ -1,0 +1,116 @@
+# content/reference_bases/hq04.yaml — reference base (эталон) for HQ4, map plain. CONTENT-5, issue #74.
+# Generated once from the placement rules (svc/base ValidateLayout); verified by tools/validate_content.py.
+# ASSUMPTION: item levels = min(HQ level, level cap of the type); counts = per-HQ limit (traps/wire/tank traps below the cap). See OQ-CONTENT5.
+schema: 1
+id: ref_hq04
+name_key: ref.hq04
+reference: true
+hq_level: 4
+map: plain
+layout:
+  items:
+    - {uid: b_hq_1, type: b_hq, level: 4, x: 20, y: 20, rot: 0}
+    - {uid: b_alloy_depot_1, type: b_alloy_depot, level: 4, x: 23, y: 25, rot: 0}
+    - {uid: b_alloy_foundry_1, type: b_alloy_foundry, level: 4, x: 7, y: 6, rot: 0}
+    - {uid: b_barracks_1, type: b_barracks, level: 4, x: 36, y: 10, rot: 0}
+    - {uid: b_barracks_2, type: b_barracks, level: 4, x: 11, y: 25, rot: 0}
+    - {uid: b_camp_1, type: b_camp, level: 4, x: 7, y: 20, rot: 0}
+    - {uid: b_camp_2, type: b_camp, level: 4, x: 32, y: 20, rot: 0}
+    - {uid: b_cash_mine_1, type: b_cash_mine, level: 4, x: 32, y: 10, rot: 0}
+    - {uid: b_cash_mine_2, type: b_cash_mine, level: 4, x: 7, y: 25, rot: 0}
+    - {uid: b_cash_mine_3, type: b_cash_mine, level: 4, x: 32, y: 25, rot: 0}
+    - {uid: b_cash_mine_4, type: b_cash_mine, level: 4, x: 12, y: 8, rot: 0}
+    - {uid: b_factory_1, type: b_factory, level: 4, x: 20, y: 7, rot: 0}
+    - {uid: b_fuel_refinery_1, type: b_fuel_refinery, level: 4, x: 28, y: 8, rot: 0}
+    - {uid: b_fuel_refinery_2, type: b_fuel_refinery, level: 4, x: 20, y: 3, rot: 0}
+    - {uid: b_fuel_refinery_3, type: b_fuel_refinery, level: 4, x: 7, y: 16, rot: 0}
+    - {uid: b_fuel_refinery_4, type: b_fuel_refinery, level: 4, x: 32, y: 16, rot: 0}
+    - {uid: b_fuel_tank_1, type: b_fuel_tank, level: 4, x: 25, y: 20, rot: 0}
+    - {uid: b_fuel_tank_2, type: b_fuel_tank, level: 4, x: 18, y: 25, rot: 0}
+    - {uid: b_garage_1, type: b_garage, level: 4, x: 37, y: 22, rot: 0}
+    - {uid: b_laboratory_1, type: b_laboratory, level: 4, x: 7, y: 10, rot: 0}
+    - {uid: b_market_1, type: b_market, level: 4, x: 28, y: 4, rot: 0}
+    - {uid: b_support_bay_1, type: b_support_bay, level: 4, x: 16, y: 8, rot: 0}
+    - {uid: b_vault_1, type: b_vault, level: 4, x: 20, y: 16, rot: 0}
+    - {uid: b_vault_2, type: b_vault, level: 4, x: 16, y: 20, rot: 0}
+    - {uid: d_at_cannon_1, type: d_at_cannon, level: 4, x: 15, y: 33, rot: 0}
+    - {uid: d_mg_nest_1, type: d_mg_nest, level: 4, x: 14, y: 30, rot: 0}
+    - {uid: d_mg_nest_2, type: d_mg_nest, level: 4, x: 26, y: 24, rot: 0}
+    - {uid: d_mg_nest_3, type: d_mg_nest, level: 4, x: 30, y: 29, rot: 0}
+    - {uid: d_mortar_1, type: d_mortar, level: 4, x: 16, y: 16, rot: 0}
+    - {uid: d_sniper_tower_1, type: d_sniper_tower, level: 4, x: 24, y: 17, rot: 0}
+    - {uid: d_mine_1, type: d_mine, level: 4, x: 21, y: 30, rot: 0}
+    - {uid: d_mine_2, type: d_mine, level: 4, x: 24, y: 30, rot: 0}
+    - {uid: d_mine_3, type: d_mine, level: 4, x: 20, y: 31, rot: 0}
+    - {uid: d_spring_trap_1, type: d_spring_trap, level: 3, x: 22, y: 30, rot: 0}
+    - {uid: d_spring_trap_2, type: d_spring_trap, level: 3, x: 19, y: 30, rot: 0}
+    - {uid: d_wall_1, type: d_wall, level: 4, x: 15, y: 15, rot: 0}
+    - {uid: d_wall_2, type: d_wall, level: 4, x: 15, y: 28, rot: 0}
+    - {uid: d_wall_3, type: d_wall, level: 4, x: 16, y: 15, rot: 0}
+    - {uid: d_wall_4, type: d_wall, level: 4, x: 16, y: 28, rot: 0}
+    - {uid: d_wall_5, type: d_wall, level: 4, x: 17, y: 15, rot: 0}
+    - {uid: d_wall_6, type: d_wall, level: 4, x: 17, y: 28, rot: 0}
+    - {uid: d_wall_7, type: d_wall, level: 4, x: 18, y: 15, rot: 0}
+    - {uid: d_wall_8, type: d_wall, level: 4, x: 18, y: 28, rot: 0}
+    - {uid: d_wall_9, type: d_wall, level: 4, x: 19, y: 15, rot: 0}
+    - {uid: d_wall_10, type: d_wall, level: 4, x: 19, y: 28, rot: 0}
+    - {uid: d_wall_11, type: d_wall, level: 4, x: 20, y: 15, rot: 0}
+    - {uid: d_wall_12, type: d_wall, level: 4, x: 20, y: 28, rot: 0}
+    - {uid: d_wall_13, type: d_wall, level: 4, x: 21, y: 15, rot: 0}
+    - {uid: d_wall_14, type: d_wall, level: 4, x: 22, y: 15, rot: 0}
+    - {uid: d_wall_15, type: d_wall, level: 4, x: 23, y: 15, rot: 0}
+    - {uid: d_wall_16, type: d_wall, level: 4, x: 23, y: 28, rot: 0}
+    - {uid: d_wall_17, type: d_wall, level: 4, x: 24, y: 15, rot: 0}
+    - {uid: d_wall_18, type: d_wall, level: 4, x: 24, y: 28, rot: 0}
+    - {uid: d_wall_19, type: d_wall, level: 4, x: 25, y: 15, rot: 0}
+    - {uid: d_wall_20, type: d_wall, level: 4, x: 25, y: 28, rot: 0}
+    - {uid: d_wall_21, type: d_wall, level: 4, x: 26, y: 15, rot: 0}
+    - {uid: d_wall_22, type: d_wall, level: 4, x: 26, y: 28, rot: 0}
+    - {uid: d_wall_23, type: d_wall, level: 4, x: 27, y: 15, rot: 0}
+    - {uid: d_wall_24, type: d_wall, level: 4, x: 27, y: 28, rot: 0}
+    - {uid: d_wall_25, type: d_wall, level: 4, x: 28, y: 15, rot: 0}
+    - {uid: d_wall_26, type: d_wall, level: 4, x: 28, y: 28, rot: 0}
+    - {uid: d_wall_27, type: d_wall, level: 4, x: 15, y: 16, rot: 0}
+    - {uid: d_wall_28, type: d_wall, level: 4, x: 28, y: 16, rot: 0}
+    - {uid: d_wall_29, type: d_wall, level: 4, x: 15, y: 17, rot: 0}
+    - {uid: d_wall_30, type: d_wall, level: 4, x: 28, y: 17, rot: 0}
+    - {uid: d_wall_31, type: d_wall, level: 4, x: 15, y: 18, rot: 0}
+    - {uid: d_wall_32, type: d_wall, level: 4, x: 28, y: 18, rot: 0}
+    - {uid: d_wall_33, type: d_wall, level: 4, x: 15, y: 19, rot: 0}
+    - {uid: d_wall_34, type: d_wall, level: 4, x: 28, y: 19, rot: 0}
+    - {uid: d_wall_35, type: d_wall, level: 4, x: 15, y: 20, rot: 0}
+    - {uid: d_wall_36, type: d_wall, level: 4, x: 28, y: 20, rot: 0}
+    - {uid: d_wall_37, type: d_wall, level: 4, x: 15, y: 21, rot: 0}
+    - {uid: d_wall_38, type: d_wall, level: 4, x: 28, y: 21, rot: 0}
+    - {uid: d_wall_39, type: d_wall, level: 4, x: 15, y: 22, rot: 0}
+    - {uid: d_wall_40, type: d_wall, level: 4, x: 28, y: 22, rot: 0}
+    - {uid: d_wall_41, type: d_wall, level: 4, x: 15, y: 23, rot: 0}
+    - {uid: d_wall_42, type: d_wall, level: 4, x: 28, y: 23, rot: 0}
+    - {uid: d_wall_43, type: d_wall, level: 4, x: 15, y: 24, rot: 0}
+    - {uid: d_wall_44, type: d_wall, level: 4, x: 28, y: 24, rot: 0}
+    - {uid: d_wall_45, type: d_wall, level: 4, x: 15, y: 25, rot: 0}
+    - {uid: d_wall_46, type: d_wall, level: 4, x: 28, y: 25, rot: 0}
+    - {uid: d_wall_47, type: d_wall, level: 4, x: 15, y: 26, rot: 0}
+    - {uid: d_wall_48, type: d_wall, level: 4, x: 28, y: 26, rot: 0}
+    - {uid: d_wall_49, type: d_wall, level: 4, x: 15, y: 27, rot: 0}
+    - {uid: d_wall_50, type: d_wall, level: 4, x: 28, y: 27, rot: 0}
+    - {uid: d_wire_1, type: d_wire, level: 3, x: 21, y: 29, rot: 0}
+    - {uid: d_wire_2, type: d_wire, level: 3, x: 22, y: 29, rot: 0}
+    - {uid: d_wire_3, type: d_wire, level: 3, x: 20, y: 29, rot: 0}
+    - {uid: d_wire_4, type: d_wire, level: 3, x: 23, y: 29, rot: 0}
+    - {uid: d_wire_5, type: d_wire, level: 3, x: 19, y: 29, rot: 0}
+    - {uid: d_wire_6, type: d_wire, level: 3, x: 24, y: 29, rot: 0}
+    - {uid: d_wire_7, type: d_wire, level: 3, x: 25, y: 29, rot: 0}
+    - {uid: d_wire_8, type: d_wire, level: 3, x: 26, y: 29, rot: 0}
+    - {uid: d_wire_9, type: d_wire, level: 3, x: 20, y: 30, rot: 0}
+    - {uid: d_wire_10, type: d_wire, level: 3, x: 23, y: 30, rot: 0}
+    - {uid: d_wire_11, type: d_wire, level: 3, x: 25, y: 30, rot: 0}
+    - {uid: d_wire_12, type: d_wire, level: 3, x: 26, y: 30, rot: 0}
+    - {uid: d_wire_13, type: d_wire, level: 3, x: 21, y: 31, rot: 0}
+    - {uid: d_wire_14, type: d_wire, level: 3, x: 22, y: 31, rot: 0}
+    - {uid: d_wire_15, type: d_wire, level: 3, x: 23, y: 31, rot: 0}
+    - {uid: d_wire_16, type: d_wire, level: 3, x: 19, y: 31, rot: 0}
+    - {uid: d_wire_17, type: d_wire, level: 3, x: 24, y: 31, rot: 0}
+    - {uid: d_wire_18, type: d_wire, level: 3, x: 25, y: 31, rot: 0}
+    - {uid: d_wire_19, type: d_wire, level: 3, x: 26, y: 31, rot: 0}
+    - {uid: d_wire_20, type: d_wire, level: 3, x: 21, y: 32, rot: 0}

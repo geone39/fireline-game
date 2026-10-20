@@ -156,6 +156,97 @@ for key in bkeys:
 for key in ("decor", "obstacles"):
     for b in bld[key]:
         if not (b.get("untargetable") and b.get("hp_l1", 0) > 0): err.append(f"{b['id']}: decor/obstacle needs untargetable: true and hp_l1 (sim requires hp > 0)")
+# ---- reference bases (CONTENT-5): content/reference_bases/*.yaml; an independent port of svc/base ValidateLayout ----
+PLACE = {}   # id -> kind, w, h, unlock, water, block, limits, cap
+for key, kind in (("core", "core"), ("resources", "building"), ("military", "building")):
+    for b in bld[key]: PLACE[b["id"]] = dict(kind=kind, w=b["size"][0], h=b["size"][1], unlock=b.get("unlock_hq", 1), water=bool(b.get("requires_water")), block="all", limits=b.get("max_by_hq"), cap=b.get("levels", 1))
+for d in defs["passive_obstacles"] + defs["active"]:
+    kind = "passive" if d in defs["passive_obstacles"] else "active"
+    blk = "all" if kind == "active" else {True: "all", "vehicles": "vehicles"}.get(d.get("blocks"), "none")
+    PLACE[d["id"]] = dict(kind=kind, w=d["size"][0], h=d["size"][1], unlock=d.get("unlock_hq", 1), water=bool(d.get("requires_water")), block=blk, limits=d.get("max_count_by_hq"), cap=999)
+for i, c in load("building_costs.yaml")["buildings"].items():
+    if i in PLACE and "max_level" in c: PLACE[i]["cap"] = c["max_level"]
+def hq_limit(t, hq):
+    p = PLACE[t]
+    if p["kind"] == "core": return 1
+    if not p["limits"]: return None
+    n = 0
+    for at in sorted(p["limits"]):
+        if at <= hq: n = p["limits"][at]
+    return n
+def check_ref_base(rb, label):
+    e = lambda m: err.append(f"{label}: {m}")
+    if rb["map"] not in grid["maps"]: return e(f"unknown map {rb['map']}")
+    water = {(x + a, y + b) for x, y, w, h in grid["maps"][rb["map"]]["water"] for b in range(h) for a in range(w)}
+    items, hq = rb["layout"]["items"], rb["hq_level"]
+    occ, seen, cnt, byuid = {}, set(), {}, {}
+    hqs = [it for it in items if it["type"] == "b_hq"]
+    if len(hqs) != 1: return e(f"needs exactly one b_hq, has {len(hqs)}")
+    if hqs[0]["level"] != hq: e(f"b_hq level {hqs[0]['level']} != hq_level {hq}")
+    for it in items:
+        u, t = it["uid"], it["type"]
+        if u in seen: e(f"duplicate uid {u}")
+        seen.add(u); byuid[u] = it
+        p = PLACE.get(t)
+        if not p: e(f"{u}: type {t} is not placeable"); continue
+        cnt[t] = cnt.get(t, 0) + 1
+        if it["level"] > p["cap"]: e(f"{u}: level {it['level']} > cap {p['cap']}")
+        if it["level"] > hq: e(f"{u}: level {it['level']} > hq_level {hq}")
+        if hq < p["unlock"]: e(f"{u}: {t} needs HQ {p['unlock']}")
+        w, h = (p["h"], p["w"]) if it["rot"] % 2 else (p["w"], p["h"])
+        ts = [(it["x"] + a, it["y"] + b) for b in range(h) for a in range(w)]
+        if any(not (bz["x"] <= q[0] < bz["x"] + bz["w"] and bz["y"] <= q[1] < bz["y"] + bz["h"]) for q in ts): e(f"{u}: outside build_zone")
+        if any(q in water for q in ts): e(f"{u}: on water")
+        for q in ts:
+            if q in occ: e(f"{u} overlaps {occ[q]} at {q}"); break
+            occ[q] = u
+        if p["water"] and not any((qx + dx, qy + dy) in water for qx, qy in ts for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))): e(f"{u}: {t} must touch the shore")
+    for t, n in sorted(cnt.items()):
+        lim = hq_limit(t, hq) if t in PLACE else None
+        if lim is not None and n > lim: e(f"{t}: {n} placed, limit {lim} at HQ {hq}")
+    # HQ reachable on foot from the border. svc/base only needs it reachable by breaching walls; a reference base must also keep a gate.
+    def walk(q, breach):
+        if q in water: return False
+        u = occ.get(q)
+        if u is None: return True
+        p = PLACE[byuid[u]["type"]]
+        return p["block"] != "all" or (breach and p["kind"] == "passive")
+    def reach(breach):
+        hq_uid = hqs[0]["uid"]
+        border = [(x, y) for x in range(gw) for y in (0, gh - 1)] + [(x, y) for y in range(gh) for x in (0, gw - 1)]
+        seen_t, qu = set(), []
+        for q in border:
+            if q not in seen_t and walk(q, breach): seen_t.add(q); qu.append(q)
+        for q in qu:
+            for n in ((q[0] + 1, q[1]), (q[0] - 1, q[1]), (q[0], q[1] + 1), (q[0], q[1] - 1)):
+                if not (0 <= n[0] < gw and 0 <= n[1] < gh): continue
+                if occ.get(n) == hq_uid: return True
+                if n not in seen_t and walk(n, breach): seen_t.add(n); qu.append(n)
+        return False
+    if not reach(True): e("HQ is completely enclosed")
+    elif not reach(False): e("HQ is not reachable without breaking walls (a reference base keeps a gate)")
+    have = lambda pred: any(pred(PLACE[it["type"]], it["type"]) for it in items if it["type"] in PLACE)
+    if not have(lambda p, t: p["kind"] == "passive" and p["block"] == "all"): e("no walls/fences")
+    if not have(lambda p, t: p["kind"] == "active"): e("no active defence")
+    if not have(lambda p, t: t in ("b_vault", "b_fuel_tank")): e("no storage")
+    if hq >= 2 and not have(lambda p, t: t in ("d_mine", "d_spring_trap")): e("no traps")
+ref_hqs, ref_keys = {}, set()
+for fn in sorted(glob.glob(os.path.join(root, "reference_bases", "*.yaml"))):
+    rb = yaml.safe_load(open(fn, encoding="utf-8"))
+    label = "reference_bases/" + os.path.basename(fn)
+    schema_check(rb, "reference_base.schema.json", label)
+    if not jsonschema and not all(k in rb for k in ("id", "name_key", "hq_level", "map", "layout")): err.append(f"{label}: missing keys"); continue
+    if rb.get("id") != "ref_" + os.path.splitext(os.path.basename(fn))[0]: err.append(f"{label}: id {rb.get('id')} must be ref_<file name>")
+    if rb["id"] in ids: err.append(f"{label}: duplicate id {rb['id']}")
+    ids[rb["id"]] = "reference_base"
+    if rb["name_key"] in name_keys: err.append(f"{label}: name_key {rb['name_key']} already used by {name_keys[rb['name_key']]}")
+    name_keys[rb["name_key"]] = rb["id"]
+    if (rb["hq_level"], rb["map"]) in ref_keys: err.append(f"{label}: second reference base for HQ{rb['hq_level']}/{rb['map']}")
+    ref_keys.add((rb["hq_level"], rb["map"]))
+    ref_hqs.setdefault(rb["hq_level"], []).append(rb["map"])
+    check_ref_base(rb, label)
+for n in range(1, 11):
+    if "plain" not in ref_hqs.get(n, []): err.append(f"reference_bases: HQ{n} has no plain reference base")
 # strings: every name_key must exist in every language, no orphans, no empty values
 langs = sorted(d for d in os.listdir(os.path.join(root, "strings")) if os.path.isdir(os.path.join(root, "strings", d)))
 for want in ("ru", "en"):
