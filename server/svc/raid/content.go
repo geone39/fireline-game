@@ -162,6 +162,7 @@ type spellY struct {
 	HealTotal int     `yaml:"heal_total"`
 	AdrMove   int     `yaml:"adrenaline_move_permille"`
 	AdrDmg    int     `yaml:"adrenaline_dmg_permille"`
+	Growth    *int    `yaml:"level_growth"`
 }
 
 type troopsFile struct {
@@ -483,6 +484,12 @@ func (l *loader) spells(r *sim.Rules, f troopsFile) {
 		sp.RadiusCells = l.need(y.RadiusC, where, "radius_cells")
 		if y.Duration > 0 {
 			sp.DurationTurns = l.turns(y.Duration)
+		}
+		if y.Growth != nil {
+			if *y.Growth < 0 {
+				l.fail("%s: level_growth must be >= 0, got %d", where, *y.Growth)
+			}
+			sp.LevelGrowthPermille = *y.Growth
 		}
 		r.Spells = append(r.Spells, sp)
 	}

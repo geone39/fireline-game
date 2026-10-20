@@ -274,6 +274,18 @@ func TestLoadRulesRealContent(t *testing.T) {
 	if len(r.Spells) != 6 {
 		t.Fatalf("spells %+v", r.Spells)
 	}
+	growth := map[string]int{}
+	for _, sp := range r.Spells {
+		growth[sp.ID] = sp.LevelGrowthPermille
+	}
+	if growth["c_airstrike"] != 1160 || growth["c_medkit"] != 1160 {
+		t.Fatalf("spell level growth %+v", growth)
+	}
+	for _, id := range []string{"c_smoke", "c_adrenaline", "c_emp", "c_breach"} {
+		if g, ok := growth[id]; ok && g != 0 {
+			t.Fatalf("%s has growth %d", id, g)
+		}
+	}
 	if got, err := LoadRules(contentDir); err != nil || !reflect.DeepEqual(got, r) {
 		t.Fatalf("LoadRules differs from LoadContent: %v", err)
 	}
@@ -306,6 +318,13 @@ func TestLoadRulesMissingKeys(t *testing.T) {
 	mustWrite(t, filepath.Join(dir, "troops.yaml"), strings.Replace(string(b), "ap: 2, move_cells: 4, range_cells: 4}", "move_cells: 4, range_cells: 4}", 1))
 	if _, err := LoadRules(dir); err == nil || !strings.Contains(err.Error(), `unit u_rifleman: missing "ap"`) {
 		t.Fatalf("missing ap: %v", err)
+	}
+
+	dir = copyContent(t)
+	b, _ = os.ReadFile(filepath.Join(dir, "troops.yaml"))
+	mustWrite(t, filepath.Join(dir, "troops.yaml"), strings.Replace(string(b), "level_growth: 1160}", "level_growth: -5}", 1))
+	if _, err := LoadRules(dir); err == nil || !strings.Contains(err.Error(), "spell c_airstrike: level_growth must be >= 0") {
+		t.Fatalf("negative spell growth: %v", err)
 	}
 
 	if _, err := LoadRules(t.TempDir()); err == nil {
