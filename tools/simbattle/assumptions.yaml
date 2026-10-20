@@ -9,7 +9,7 @@ housing:                  # OQ-QA2-1: лимит армии. Контент да
   garage_max: 70          #   берём ту же шкалу, что у лагеря
   spells_per_support_bay: 10   # OQ-QA2-1: вместимость Центра поддержки (в контенте нет); housing заклинаний — из troops.yaml
 levels:                   # OQ-QA2-2: уровни юнитов/героя/заклинаний атакующего
-  policy: parity          #   parity — уровень = HQ (как уровни построек эталона = min(HQ, предел типа));
+  policy: research        # решение владельца (OQ-QA2-LEVELS, #91); было parity.     parity — уровень = HQ (как уровни построек эталона = min(HQ, предел типа));
                           #   research — по узлам research.yaml, доступным при уровне лаборатории эталона;
                           #   one — всё 1-го уровня
   unit_cap: 10

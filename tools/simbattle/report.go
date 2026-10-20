@@ -242,7 +242,7 @@ func assumptionNotes(e *Env) []string {
 	a := e.A
 	return []string{
 		fmt.Sprintf("OQ-QA2-1: housing: camp %d..%d per camp by level (content gives only 4x20 at L1 -> 280 at HQ10); garage %d..%d; spells %d per support bay", a.Housing.CampL1, a.Housing.CampMax, a.Housing.GarageL1, a.Housing.GarageMax, a.Housing.SpellsPerSupportBay),
-		fmt.Sprintf("OQ-QA2-2: unit level policy %q (parity = HQ level)", a.Levels.Policy),
+		fmt.Sprintf("OQ-QA2-2: unit level policy %q (research = laboratory nodes, parity = HQ level)", a.Levels.Policy),
 		fmt.Sprintf("OQ-QA2-3: bot turn cap %d (300 s / ~12 s per turn), then Retreat", a.Battle.TurnCap),
 		fmt.Sprintf("OQ-QA2-4: bunker garrison policy %q (%s, level of the defence barracks)", a.Garrison.Policy, a.Garrison.Unit),
 		fmt.Sprintf("OQ-QA2-5: win = at least %d star(s)", a.Win.MinStars),
