@@ -1,6 +1,10 @@
 # CHANGELOG `server-core`
 
 ## Unreleased
+- SERVER-4: migrations `00004_army_research` (аддитивная) — `army(player_id, unit_id, level, count)` PK(player_id, unit_id, level), `CHECK level >= 1`, `count >= 0`; `research(player_id, node_id, state, finish_at)` PK(player_id, node_id), `state IN ('researching','done')`, `finish_at` обязателен при `researching`; FK на `players` ON DELETE CASCADE; индекс `timers(player_id, kind)`. Интеграционные тесты — `server/db/army_research_test.go` (testcontainers).
+- timers: `kind='train'|'research'` не требуют изменения схемы (kind — text, детали в `payload` jsonb); `timers(finish_at)` уже есть.
+- ASSUMPTION: состояния research — только `researching`/`done` (очереди исследований нет); `finish_at` у `done` может быть NULL; `count = 0` разрешён (строка не удаляется при нулевом остатке). Формат `payload` у train-таймеров (`building_id`, `count`, `level`) — за ARMY-1.
+- не сделано: логика армии/лаборатории (ARMY-1/2), HTTP (SERVER-5).
 - SERVER-3: `base.Mount` подключён под `/v1/base` (`GET /base`, `POST /base/commands`, `PUT /base/layout`) внутри авторизованной группы: Bearer, Idempotency-Key, rate limit, `X-Content-Version`; `server_time`/`content_version` и формат ошибок общие. `X-Content-Version` теперь ставится middleware на всех авторизованных ответах.
 - migrations: `00003_defence_snapshots` (OQ-B7) — `defence_snapshots` по docs/04-data-model.md, `UNIQUE(player_id, base_version)`, иммутабельна (триггер на UPDATE). `SnapshotSink` реализован через `db.Store.InsertSnapshot` в транзакции `PUT /v1/base/layout`.
 - auth: `Service.Provision` — хук в той же транзакции, что и upsert гостя; `cmd/api` подключает `BaseModule.Provision` = стартовая `base_state` + `Ledger.GrantStartTx` (OQ-E4). Ошибка откатывает создание игрока (атомарно); повторный логин идемпотентен и «долечивает» ранее созданных гостей.
