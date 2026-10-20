@@ -1,0 +1,26 @@
+# content/army.yaml — owner: module `content` (CONTENT-6, docs/design/army-lab.md §3/§4/§7/§11, OQ-ARMY-1…10). Read by server/svc/army.
+# Schema: schema/army.schema.json. Numbers: capacities in buildings.yaml (capacity_by_level), per-unit housing/train_s/cost in troops.yaml, research tiers in research.yaml.
+schema: 1
+# Unit class -> housing pool (troops.yaml classes; spells have their own pool). Ships live in the garage; the shipyard only produces them.
+pool_by_class: {INF: unit, AIR: unit, VEH: garage, SEA: garage}
+pool_spell: spell
+# Pool -> building whose capacity_by_level feeds it (sum over built buildings, army-lab.md §3.2).
+pool_building: {unit: b_camp, garage: b_garage, spell: b_support_bay}
+# Perk that grows a pool: base_cap * (1000 + 10 * perk_total) / 1000, floor once; garage and spell pools are not affected (ASSUMPTION army-lab.md §12.7).
+housing_perk: {key: army_housing_pct, pools: [unit]}
+# Who trains what (army-lab.md §4.1). `spell` is the producer of troops.yaml `spells:`.
+producers: {INF: b_barracks, AIR: b_barracks, VEH: b_factory, SEA: b_shipyard, spell: b_support_bay}
+lab_building: b_laboratory
+queue:
+  max_orders_per_building: 5   # ASSUMPTION (OQ-CONTENT6-4): no source number in the design; balance to confirm
+# Cancel refunds (owner decision OQ-ARMY-3, 2026-10-20): not started 100%, the unit in progress 50%, research 50%.
+# cancel_refund_started_pct must equal building_costs.yaml cancel_refund_pct (the same 50% as for a build) — validate_content.py checks it.
+cancel_refund_unstarted_pct: 100
+cancel_refund_started_pct: 50
+lab_cancel_refund_pct: 50
+# Tutorial (owner decision OQ-ARMY-8): only the first army order of the player is finished free (ux-onboarding step 4); the first research is NOT free.
+tutorial: {free_finish_first_order: true}
+# Reference starter army (ux-onboarding step 4: 5 riflemen = 125 fuel <= start_grant.fuel). Never granted automatically (OQ-ARMY-8): the player trains it.
+start_army_auto_grant: false
+start_army:
+  - {id: u_rifleman, count: 5}

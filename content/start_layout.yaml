@@ -1,0 +1,8 @@
+# content/start_layout.yaml — layout of a brand-new base (OQ-S6, army-lab.md §7 п.1). Same item format as reference_bases/*.yaml; read by gateway.BaseModule.StartLayout.
+# HQ L1 in the middle of the 44x44 grid (== (grid - 4) / 2) + a ready camp L1: without a camp cap(unit) = 0 and nothing can be trained.
+# The barracks is built by the tutorial (ux-onboarding step 3), so it is not here. Placed ready (no build timer).
+schema: 1
+layout:
+  items:
+    - {uid: b_hq_1, type: b_hq, level: 1, x: 20, y: 20, rot: 0}
+    - {uid: b_camp_1, type: b_camp, level: 1, x: 20, y: 14, rot: 0}

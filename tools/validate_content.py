@@ -174,7 +174,7 @@ def hq_limit(t, hq):
     for at in sorted(p["limits"]):
         if at <= hq: n = p["limits"][at]
     return n
-def check_ref_base(rb, label):
+def check_ref_base(rb, label, start=False):   # start=True: the start layout is only checked for placement, not for defences/storage
     e = lambda m: err.append(f"{label}: {m}")
     if rb["map"] not in grid["maps"]: return e(f"unknown map {rb['map']}")
     water = {(x + a, y + b) for x, y, w, h in grid["maps"][rb["map"]]["water"] for b in range(h) for a in range(w)}
@@ -226,10 +226,10 @@ def check_ref_base(rb, label):
     if not reach(True): e("HQ is completely enclosed")
     elif not reach(False): e("HQ is not reachable without breaking walls (a reference base keeps a gate)")
     have = lambda pred: any(pred(PLACE[it["type"]], it["type"]) for it in items if it["type"] in PLACE)
-    if not have(lambda p, t: p["kind"] == "passive" and p["block"] == "all"): e("no walls/fences")
-    if not have(lambda p, t: p["kind"] == "active"): e("no active defence")
-    if not have(lambda p, t: t in ("b_vault", "b_fuel_tank")): e("no storage")
-    if hq >= 2 and not have(lambda p, t: t in ("d_mine", "d_spring_trap")): e("no traps")
+    if not start and not have(lambda p, t: p["kind"] == "passive" and p["block"] == "all"): e("no walls/fences")
+    if not start and not have(lambda p, t: p["kind"] == "active"): e("no active defence")
+    if not start and not have(lambda p, t: t in ("b_vault", "b_fuel_tank")): e("no storage")
+    if not start and hq >= 2 and not have(lambda p, t: t in ("d_mine", "d_spring_trap")): e("no traps")
 ref_hqs, ref_keys = {}, set()
 for fn in sorted(glob.glob(os.path.join(root, "reference_bases", "*.yaml"))):
     rb = yaml.safe_load(open(fn, encoding="utf-8"))
@@ -247,6 +247,87 @@ for fn in sorted(glob.glob(os.path.join(root, "reference_bases", "*.yaml"))):
     check_ref_base(rb, label)
 for n in range(1, 11):
     if "plain" not in ref_hqs.get(n, []): err.append(f"reference_bases: HQ{n} has no plain reference base")
+# ---- army & laboratory (CONTENT-6, docs/design/army-lab.md §11): army.yaml, capacity_by_level, research nodes, start_layout ----
+army = load("army.yaml")
+schema_check(army, "army.schema.json", "army.yaml")
+econ_f, costs_f = load("economy.yaml"), load("building_costs.yaml")
+bmap = {b["id"]: b for key in ("core", "resources", "military") for b in bld[key]}
+unit_by_id = {u["id"]: u for u in alluni}
+spell_by_id = {s["id"]: s for s in troops["spells"]}
+POOLS = ("unit", "garage", "spell")
+for cls in troops["classes"]:
+    if cls not in army.get("pool_by_class", {}): err.append(f"army.yaml: class {cls} has no pool_by_class")
+for cls in army.get("pool_by_class", {}):
+    if cls not in troops["classes"]: err.append(f"army.yaml: pool_by_class.{cls} is not a class in troops.yaml")
+for where, b in list(army.get("pool_building", {}).items()) + list(army.get("producers", {}).items()) + [("lab_building", army.get("lab_building"))]:
+    if b not in bmap: err.append(f"army.yaml: {where} -> unknown building {b}")
+if army.get("lab_building") != "b_laboratory": err.append("army.yaml: lab_building must be b_laboratory")
+for u in alluni:   # the producer of the unit must exist and match its unlock key (barracks/factory/shipyard)
+    prod = army.get("producers", {}).get(u["class"])
+    if prod and prod.removeprefix("b_") not in u["unlock"]: err.append(f"{u['id']}: unlock has no level of its producer {prod}")
+    if not isinstance(u.get("train_s"), int) or not isinstance(u.get("housing"), int) or not u.get("cost"): err.append(f"{u['id']}: train_s/housing/cost required")
+    if u["class"] in ("INF", "AIR") and set(u["cost"]) != {"fuel"}: err.append(f"{u['id']}: infantry/air cost fuel only")
+    if u["class"] in ("VEH", "SEA") and "cash" not in u["cost"]: err.append(f"{u['id']}: vehicles/ships cost cash")
+for sp in troops["spells"]:
+    if not isinstance(sp.get("train_s"), int) or sp["train_s"] < 1: err.append(f"{sp['id']}: missing train_s")
+    if set(sp["cost"]) != {"fuel"}: err.append(f"{sp['id']}: spells cost fuel only")
+    if "level_growth" in sp: err.append(f"{sp['id']}: level_growth for spells waits for SIM-9 (OQ-ARMY-2)")
+if army.get("housing_perk", {}).get("key") not in {n["perk"]["key"] for n in res["nodes"] if "perk" in n}: err.append("army.yaml: housing_perk.key is not a perk of any research node")
+if army.get("cancel_refund_started_pct") != costs_f.get("cancel_refund_pct"): err.append("army.yaml: cancel_refund_started_pct != building_costs.yaml cancel_refund_pct")
+for u in army.get("start_army", []):
+    if u["id"] not in unit_by_id: err.append(f"army.yaml: start_army unknown unit {u['id']}")
+    elif u["count"] * unit_by_id[u["id"]]["cost"].get("fuel", 0) > econ_f["start_grant"]["fuel"]: err.append("army.yaml: start_army costs more fuel than start_grant.fuel")
+# capacity_by_level: exactly the pool buildings, one positive integer per building level, non-decreasing
+cap_bld = set(army.get("pool_building", {}).values())
+for i, b in bmap.items():
+    c = b.get("capacity_by_level")
+    if i in cap_bld:
+        if not (isinstance(c, list) and len(c) == b["levels"] and all(isinstance(v, int) and v > 0 for v in c)): err.append(f"{i}: capacity_by_level must be {b['levels']} positive integers (one per level)")
+        elif c != sorted(c): err.append(f"{i}: capacity_by_level must be non-decreasing")
+    elif c is not None: err.append(f"{i}: capacity_by_level is only for pool buildings")
+# research nodes
+lab_levels = bmap["b_laboratory"]["levels"]
+rnode = {n["id"]: n for n in res["nodes"]}
+chains = {}
+for n in res["nodes"]:
+    i = n["id"]
+    schema_check(n, "research.schema.json", i)
+    if n["tier"] not in res["tiers"]: err.append(f"{i}: unknown tier {n['tier']}")
+    if not 1 <= n["lab"] <= lab_levels: err.append(f"{i}: lab {n['lab']} outside 1..{lab_levels} (b_laboratory levels)")
+    item = unit_by_id.get(n.get("unit")) or spell_by_id.get(n.get("spell"))
+    if "perk" in n:
+        pk, pv = n["perk"]["key"], n["perk"]["value"]
+        if (pk == "scan_reveals_traps") != isinstance(pv, bool): err.append(f"{i}: perk {pk} value must be {'bool' if pk == 'scan_reveals_traps' else 'int'}")
+        if isinstance(pv, int) and not isinstance(pv, bool) and pv < 1: err.append(f"{i}: perk value must be >= 1")
+    elif item is None: err.append(f"{i}: unknown unit/spell {n.get('unit') or n.get('spell')}")
+    else:
+        key = n.get("unit") or n.get("spell")
+        chains.setdefault(key, []).append(n)
+        if n["lab"] + 1 < item["unlock"]["hq"]: err.append(f"{i}: lab {n['lab']} is reached only after HQ {n['lab'] + 1}, but {key} unlocks at HQ {item['unlock']['hq']} (need lab >= unlock.hq - 1)")
+        if "spell" in n and not n.get("soon"): err.append(f"{i}: spell nodes must be soon: true until level_growth for spells exists (SIM-9, OQ-ARMY-2)")
+        if "unit" in n and n.get("soon"): err.append(f"{i}: soon is only for spell nodes")
+    for r in n.get("requires", []):
+        q = rnode.get(r)
+        if q is None: err.append(f"{i}: requires unknown node {r}")
+        elif "perk" in n or (q.get("unit"), q.get("spell")) != (n.get("unit"), n.get("spell")) or q["to_level"] >= n["to_level"]: err.append(f"{i}: requires {r} must be a node of the same item with a lower to_level")
+for key, ns in chains.items():
+    ns.sort(key=lambda n: n["to_level"])
+    if len({n["to_level"] for n in ns}) != len(ns): err.append(f"research: {key} has two nodes with the same to_level")
+    for a, b in zip(ns, ns[1:]):
+        if b["lab"] < a["lab"]: err.append(f"{b['id']}: lab lower than the previous node {a['id']} of the chain")
+        if "requires" in b and a["id"] not in b["requires"]: err.append(f"{b['id']}: requires must include the previous node {a['id']}")
+# start layout: HQ L1 + a ready camp, valid against the placement rules
+sl = load("start_layout.yaml")
+if sorted(it["type"] for it in sl["layout"]["items"]) != ["b_camp", "b_hq"]: err.append("start_layout.yaml: needs exactly one b_hq and one b_camp")
+check_ref_base({"map": grid["default_map"], "hq_level": 1, "layout": sl["layout"]}, "start_layout.yaml", start=True)
+# UI strings (strings/*/army.yaml): res.*, army.*, lab.*, perk.*, reason.* — not name_keys of ids, so the required ones are listed here
+UI_PREFIXES = ("res.", "army.", "lab.", "perk.", "reason.")
+UI_REASONS = ("housing_full", "locked", "queue_full", "not_multiple_of_group", "no_stock", "housing_exceeded", "ship_no_water", "hero_unavailable",
+              "lab_level", "lab_busy", "prerequisite", "housing_in_use", "queue_not_empty", "research_in_progress")
+UI_REQUIRED = ({v["name_key"] for v in econ_f["resources"].values()} | {"army.pool." + p for p in POOLS} | {"reason." + r for r in UI_REASONS}
+               | {"army.title", "army.capacity", "army.used", "army.free", "army.queue", "army.train", "army.cancel", "army.speedup", "army.coming_soon", "lab.title", "lab.research", "lab.coming_soon"}
+               | {f"perk.{n['perk']['key']}{sfx}" for n in res["nodes"] if "perk" in n for sfx in ("", ".desc")})
+ui_keys = {}
 # strings: every name_key must exist in every language, no orphans, no empty values
 langs = sorted(d for d in os.listdir(os.path.join(root, "strings")) if os.path.isdir(os.path.join(root, "strings", d)))
 for want in ("ru", "en"):
@@ -260,7 +341,11 @@ for lang in langs:
     for k in name_keys:
         if not isinstance(strs.get(k), str) or not strs[k].strip(): err.append(f"strings/{lang}: missing/empty {k} ({name_keys[k]})")
     for k in strs:
-        if k not in name_keys: err.append(f"strings/{lang}: orphan key {k}")
+        if k not in name_keys and not k.startswith(UI_PREFIXES): err.append(f"strings/{lang}: orphan key {k}")
+    for k in sorted(UI_REQUIRED):
+        if k not in strs: err.append(f"strings/{lang}: missing UI key {k}")
+    ui_keys[lang] = {k for k in strs if k.startswith(UI_PREFIXES)}
+if len({frozenset(v) for v in ui_keys.values()}) > 1: err.append("strings: UI keys (res/army/lab/perk/reason) differ between languages")
 # balance sanity: damage-per-housing within 3x band inside class
 import statistics
 for cls in ("INF", "VEH"):

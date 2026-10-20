@@ -1,16 +1,42 @@
 # content/research.yaml — Laboratory. One research at a time. Each node raises max level of an item; time/cost by tier.
+# Schema: schema/research.schema.json (CONTENT-6, army-lab.md §2/§5/§11). Level(item) = max(1, max to_level of done nodes of the item).
+#   unit | spell | perk — what the node is about (exactly one); perk is structural {key, value} (was the string "key+N").
+#   requires — explicit prerequisite node ids (same item, lower to_level); a chain without `requires` is implicit by ascending to_level.
+#   soon: true — the node is shown as "coming soon" and cannot be started: level_growth for spells does not exist yet (OQ-ARMY-2, SIM-9), the research would change nothing.
+# ASSUMPTION (OQ-CONTENT6-3): the nodes added in CONTENT-6 are the first step (to_level 2) of every item; tier follows the existing table (HQ<=2 items tier 1, HQ3..5 tier 2, HQ>=6 tier 3);
+#   lab = max(tier floor, item unlock.hq - 1) — the lab reaches level L at about HQ L+1 (validate_content.py checks lab + 1 >= unlock.hq). Higher levels of items are balance's call.
 schema: 1
 tiers: {1: {fuel: 800, hours: 2}, 2: {fuel: 3000, hours: 8}, 3: {fuel: 12000, hours: 24}, 4: {fuel: 45000, hours: 72}, 5: {fuel: 160000, hours: 168}}
 nodes:
   - {id: r_rifle_1, name_key: r.rifle_1,  unit: u_rifleman, to_level: 2, tier: 1, lab: 1}
-  - {id: r_rifle_2, name_key: r.rifle_2,  unit: u_rifleman, to_level: 4, tier: 2, lab: 3}
+  - {id: r_rifle_2, name_key: r.rifle_2,  unit: u_rifleman, to_level: 4, tier: 2, lab: 3, requires: [r_rifle_1]}
   - {id: r_brawler_1, name_key: r.brawler_1,unit: u_brawler,  to_level: 2, tier: 1, lab: 2}
   - {id: r_sniper_1, name_key: r.sniper_1, unit: u_sniper,   to_level: 2, tier: 2, lab: 3}
   - {id: r_dasher_1, name_key: r.dasher_1, unit: u_dasher,   to_level: 2, tier: 1, lab: 2}
   - {id: r_breach_1, name_key: r.breach_1, unit: u_breacher, to_level: 2, tier: 2, lab: 3}
   - {id: r_humvee_1, name_key: r.humvee_1, unit: v_humvee,   to_level: 2, tier: 2, lab: 4}
   - {id: r_tank_1, name_key: r.tank_1,   unit: v_tank,     to_level: 2, tier: 3, lab: 6}
-  - {id: r_airstrike_1, name_key: r.airstrike_1, spell: c_airstrike, to_level: 2, tier: 2, lab: 4}
-  - {id: r_camp_cap, name_key: r.camp_cap, perk: "army_housing_pct+5", tier: 3, lab: 5}
-  - {id: r_loot_1, name_key: r.loot_1,   perk: "raid_loot_pct+5", tier: 3, lab: 6, note: "capped; respects raids.loot_cap"}
-  - {id: r_radar_scan, name_key: r.radar_scan, perk: "scan_reveals_traps", tier: 3, lab: 6}
+  - {id: r_airstrike_1, name_key: r.airstrike_1, spell: c_airstrike, to_level: 2, tier: 2, lab: 4, soon: true}
+  # --- CONTENT-6: remaining infantry / vehicles / ships / spells (first step each) ---
+  - {id: r_medic_1, name_key: r.medic_1, unit: u_medic, to_level: 2, tier: 2, lab: 4}
+  - {id: r_grenadier_1, name_key: r.grenadier_1, unit: u_grenadier, to_level: 2, tier: 2, lab: 4}
+  - {id: r_flamer_1, name_key: r.flamer_1, unit: u_flamer, to_level: 2, tier: 2, lab: 5}
+  - {id: r_saboteur_1, name_key: r.saboteur_1, unit: u_saboteur, to_level: 2, tier: 3, lab: 6}
+  - {id: r_heavy_1, name_key: r.heavy_1, unit: u_heavy, to_level: 2, tier: 3, lab: 7}
+  - {id: r_drone_1, name_key: r.drone_1, unit: u_drone, to_level: 2, tier: 3, lab: 6}
+  - {id: r_paratrooper_1, name_key: r.paratrooper_1, unit: u_paratrooper, to_level: 2, tier: 3, lab: 7}
+  - {id: r_apc_1, name_key: r.apc_1, unit: v_apc, to_level: 2, tier: 2, lab: 5}
+  - {id: r_mortar_1, name_key: r.mortar_1, unit: v_mortar, to_level: 2, tier: 3, lab: 7}
+  - {id: r_engineer_1, name_key: r.engineer_1, unit: v_engineer, to_level: 2, tier: 3, lab: 8}
+  - {id: r_gunboat_1, name_key: r.gunboat_1, unit: s_gunboat, to_level: 2, tier: 2, lab: 4}
+  - {id: r_lander_1, name_key: r.lander_1, unit: s_lander, to_level: 2, tier: 3, lab: 6}
+  - {id: r_destroyer_1, name_key: r.destroyer_1, unit: s_destroyer, to_level: 2, tier: 3, lab: 8}
+  - {id: r_smoke_1, name_key: r.smoke_1, spell: c_smoke, to_level: 2, tier: 2, lab: 3, soon: true}
+  - {id: r_medkit_1, name_key: r.medkit_1, spell: c_medkit, to_level: 2, tier: 2, lab: 3, soon: true}
+  - {id: r_adrenaline_1, name_key: r.adrenaline_1, spell: c_adrenaline, to_level: 2, tier: 2, lab: 5, soon: true}
+  - {id: r_emp_1, name_key: r.emp_1, spell: c_emp, to_level: 2, tier: 3, lab: 6, soon: true}
+  - {id: r_spell_breach_1, name_key: r.spell_breach_1, spell: c_breach, to_level: 2, tier: 2, lab: 5, soon: true}   # r_breach_1 is the u_breacher node
+  # --- perks (consumers: army_housing_pct -> svc/army, raid_loot_pct / scan_reveals_traps -> raid) ---
+  - {id: r_camp_cap, name_key: r.camp_cap, perk: {key: army_housing_pct, value: 5}, tier: 3, lab: 5}
+  - {id: r_loot_1, name_key: r.loot_1,   perk: {key: raid_loot_pct, value: 5}, tier: 3, lab: 6, note: "capped; respects raids.loot_cap"}
+  - {id: r_radar_scan, name_key: r.radar_scan, perk: {key: scan_reveals_traps, value: true}, tier: 3, lab: 6}

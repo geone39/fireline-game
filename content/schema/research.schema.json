@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Research node (research.yaml)",
+  "type": "object",
+  "required": ["id", "name_key", "tier", "lab"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {"type": "string", "pattern": "^r_[a-z0-9_]+$"},
+    "name_key": {"type": "string"},
+    "unit": {"type": "string", "pattern": "^[uvs]_[a-z0-9_]+$"},
+    "spell": {"type": "string", "pattern": "^c_[a-z0-9_]+$"},
+    "perk": {"type": "object", "required": ["key", "value"], "additionalProperties": false,
+      "properties": {"key": {"enum": ["army_housing_pct", "raid_loot_pct", "scan_reveals_traps"]}, "value": {"type": ["integer", "boolean"]}}},
+    "to_level": {"type": "integer", "minimum": 2},
+    "tier": {"type": "integer", "minimum": 1},
+    "lab": {"type": "integer", "minimum": 1},
+    "requires": {"type": "array", "items": {"type": "string", "pattern": "^r_[a-z0-9_]+$"}, "uniqueItems": true},
+    "soon": {"type": "boolean"},
+    "note": {"type": "string"}
+  },
+  "oneOf": [
+    {"required": ["unit", "to_level"], "not": {"anyOf": [{"required": ["spell"]}, {"required": ["perk"]}]}},
+    {"required": ["spell", "to_level"], "not": {"anyOf": [{"required": ["unit"]}, {"required": ["perk"]}]}},
+    {"required": ["perk"], "not": {"anyOf": [{"required": ["unit"]}, {"required": ["spell"]}, {"required": ["to_level"]}]}}
+  ]
+}

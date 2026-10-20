@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "army.yaml",
+  "type": "object",
+  "required": ["schema", "pool_by_class", "pool_spell", "pool_building", "housing_perk", "producers", "lab_building", "queue",
+               "cancel_refund_unstarted_pct", "cancel_refund_started_pct", "lab_cancel_refund_pct", "tutorial", "start_army_auto_grant", "start_army"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": 1},
+    "pool_by_class": {"type": "object", "required": ["INF", "VEH", "AIR", "SEA"], "additionalProperties": false,
+      "properties": {"INF": {"$ref": "#/$defs/pool"}, "VEH": {"$ref": "#/$defs/pool"}, "AIR": {"$ref": "#/$defs/pool"}, "SEA": {"$ref": "#/$defs/pool"}}},
+    "pool_spell": {"$ref": "#/$defs/pool"},
+    "pool_building": {"type": "object", "required": ["unit", "garage", "spell"], "additionalProperties": false,
+      "properties": {"unit": {"$ref": "#/$defs/building"}, "garage": {"$ref": "#/$defs/building"}, "spell": {"$ref": "#/$defs/building"}}},
+    "housing_perk": {"type": "object", "required": ["key", "pools"], "additionalProperties": false,
+      "properties": {"key": {"type": "string"}, "pools": {"type": "array", "items": {"$ref": "#/$defs/pool"}, "minItems": 1}}},
+    "producers": {"type": "object", "required": ["INF", "VEH", "AIR", "SEA", "spell"], "additionalProperties": false,
+      "properties": {"INF": {"$ref": "#/$defs/building"}, "VEH": {"$ref": "#/$defs/building"}, "AIR": {"$ref": "#/$defs/building"}, "SEA": {"$ref": "#/$defs/building"}, "spell": {"$ref": "#/$defs/building"}}},
+    "lab_building": {"$ref": "#/$defs/building"},
+    "queue": {"type": "object", "required": ["max_orders_per_building"], "additionalProperties": false,
+      "properties": {"max_orders_per_building": {"type": "integer", "minimum": 1}}},
+    "cancel_refund_unstarted_pct": {"type": "integer", "minimum": 0, "maximum": 100},
+    "cancel_refund_started_pct": {"type": "integer", "minimum": 0, "maximum": 100},
+    "lab_cancel_refund_pct": {"type": "integer", "minimum": 0, "maximum": 100},
+    "tutorial": {"type": "object", "required": ["free_finish_first_order"], "additionalProperties": false,
+      "properties": {"free_finish_first_order": {"type": "boolean"}}},
+    "start_army_auto_grant": {"type": "boolean"},
+    "start_army": {"type": "array", "items": {"type": "object", "required": ["id", "count"], "additionalProperties": false,
+      "properties": {"id": {"type": "string", "pattern": "^[uvs]_[a-z0-9_]+$"}, "count": {"type": "integer", "minimum": 1}}}}
+  },
+  "$defs": {
+    "pool": {"enum": ["unit", "garage", "spell"]},
+    "building": {"type": "string", "pattern": "^b_[a-z0-9_]+$"}
+  }
+}
