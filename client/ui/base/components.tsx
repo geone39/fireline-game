@@ -3,7 +3,7 @@
 import type { VNode } from 'preact';
 import type { BaseActions } from '../../core/base/controller';
 import type { BaseViewModel, CardVM, OverlayVM, ShopEntry } from '../../core/base/view-model';
-import { formatCost, formatDuration, type T } from './i18n';
+import { formatCost, formatDuration, formatGems, formatShortfall, type T } from './i18n';
 
 export interface Point {
   x: number;
@@ -14,25 +14,60 @@ export type Project = (tx: number, ty: number) => Point;
 
 const COLOR = { ok: '#2fbf71', bad: '#e5484d', aura: '#4c8dff' };
 
-export function ShopPanel(p: { entries: readonly ShopEntry[]; t: T; onPick: (type: string) => void }): VNode {
+/** Панели интерактивны сами, а корень редактора пропускает клики к канвасу (см. BaseEditorView). */
+const PANEL_STYLE = { pointerEvents: 'auto', background: 'rgba(0,0,0,.6)', padding: '6px 10px' } as const;
+const CHIP_STYLE = { ...PANEL_STYLE, width: 'fit-content' } as const;
+
+function blockText(block: NonNullable<ShopEntry['blocked'] | CardVM['upgrade']['blocked']>, short: ShopEntry['short'], unlockHq: number, t: T): string {
+  if (block === 'no_funds' && short) return formatShortfall(short, t);
+  return t(`block.${block}`, { n: unlockHq });
+}
+
+export function ShopPanel(p: { entries: readonly ShopEntry[]; t: T; onPick: (type: string) => void; open?: boolean; onToggle?: () => void }): VNode {
+  const open = p.open ?? true;
   return (
-    <section data-testid="shop" aria-label={p.t('ui.shop')}>
+    // Кнопка сворачивания — вне section[data-testid=shop]: e2e берут первую `[data-testid=shop] button:enabled` как «здание».
+    <div data-testid="shop-panel" style={{ ...(open ? PANEL_STYLE : CHIP_STYLE), display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+      {p.onToggle && (
+        <button type="button" data-testid="shop-toggle" aria-expanded={open} aria-controls="shop-list" onClick={p.onToggle}>
+          {p.t(open ? 'ui.shop_hide' : 'ui.shop_show')}
+        </button>
+      )}
+      <section data-testid="shop" aria-label={p.t('ui.shop')} style={{ minWidth: 0, flex: '1 1 auto' }}>
       <h3>{p.t('ui.shop')}</h3>
-      <ul>
-        {p.entries.map((e) => (
-          <li key={e.type} data-testid={`shop-${e.type}`}>
-            <button type="button" disabled={e.blocked !== null} onClick={() => p.onPick(e.type)}>
-              {p.t(e.nameKey)}
-            </button>{' '}
-            <span data-testid={`shop-${e.type}-info`}>
-              {formatCost(e.cost, p.t)}
-              {e.limit !== null ? ` · ${p.t('ui.count')} ${e.count}/${e.limit}` : ''}
-            </span>
-            {e.blocked && <small data-testid={`shop-${e.type}-block`}> {p.t(`block.${e.blocked}`, { n: e.unlockHq })}</small>}
-          </li>
-        ))}
-      </ul>
-    </section>
+      {open && (
+        <ul id="shop-list">
+          {p.entries.map((e) => {
+            const blockId = `shop-${e.type}-block`;
+            const reason = e.blocked ? blockText(e.blocked, e.short, e.unlockHq, p.t) : '';
+            return (
+              <li key={e.type} data-testid={`shop-${e.type}`} data-blocked={e.blocked ?? undefined}>
+                <button
+                  type="button"
+                  disabled={e.blocked !== null}
+                  aria-describedby={e.blocked ? blockId : undefined}
+                  title={reason || undefined}
+                  onClick={() => p.onPick(e.type)}
+                >
+                  {p.t(e.nameKey)}
+                </button>{' '}
+                <span data-testid={`shop-${e.type}-info`}>
+                  {formatCost(e.cost, p.t)}
+                  {e.limit !== null ? ` · ${p.t('ui.count')} ${e.count}/${e.limit}` : ''}
+                </span>
+                {e.blocked && (
+                  <small id={blockId} data-testid={blockId}>
+                    {' '}
+                    {reason}
+                  </small>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      )}
+      </section>
+    </div>
   );
 }
 
@@ -49,7 +84,7 @@ export interface CardHandlers {
 export function BuildingCard(p: { card: CardVM; t: T } & CardHandlers): VNode {
   const c = p.card;
   return (
-    <section data-testid="card" aria-label={p.t(c.nameKey)}>
+    <section data-testid="card" aria-label={p.t(c.nameKey)} style={PANEL_STYLE}>
       <h3>{p.t(c.nameKey)}</h3>
       <p data-testid="card-level">
         {p.t('ui.level')} {c.level}/{c.maxLevel}
@@ -61,17 +96,42 @@ export function BuildingCard(p: { card: CardVM; t: T } & CardHandlers): VNode {
       )}
       {c.kind !== 'obstacle' && c.upgrade.blocked !== 'no_price' && (
         <p>
-          <button type="button" data-testid="card-upgrade" disabled={c.upgrade.blocked !== null} onClick={() => p.onUpgrade(c.uid)}>
+          <button
+            type="button"
+            data-testid="card-upgrade"
+            disabled={c.upgrade.blocked !== null}
+            aria-describedby={c.upgrade.blocked ? 'card-upgrade-block' : undefined}
+            onClick={() => p.onUpgrade(c.uid)}
+          >
             {p.t('ui.upgrade')}
           </button>{' '}
           <span data-testid="card-upgrade-cost">{c.upgrade.blocked === 'max_level' ? '' : formatCost(c.upgrade.cost, p.t)}</span>
-          {c.upgrade.blocked && <small data-testid="card-upgrade-block"> {p.t(`block.${c.upgrade.blocked}`)}</small>}
+          {c.upgrade.blocked && (
+            <small id="card-upgrade-block" data-testid="card-upgrade-block">
+              {' '}
+              {blockText(c.upgrade.blocked, c.upgrade.short, 0, p.t)}
+            </small>
+          )}
         </p>
       )}
       {c.timer && c.speedupGems !== null && (
-        <button type="button" data-testid="card-speedup" onClick={() => p.onSpeedup(c.uid)}>
-          {p.t('ui.speedup')} · {c.speedupGems} {p.t('ui.gems')}
-        </button>
+        <p>
+          <button
+            type="button"
+            data-testid="card-speedup"
+            disabled={!c.speedupAffordable}
+            aria-describedby={c.speedupAffordable ? undefined : 'card-speedup-block'}
+            onClick={() => p.onSpeedup(c.uid)}
+          >
+            {p.t('ui.speedup')} · {formatGems(c.speedupGems, p.t)}
+          </button>
+          {!c.speedupAffordable && (
+            <small id="card-speedup-block" data-testid="card-speedup-block">
+              {' '}
+              {p.t('block.no_funds', { need: formatGems(c.speedupGems, p.t), have: formatGems(c.gemsHave ?? 0, p.t) })}
+            </small>
+          )}
+        </p>
       )}
       {c.clear && (
         <p>
@@ -113,7 +173,7 @@ export function BuildingCard(p: { card: CardVM; t: T } & CardHandlers): VNode {
 export function Toolbar(p: { tb: BaseViewModel['toolbar']; t: T; actions: Pick<BaseActions, 'toggleEdit' | 'undo' | 'redo' | 'save' | 'cancel' | 'collect'> }): VNode {
   const { tb, actions } = p;
   return (
-    <nav data-testid="toolbar">
+    <nav data-testid="toolbar" style={CHIP_STYLE}>
       <span data-testid="builders">
         {p.t('ui.builders')}: {tb.builders.total - tb.builders.busy}/{tb.builders.total}
       </span>{' '}
@@ -152,7 +212,7 @@ export function PlacementBar(p: {
 }): VNode {
   const { placing } = p;
   return (
-    <div data-testid="placement-bar" role="status">
+    <div data-testid="placement-bar" role="status" style={CHIP_STYLE}>
       <strong>{p.t(placing.nameKey)}</strong>{' '}
       <span data-testid="placement-state" data-ok={placing.ok}>
         {placing.ok ? '✓' : placing.reason ? p.t(`reason.${placing.reason}`) : ''}
@@ -225,7 +285,7 @@ export function Notice(p: { vm: Pick<BaseViewModel, 'notice' | 'rejection'>; t: 
   const k = `reason.${key}`;
   const text = p.t(k) === k ? (p.vm.rejection?.message ?? key) : p.t(k);
   return (
-    <div data-testid="notice" role="alert">
+    <div data-testid="notice" role="alert" style={CHIP_STYLE}>
       {text}
     </div>
   );
@@ -235,7 +295,9 @@ export function Notice(p: { vm: Pick<BaseViewModel, 'notice' | 'rejection'>; t: 
 export function BaseEditorView(p: { vm: BaseViewModel; actions: BaseActions; t: T; project: Project }): VNode {
   const { vm, actions, t } = p;
   return (
-    <div data-testid="base-editor">
+    // Корень не перехватывает ввод и без фона: тап между панелями доходит до канваса (здание под лентой можно выбрать),
+    // а каждая панель сама включает pointer-events и рисует свой фон. Перекрывает шелловые правила `.base-slot [data-testid=base-editor]`.
+    <div data-testid="base-editor" style={{ pointerEvents: 'none', background: 'none', padding: 0 }}>
       <PlacementOverlay overlay={vm.overlay} project={p.project} />
       <Toolbar tb={vm.toolbar} t={t} actions={actions} />
       <Notice vm={vm} t={t} />
@@ -254,7 +316,7 @@ export function BaseEditorView(p: { vm: BaseViewModel; actions: BaseActions; t: 
           onClose={() => actions.select(null)}
         />
       ) : (
-        <ShopPanel entries={vm.shop} t={t} onPick={actions.pickBuilding} />
+        <ShopPanel entries={vm.shop} t={t} onPick={actions.pickBuilding} open={vm.shopOpen} onToggle={actions.toggleShop} />
       )}
     </div>
   );

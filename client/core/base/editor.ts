@@ -32,6 +32,8 @@ export interface EditorState {
   askRemove: string | null;
   /** Код последней ошибки сохранения / причина отказа клиентской проверки. */
   notice: string | null;
+  /** Панель построек развёрнута; свёрнутая освобождает базу под собой для тапов. */
+  shopOpen: boolean;
 }
 
 export const GHOST_UID = '__ghost__';
@@ -41,6 +43,7 @@ export interface BaseEditor {
   setEditing(on: boolean): boolean;
   select(uid: string | null): void;
   askRemove(uid: string | null): void;
+  setShopOpen(open: boolean): void;
   startPlacing(type: string): void;
   cancelPlacing(): void;
   movePlacing(x: number, y: number): void;
@@ -79,6 +82,7 @@ const INITIAL: EditorState = {
   saving: false,
   askRemove: null,
   notice: null,
+  shopOpen: true,
 };
 
 export function applyOverrides(items: readonly BaseItem[], overrides: Overrides, drag: EditorState['drag']): BaseItem[] {
@@ -126,7 +130,7 @@ export function createBaseEditor(o: EditorOptions): BaseEditor {
 
     setEditing(on) {
       if (!on && self.dirty()) return false; // выйти можно через save() или cancel()
-      set({ ...INITIAL, editing: on, selectedUid: store.getState().selectedUid });
+      set({ ...INITIAL, editing: on, selectedUid: store.getState().selectedUid, shopOpen: store.getState().shopOpen });
       return true;
     },
     select(uid) {
@@ -134,6 +138,7 @@ export function createBaseEditor(o: EditorOptions): BaseEditor {
       set({ selectedUid: uid, placing: null, askRemove: null, notice: null });
     },
     askRemove: (uid) => set({ askRemove: uid }),
+    setShopOpen: (open) => set({ shopOpen: open }),
     startPlacing(type) {
       const def = o.catalog.get(type);
       if (!def) return;

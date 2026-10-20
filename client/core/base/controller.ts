@@ -17,6 +17,7 @@ export interface BaseActions {
   upgrade(uid: string): void;
   speedup(uid: string): void;
   askRemove(uid: string | null): void;
+  toggleShop(): void;
   remove(uid: string): void;
   clearObstacle(uid: string): void;
   collect(): void;
@@ -42,6 +43,11 @@ export interface ControllerOptions extends Omit<BaseModelOptions, 'catalog'> {
   pricing?: Pricing;
   grid: Grid;
   now?: () => number;
+  /**
+   * Кошельки игрока (cash/fuel/alloy/gems) из /v1/me — только для подсветки «не хватает ресурсов»; решает сервер.
+   * Не задан или вернул undefined — предпроверка отключена.
+   */
+  wallet?: () => Readonly<Record<string, number>> | undefined;
 }
 
 export function createBaseController(o: ControllerOptions): BaseController {
@@ -68,6 +74,7 @@ export function createBaseController(o: ControllerOptions): BaseController {
       editor: es,
       catalog: o.catalog,
       pricing: o.pricing,
+      wallet: o.wallet?.(),
       serverNowMs: serverClock(gs.confirmed, receivedAt, now()),
       placement: editor.placement(),
       rejection: gs.lastRejection ? { code: gs.lastRejection.code, message: gs.lastRejection.message } : null,
@@ -94,6 +101,7 @@ export function createBaseController(o: ControllerOptions): BaseController {
     upgrade: (uid) => void c.upgrade(uid),
     speedup: (uid) => void c.speedup(uid),
     askRemove: (uid) => editor.askRemove(uid),
+    toggleShop: () => editor.setShopOpen(!editor.store.getState().shopOpen),
     remove: (uid) => {
       editor.select(null);
       void c.remove(uid);

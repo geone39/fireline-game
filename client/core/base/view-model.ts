@@ -5,7 +5,21 @@ import { GHOST_UID, type EditorState } from './editor';
 import { footprintSize, hqLevel, type PlacementReason } from './validate';
 import type { BaseItem, BaseTimer, BaseWorld, Def, Grid, Kind } from './types';
 
-export type ShopBlock = 'locked' | 'limit' | 'no_builder' | 'no_price';
+export type ShopBlock = 'locked' | 'limit' | 'no_builder' | 'no_price' | 'no_funds';
+
+/** Чего не хватает: ресурс → сколько нужно и сколько есть. Только подсказка UI — решает сервер (insufficient_resources). */
+export type Shortfall = Record<string, { need: number; have: number }>;
+
+/** Клиентская предпроверка цены по кошельку; null — кошелёк неизвестен или всего хватает. */
+export function shortfallOf(cost: Readonly<Record<string, number>>, wallet: Readonly<Record<string, number>> | undefined): Shortfall | null {
+  if (!wallet) return null;
+  const out: Shortfall = {};
+  for (const [res, need] of Object.entries(cost)) {
+    const have = wallet[res] ?? 0;
+    if (have < need) out[res] = { need, have };
+  }
+  return Object.keys(out).length > 0 ? out : null;
+}
 
 export interface ShopEntry {
   type: string;
@@ -16,10 +30,12 @@ export interface ShopEntry {
   /** null — без лимита. */
   limit: number | null;
   blocked: ShopBlock | null;
+  /** Заполнено при blocked === 'no_funds'. */
+  short: Shortfall | null;
   unlockHq: number;
 }
 
-export type ActionBlock = 'busy' | 'max_level' | 'no_builder' | 'no_price';
+export type ActionBlock = 'busy' | 'max_level' | 'no_builder' | 'no_price' | 'no_funds';
 
 export interface CardVM {
   uid: string;
@@ -29,8 +45,11 @@ export interface CardVM {
   level: number;
   maxLevel: number;
   timer: { kind: string; toLevel: number; remainingS: number } | null;
-  upgrade: { cost: Record<string, number>; blocked: ActionBlock | null };
+  upgrade: { cost: Record<string, number>; blocked: ActionBlock | null; short: Shortfall | null };
   speedupGems: number | null;
+  /** Гемов у игрока (undefined — кошелёк неизвестен) и хватает ли на ускорение; для подсказки, решает сервер. */
+  gemsHave: number | null;
+  speedupAffordable: boolean;
   canRemove: boolean;
   clear: { cost: Record<string, number>; reward: Record<string, number> } | null;
   canRotate: boolean;
@@ -53,6 +72,8 @@ export interface OverlayVM {
 
 export interface BaseViewModel {
   shop: ShopEntry[];
+  /** Панель построек развёрнута (свёрнутая не закрывает базу под собой). */
+  shopOpen: boolean;
   card: CardVM | null;
   toolbar: {
     editing: boolean;
@@ -76,6 +97,8 @@ export interface ViewInput {
   editor: EditorState;
   catalog: Catalog;
   pricing?: Pricing;
+  /** Кошельки игрока (cash/fuel/alloy/gems); без них проверка цены не делается. */
+  wallet?: Readonly<Record<string, number>>;
   /** текущее время сервера, мс (Date.parse(server_time) + прошло с ответа) */
   serverNowMs: number;
   placement: { ok: boolean; reason: PlacementReason | null; tiles: { x: number; y: number; ok: boolean }[] } | null;
@@ -112,19 +135,23 @@ export function selectViewModel(i: ViewInput): BaseViewModel {
     .map((d) => {
       const count = world.items.filter((it) => it.type === d.id).length;
       const limit = catalog.maxCount(d, hq);
+      const cost = pricing?.cost(d.id, 1) ?? {};
+      const short = shortfallOf(cost, i.wallet);
       let blocked: ShopBlock | null = null;
       if (hq < d.unlockHq) blocked = 'locked';
       else if (limit !== null && count >= limit) blocked = 'limit';
       else if (!pricing?.has(d.id)) blocked = 'no_price';
       else if (!builderFree) blocked = 'no_builder';
+      else if (short) blocked = 'no_funds';
       return {
         type: d.id,
         nameKey: d.nameKey,
         kind: d.kind,
-        cost: pricing?.cost(d.id, 1) ?? {},
+        cost,
         count,
         limit,
         blocked,
+        short: blocked === 'no_funds' ? short : null,
         unlockHq: d.unlockHq,
       };
     });
@@ -136,11 +163,16 @@ export function selectViewModel(i: ViewInput): BaseViewModel {
     const t = timerOf(world, sel.uid);
     const maxLevel = pricing?.maxLevel(sd) ?? sd.levels ?? 1;
     const remainingS = t ? remainingSeconds(t, i.serverNowMs) : 0;
+    const upCost = pricing?.cost(sd.id, sel.level + 1) ?? {};
+    const upShort = shortfallOf(upCost, i.wallet);
     let blocked: ActionBlock | null = null;
     if (!pricing?.has(sd.id)) blocked = 'no_price';
     else if (t) blocked = 'busy';
     else if (sel.level >= maxLevel) blocked = 'max_level';
     else if (!builderFree) blocked = 'no_builder';
+    else if (upShort) blocked = 'no_funds';
+    const speedupGems = t && pricing ? pricing.speedupGems(remainingS) : null;
+    const gemsHave = i.wallet ? (i.wallet.gems ?? 0) : null;
     card = {
       uid: sel.uid,
       type: sel.type,
@@ -149,8 +181,10 @@ export function selectViewModel(i: ViewInput): BaseViewModel {
       level: sel.level,
       maxLevel,
       timer: t ? { kind: t.kind, toLevel: t.to_level, remainingS } : null,
-      upgrade: { cost: pricing?.cost(sd.id, sel.level + 1) ?? {}, blocked },
-      speedupGems: t && pricing ? pricing.speedupGems(remainingS) : null,
+      upgrade: { cost: upCost, blocked, short: blocked === 'no_funds' ? upShort : null },
+      speedupGems,
+      gemsHave,
+      speedupAffordable: speedupGems === null || gemsHave === null || gemsHave >= speedupGems,
       canRemove: sd.kind !== 'core' && sd.kind !== 'obstacle',
       clear: sd.kind === 'obstacle' ? { cost: { ...sd.clearCost }, reward: { ...sd.reward } } : null,
       canRotate: editor.editing && sd.kind !== 'obstacle' && sd.w !== sd.h,
@@ -173,6 +207,7 @@ export function selectViewModel(i: ViewInput): BaseViewModel {
   const pd = editor.placing ? catalog.get(editor.placing.type) : undefined;
   return {
     shop,
+    shopOpen: editor.shopOpen,
     card,
     toolbar: {
       editing: editor.editing,

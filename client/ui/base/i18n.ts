@@ -28,7 +28,12 @@ const UI: Record<Lang, Record<string, string>> = {
     'ui.left': 'осталось',
     'ui.reward': 'Награда',
     'ui.count': 'Построено',
-    'ui.gems': 'гемов',
+    'ui.gems.one': 'гем',
+    'ui.gems.few': 'гема',
+    'ui.gems.many': 'гемов',
+    'ui.shop_hide': 'Свернуть',
+    'ui.shop_show': 'Развернуть',
+    'meta.lang': 'ru',
     'res.cash': 'Деньги',
     'res.fuel': 'Топливо',
     'res.alloy': 'Сплав',
@@ -43,6 +48,7 @@ const UI: Record<Lang, Record<string, string>> = {
     'block.no_price': 'Цена не задана',
     'block.busy': 'Уже строится',
     'block.max_level': 'Максимальный уровень',
+    'block.no_funds': 'Нужно {need}, есть {have}',
     'reason.out_of_bounds': 'За пределами карты',
     'reason.on_water': 'Нельзя строить на воде',
     'reason.overlap': 'Клетка занята',
@@ -88,7 +94,12 @@ const UI: Record<Lang, Record<string, string>> = {
     'ui.left': 'left',
     'ui.reward': 'Reward',
     'ui.count': 'Built',
-    'ui.gems': 'gems',
+    'ui.gems.one': 'gem',
+    'ui.gems.few': 'gems',
+    'ui.gems.many': 'gems',
+    'ui.shop_hide': 'Collapse',
+    'ui.shop_show': 'Expand',
+    'meta.lang': 'en',
     'res.cash': 'Cash',
     'res.fuel': 'Fuel',
     'res.alloy': 'Alloy',
@@ -103,6 +114,7 @@ const UI: Record<Lang, Record<string, string>> = {
     'block.no_price': 'No price set',
     'block.busy': 'Already in progress',
     'block.max_level': 'Max level',
+    'block.no_funds': 'Need {need}, have {have}',
     'reason.out_of_bounds': 'Outside the map',
     'reason.on_water': 'Cannot build on water',
     'reason.overlap': 'Tile is occupied',
@@ -155,6 +167,23 @@ export function formatDuration(totalS: number, t: T): string {
     if (n > 0 && parts.length < 2) parts.push(`${n} ${t(key)}`);
   }
   return parts.length ? parts.join(' ') : `0 ${t('time.s')}`;
+}
+
+/** «1 гем», «2 гема», «5 гемов» (ru) / «1 gem», «2 gems» (en): форма слова по правилам языка (Intl.PluralRules). */
+export function formatGems(n: number, t: T): string {
+  const cat = new Intl.PluralRules(t('meta.lang')).select(n);
+  return `${n} ${t(cat === 'one' ? 'ui.gems.one' : cat === 'few' ? 'ui.gems.few' : 'ui.gems.many')}`;
+}
+
+/** «Нужно …, есть …» для нехватки ресурсов (см. Shortfall). */
+export function formatShortfall(short: Readonly<Record<string, { need: number; have: number }>>, t: T): string {
+  const need: Record<string, number> = {};
+  const have: Record<string, number> = {};
+  for (const [res, v] of Object.entries(short)) {
+    need[res] = v.need;
+    have[res] = v.have;
+  }
+  return t('block.no_funds', { need: formatCost(need, t), have: formatCost(have, t) });
 }
 
 export function formatCost(cost: Readonly<Record<string, number>>, t: T): string {
