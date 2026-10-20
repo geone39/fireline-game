@@ -59,3 +59,7 @@ go -C tools/simbattle run . -seeds 6 -levels research   # матрица win-rat
 - Nightly `.github/workflows/simbattle-nightly.yml` (cron 03:17 UTC и ручной запуск: Actions → simbattle-nightly → Run workflow, входы `seeds`, `levels`) делает полную матрицу, кладёт `report.md`/`report.json` в артефакт `simbattle-report` (30 дней) и печатает таблицу в job summary. Ничего не коммитит и не падает из-за win-rate (он информативный до M3); падает только при ошибке самого прогона.
 
 Цели `make wasm`, `make e2e`, `make e2e-down` делают то же. При падении e2e в CI артефакт `e2e-failure` содержит отчёт, trace, скриншоты и `compose.log`.
+
+## Экран боя в docker compose (OPS-6)
+
+`docker compose -f deploy/docker-compose.yml up --build` сам собирает `sim.wasm` и `wasm_exec.js` (сервис `sim-wasm`, вывод в `client/public/sim/`), ручной `node client/sim-wasm/build.mjs` не нужен. Экран боя: `http://localhost:5173/?screen=battle`. После правок `sim/` — `docker compose -f deploy/docker-compose.yml up -d` (пересборка ~3 с, кэш Go в томах). Нет экрана боя/клиент не стартует — `docker compose logs sim-wasm`. Подробнее: `deploy/ENV.md`.

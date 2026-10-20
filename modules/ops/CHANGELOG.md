@@ -1,6 +1,7 @@
 # CHANGELOG `ops`
 
 ## Unreleased
+- feat(compose): сервис `sim-wasm` собирает sim.wasm и wasm_exec.js в `client/public/sim` перед стартом client; экран боя работает после одной команды `compose up` (OPS-6, #99, закрывает #93)
 - feat(ci): job `simbattle` (`make simbattle`: vet, gofmt, `test -short`, кэш модулей tools/simbattle+sim+server) и nightly-workflow `simbattle-nightly.yml` (cron + workflow_dispatch: матрица `-seeds 6 -levels research`, артефакт `simbattle-report`, сводка в job summary, без коммита и без гейта по win-rate) (OPS-7, #89)
 - feat(make): цели `simbattle`, `simbattle-full`, `simbattle-matrix` (не входят в `check`); runbook dev-checks.md дополнен
 - feat(ci): job `e2e` (compose up --wait, Playwright с кэшем браузеров, артефакты и логи compose при падении) и job `wasm` (`make wasm`: сборка sim.wasm, паритет G01..G20 через node, размер в лог и summary, артефакт) (OPS-5; закрывает запросы qa и OQ-SIM10(2))

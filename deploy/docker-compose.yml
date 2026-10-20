@@ -42,6 +42,17 @@ services:
       timeout: 3s
       retries: 20
 
+  # Собирает sim.wasm + wasm_exec.js в client/public/sim (не коммитятся) и завершается; client ждёт его успеха.
+  sim-wasm:
+    build:
+      context: ..
+      dockerfile: deploy/sim-wasm.Dockerfile
+    volumes:
+      - ../sim:/src/sim:ro
+      - ../client/public/sim:/out
+      - go_cache:/root/.cache/go-build
+      - go_mod:/go/pkg/mod
+
   client:
     build:
       context: ..
@@ -62,6 +73,8 @@ services:
     depends_on:
       server:
         condition: service_healthy
+      sim-wasm:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1:5173/"]
       interval: 5s
@@ -72,3 +85,5 @@ services:
 volumes:
   pgdata:
   client_node_modules:
+  go_cache:
+  go_mod:

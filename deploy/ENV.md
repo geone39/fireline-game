@@ -36,6 +36,10 @@
 
 Контейнер `client` монтирует `../client` → `/app`, а также `../content` → `/content` и `../art` → `/art` (read-only): клиент импортирует `../../content/*` и `../../art/*` относительно `/app`. Healthcheck клиента — `wget http://127.0.0.1:5173/`; `server` — `/healthz`, `postgres` — `pg_isready`. Запуск: `docker compose -f deploy/docker-compose.yml up --build`, приложение на `http://localhost:${CLIENT_PORT}`.
 
+### sim.wasm в compose (OPS-6)
+
+Одноразовый сервис `sim-wasm` (`deploy/sim-wasm.Dockerfile`, golang:1.26-alpine) при каждом `compose up` собирает `sim/wasm` → `client/public/sim/{sim.wasm,wasm_exec.js}` (bind-mount, в git не попадает) и завершается; `client` стартует после его успеха (`service_completed_successfully`). Vite раздаёт `public/` как есть, перезапуск не нужен; после правки `sim/` достаточно `docker compose up -d` (пересборка ~3 с благодаря именованным томам `go_cache`/`go_mod`). Вручную `node client/sim-wasm/build.mjs` больше не нужен. Если Go-сборка падает, `client` не стартует — смотрите `docker compose logs sim-wasm`.
+
 ## Клиент (`client/`, Vite)
 
 | Переменная | По умолчанию | Описание |
