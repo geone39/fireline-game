@@ -13,11 +13,13 @@
     "heal_total": {"type": "integer", "minimum": 1},
     "adrenaline_move_permille": {"type": "integer", "minimum": 0},
     "adrenaline_dmg_permille": {"type": "integer", "minimum": 0},
+    "level_growth": {"type": "integer", "minimum": 1000},
     "housing": {"type": "integer", "minimum": 1},
     "cost": {"type": "object", "minProperties": 1},
     "unlock": {"type": "object"}
   },
   "allOf": [
+    {"if": {"required": ["level_growth"]}, "then": {"properties": {"kind": {"enum": ["airstrike", "medkit"]}}}},
     {"if": {"properties": {"kind": {"const": "airstrike"}}}, "then": {"required": ["duration_s", "dmg_total"]}},
     {"if": {"properties": {"kind": {"const": "medkit"}}}, "then": {"required": ["duration_s", "heal_total"]}},
     {"if": {"properties": {"kind": {"enum": ["smoke", "emp"]}}}, "then": {"required": ["duration_s"]}},

@@ -2,7 +2,7 @@
 # Schema: schema/research.schema.json (CONTENT-6, army-lab.md §2/§5/§11). Level(item) = max(1, max to_level of done nodes of the item).
 #   unit | spell | perk — what the node is about (exactly one); perk is structural {key, value} (was the string "key+N").
 #   requires — explicit prerequisite node ids (same item, lower to_level); a chain without `requires` is implicit by ascending to_level.
-#   soon: true — the node is shown as "coming soon" and cannot be started: level_growth for spells does not exist yet (OQ-ARMY-2, SIM-9), the research would change nothing.
+#   soon: true — the node is shown as "coming soon" and cannot be started: its spell has no `level_growth` in troops.yaml (only airstrike and medkit have one, OQ-ARMY-2/SIM-9), the research would change nothing.
 # ASSUMPTION (OQ-CONTENT6-3): the nodes added in CONTENT-6 are the first step (to_level 2) of every item; tier follows the existing table (HQ<=2 items tier 1, HQ3..5 tier 2, HQ>=6 tier 3);
 #   lab = max(tier floor, item unlock.hq - 1) — the lab reaches level L at about HQ L+1 (validate_content.py checks lab + 1 >= unlock.hq). Higher levels of items are balance's call.
 schema: 1
@@ -16,7 +16,7 @@ nodes:
   - {id: r_breach_1, name_key: r.breach_1, unit: u_breacher, to_level: 2, tier: 2, lab: 3}
   - {id: r_humvee_1, name_key: r.humvee_1, unit: v_humvee,   to_level: 2, tier: 2, lab: 4}
   - {id: r_tank_1, name_key: r.tank_1,   unit: v_tank,     to_level: 2, tier: 3, lab: 6}
-  - {id: r_airstrike_1, name_key: r.airstrike_1, spell: c_airstrike, to_level: 2, tier: 2, lab: 4, soon: true}
+  - {id: r_airstrike_1, name_key: r.airstrike_1, spell: c_airstrike, to_level: 2, tier: 2, lab: 4}
   # --- CONTENT-6: remaining infantry / vehicles / ships / spells (first step each) ---
   - {id: r_medic_1, name_key: r.medic_1, unit: u_medic, to_level: 2, tier: 2, lab: 4}
   - {id: r_grenadier_1, name_key: r.grenadier_1, unit: u_grenadier, to_level: 2, tier: 2, lab: 4}
@@ -32,7 +32,7 @@ nodes:
   - {id: r_lander_1, name_key: r.lander_1, unit: s_lander, to_level: 2, tier: 3, lab: 6}
   - {id: r_destroyer_1, name_key: r.destroyer_1, unit: s_destroyer, to_level: 2, tier: 3, lab: 8}
   - {id: r_smoke_1, name_key: r.smoke_1, spell: c_smoke, to_level: 2, tier: 2, lab: 3, soon: true}
-  - {id: r_medkit_1, name_key: r.medkit_1, spell: c_medkit, to_level: 2, tier: 2, lab: 3, soon: true}
+  - {id: r_medkit_1, name_key: r.medkit_1, spell: c_medkit, to_level: 2, tier: 2, lab: 3}
   - {id: r_adrenaline_1, name_key: r.adrenaline_1, spell: c_adrenaline, to_level: 2, tier: 2, lab: 5, soon: true}
   - {id: r_emp_1, name_key: r.emp_1, spell: c_emp, to_level: 2, tier: 3, lab: 6, soon: true}
   - {id: r_spell_breach_1, name_key: r.spell_breach_1, spell: c_breach, to_level: 2, tier: 2, lab: 5, soon: true}   # r_breach_1 is the u_breacher node

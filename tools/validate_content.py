@@ -271,7 +271,7 @@ for u in alluni:   # the producer of the unit must exist and match its unlock ke
 for sp in troops["spells"]:
     if not isinstance(sp.get("train_s"), int) or sp["train_s"] < 1: err.append(f"{sp['id']}: missing train_s")
     if set(sp["cost"]) != {"fuel"}: err.append(f"{sp['id']}: spells cost fuel only")
-    if "level_growth" in sp: err.append(f"{sp['id']}: level_growth for spells waits for SIM-9 (OQ-ARMY-2)")
+    if "level_growth" in sp and sp["kind"] not in ("airstrike", "medkit"): err.append(f"{sp['id']}: level_growth only for airstrike/medkit (nothing else grows, OQ-SIM15)")
 if army.get("housing_perk", {}).get("key") not in {n["perk"]["key"] for n in res["nodes"] if "perk" in n}: err.append("army.yaml: housing_perk.key is not a perk of any research node")
 if army.get("cancel_refund_started_pct") != costs_f.get("cancel_refund_pct"): err.append("army.yaml: cancel_refund_started_pct != building_costs.yaml cancel_refund_pct")
 for u in army.get("start_army", []):
@@ -304,7 +304,7 @@ for n in res["nodes"]:
         key = n.get("unit") or n.get("spell")
         chains.setdefault(key, []).append(n)
         if n["lab"] + 1 < item["unlock"]["hq"]: err.append(f"{i}: lab {n['lab']} is reached only after HQ {n['lab'] + 1}, but {key} unlocks at HQ {item['unlock']['hq']} (need lab >= unlock.hq - 1)")
-        if "spell" in n and not n.get("soon"): err.append(f"{i}: spell nodes must be soon: true until level_growth for spells exists (SIM-9, OQ-ARMY-2)")
+        if "spell" in n and bool(n.get("soon")) != ("level_growth" not in item): err.append(f"{i}: spell node must be soon: true exactly when the spell has no level_growth (SIM-9, OQ-ARMY-2)")
         if "unit" in n and n.get("soon"): err.append(f"{i}: soon is only for spell nodes")
     for r in n.get("requires", []):
         q = rnode.get(r)
