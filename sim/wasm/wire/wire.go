@@ -204,3 +204,13 @@ func (t *Battles) Free(h int) string {
 	t.list[h-1] = nil
 	return reply(map[string]bool{"freed": true}, nil)
 }
+
+// State is Battle.State: the client view of the world at this moment (entities, hp, ap, positions, zone effects;
+// no hidden traps). Reply result: sim.State with Go field names.
+func (t *Battles) State(h int) string {
+	b, err := t.get(h)
+	if err != nil {
+		return reply(nil, err)
+	}
+	return reply(b.State(), nil)
+}

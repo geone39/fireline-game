@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -180,7 +181,40 @@ func scenarios() []scenario {
 		}})
 	all = append(all, scenariosSim2()...)
 	all = append(all, scenariosSim3()...)
-	return append(all, scenariosSim5()...)
+	all = append(all, scenariosSim5()...)
+	return append(all, scenariosSim6()...)
+}
+
+// checkUpdatePolicy is the EngineVersion policy (README of the replays): -update may create a new replay or
+// regenerate one recorded by an OLDER engine version (a bump, committed on its own). A replay of the CURRENT
+// version may only be rewritten with the same log, seed, Result and StateHash (the embedded fixture Rules may be
+// refreshed): anything else is a rules change without a bump and is refused.
+func checkUpdatePolicy(file string, fresh goldenFile) error {
+	old, err := os.ReadFile(file)
+	if os.IsNotExist(err) {
+		return nil
+	}
+	if err != nil {
+		return err
+	}
+	var g goldenFile
+	if err := json.Unmarshal(old, &g); err != nil {
+		return err
+	}
+	// the fresh file goes through JSON like the old one, so that nil/empty slices compare equal
+	raw, err := json.Marshal(fresh)
+	if err != nil {
+		return err
+	}
+	var f goldenFile
+	if err := json.Unmarshal(raw, &f); err != nil {
+		return err
+	}
+	if g.EngineVersion == EngineVersion && (g.Seed != f.Seed || !reflect.DeepEqual(g.Commands, f.Commands) ||
+		!reflect.DeepEqual(g.Expect, f.Expect) || g.StateHashHex != f.StateHashHex) {
+		return fmt.Errorf("the replay of engine %s would change: bump EngineVersion first (the regenerated replays go in a separate commit)", EngineVersion)
+	}
+	return nil
 }
 
 func goldenDir() string { return filepath.Join("testdata", "replays") }
@@ -188,11 +222,14 @@ func goldenDir() string { return filepath.Join("testdata", "replays") }
 func TestGolden(t *testing.T) {
 	if *update {
 		for _, sc := range scenarios() {
+			if *only != "" && !strings.HasPrefix(sc.name, *only) {
+				continue
+			}
 			res, err := Run(sc.snap, sc.cmds, sc.seed)
 			if err != nil {
 				t.Fatalf("%s: %v", sc.name, err)
 			}
-			if len(res.Rejected) != sc.wantRejects {
+			if sc.wantRejects >= 0 && len(res.Rejected) != sc.wantRejects {
 				t.Fatalf("%s: %d rejections, scenario expects %d: %+v", sc.name, len(res.Rejected), sc.wantRejects, res.Rejected)
 			}
 			g := goldenFile{Name: sc.name, About: sc.about, EngineVersion: EngineVersion, Seed: sc.seed, Snapshot: sc.snap,
@@ -201,7 +238,12 @@ func TestGolden(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			if err := os.WriteFile(filepath.Join(goldenDir(), sc.name+".json"), append(data, '\n'), 0o644); err != nil {
+			data = append(data, 10)
+			file := filepath.Join(goldenDir(), sc.name+".json")
+			if err := checkUpdatePolicy(file, g); err != nil {
+				t.Fatalf("%s: %v", sc.name, err)
+			}
+			if err := os.WriteFile(file, data, 0o644); err != nil {
 				t.Fatal(err)
 			}
 		}

@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"hash/fnv"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -51,8 +52,9 @@ type reply struct {
 	Result json.RawMessage `json:"result"`
 }
 
-// nativeStepped feeds commands one by one through the Battles table (the path JS uses for prediction).
-func nativeStepped(t *testing.T, g golden) string {
+// nativeStepped feeds commands one by one through the Battles table (the path JS uses for prediction). It returns
+// the final Result reply and the State replies before the first command and after every command.
+func nativeStepped(t *testing.T, g golden) (string, []string) {
 	var tab wire.Battles
 	var nb struct{ Result struct{ Handle int } }
 	if err := json.Unmarshal([]byte(tab.New(string(g.Snapshot), fmt.Sprint(g.Seed))), &nb); err != nil || nb.Result.Handle == 0 {
@@ -62,13 +64,15 @@ func nativeStepped(t *testing.T, g golden) string {
 	if err := json.Unmarshal(g.Commands, &cmds); err != nil {
 		t.Fatal(err)
 	}
+	states := []string{tab.State(nb.Result.Handle)}
 	for i, c := range cmds {
 		var r reply
 		if err := json.Unmarshal([]byte(tab.Apply(nb.Result.Handle, string(c))), &r); err != nil || !r.OK {
 			t.Fatalf("%s cmd %d: %v %s", g.Name, i, err, r.Error)
 		}
+		states = append(states, tab.State(nb.Result.Handle))
 	}
-	return tab.Result(nb.Result.Handle)
+	return tab.Result(nb.Result.Handle), states
 }
 
 // The wire layer must reproduce the golden StateHash natively.
@@ -88,6 +92,41 @@ func TestWireMatchesGolden(t *testing.T) {
 	}
 }
 
+// state(handle) is the client view: JSON with the Go field names, no hidden traps, a bad handle is an error.
+func TestWireState(t *testing.T) {
+	var tab wire.Battles
+	var nb struct{ Result struct{ Handle int } }
+	g := loadGoldens(t)
+	var trap golden
+	for _, x := range g {
+		if x.Name == "G31" {
+			trap = x
+		}
+	}
+	if err := json.Unmarshal([]byte(tab.New(string(trap.Snapshot), fmt.Sprint(trap.Seed))), &nb); err != nil || nb.Result.Handle == 0 {
+		t.Fatal("newBattle failed")
+	}
+	var r reply
+	if err := json.Unmarshal([]byte(tab.State(nb.Result.Handle)), &r); err != nil || !r.OK {
+		t.Fatalf("state: %v %s", err, r.Error)
+	}
+	var st sim.State
+	if err := json.Unmarshal(r.Result, &st); err != nil {
+		t.Fatal(err)
+	}
+	if st.Phase != sim.PhaseDeploy || len(st.Entities) != 2 {
+		t.Fatalf("G31 at the start must show the nest and the HQ only (traps are hidden): %+v", st)
+	}
+	for _, e := range st.Entities {
+		if e.ContentID == "d_mine" || e.ContentID == "d_spring_trap" {
+			t.Fatalf("hidden trap leaked: %+v", e)
+		}
+	}
+	if err := json.Unmarshal([]byte(tab.State(99)), &r); err != nil || r.OK || r.Error == "" {
+		t.Fatalf("a bad handle must be an error: %+v", r)
+	}
+}
+
 func TestWireErrors(t *testing.T) {
 	var tab wire.Battles
 	for name, s := range map[string]string{
@@ -97,6 +136,7 @@ func TestWireErrors(t *testing.T) {
 		"empty rules":  wire.Run("{}", "[]", "1"),
 		"bad handle":   tab.Apply(7, `{"turn":0,"op":"start"}`),
 		"free handle":  tab.Free(1),
+		"state handle": tab.State(1),
 	} {
 		var r reply
 		if err := json.Unmarshal([]byte(s), &r); err != nil || r.OK || r.Error == "" {
@@ -166,7 +206,10 @@ func TestWasmParity(t *testing.T) {
 	sc := bufio.NewScanner(stdout)
 	sc.Buffer(make([]byte, 1<<20), 1<<24)
 	for sc.Scan() {
-		var line struct{ Name, Engine, Run, Stepped string }
+		var line struct {
+			Name, Engine, Run, Stepped string
+			States                     []string
+		}
 		if err := json.Unmarshal(sc.Bytes(), &line); err != nil {
 			t.Fatalf("node output: %v", err)
 		}
@@ -185,8 +228,20 @@ func TestWasmParity(t *testing.T) {
 		if res.StateHash != g.StateHashHex {
 			t.Errorf("%s: wasm StateHash %s, golden %s", line.Name, res.StateHash, g.StateHashHex)
 		}
-		if want := nativeStepped(t, g); line.Stepped != want {
+		want, wantStates := nativeStepped(t, g)
+		if line.Stepped != want {
 			t.Errorf("%s: newBattle/apply result differs\n wasm   %s\n native %s", line.Name, line.Stepped, want)
+		}
+		if len(line.States) != len(wantStates) {
+			t.Errorf("%s: wasm returned %d states, native %d", line.Name, len(line.States), len(wantStates))
+		}
+		for i := range wantStates {
+			h := fnv.New32a()
+			h.Write([]byte(wantStates[i]))
+			if want := fmt.Sprintf("%08x", h.Sum32()); i < len(line.States) && line.States[i] != want {
+				t.Errorf("%s: state() after %d commands differs (wasm hash %s, native %s)", line.Name, i, line.States[i], want)
+				break
+			}
 		}
 	}
 	if err := cmd.Wait(); err != nil {

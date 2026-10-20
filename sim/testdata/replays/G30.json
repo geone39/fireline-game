@@ -1,0 +1,4748 @@
+{
+ "name": "G30",
+ "about": "large base HQ10 (150 buildings, 12-man bunkers, 120 garrison, 120 attackers): eight idle turns of the defence phase; the Snapshot.Buildings order does not matter (TestGoldenShuffleInvariant)",
+ "engine_version": "0.2.4",
+ "seed": 30,
+ "snapshot": {
+  "ContentVersion": "test-fixture",
+  "BaseID": "f01",
+  "Map": "plain",
+  "Buildings": [
+   {
+    "ID": "d_bunker",
+    "Level": 1,
+    "Pos": {
+     "X": 2,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 5,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mortar",
+    "Level": 1,
+    "Pos": {
+     "X": 7,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_flame_trap",
+    "Level": 1,
+    "Pos": {
+     "X": 10,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_tesla",
+    "Level": 1,
+    "Pos": {
+     "X": 12,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 14,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 15,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wire",
+    "Level": 1,
+    "Pos": {
+     "X": 16,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mine",
+    "Level": 1,
+    "Pos": {
+     "X": 17,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 18,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_bunker",
+    "Level": 1,
+    "Pos": {
+     "X": 20,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 23,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mortar",
+    "Level": 1,
+    "Pos": {
+     "X": 25,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_flame_trap",
+    "Level": 1,
+    "Pos": {
+     "X": 28,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_tesla",
+    "Level": 1,
+    "Pos": {
+     "X": 30,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 32,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 33,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wire",
+    "Level": 1,
+    "Pos": {
+     "X": 34,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mine",
+    "Level": 1,
+    "Pos": {
+     "X": 35,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 36,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_bunker",
+    "Level": 1,
+    "Pos": {
+     "X": 38,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 14,
+     "Y": 3
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mortar",
+    "Level": 1,
+    "Pos": {
+     "X": 32,
+     "Y": 3
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_flame_trap",
+    "Level": 1,
+    "Pos": {
+     "X": 16,
+     "Y": 3
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_tesla",
+    "Level": 1,
+    "Pos": {
+     "X": 5,
+     "Y": 4
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 41,
+     "Y": 2
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 35,
+     "Y": 3
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wire",
+    "Level": 1,
+    "Pos": {
+     "X": 41,
+     "Y": 3
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mine",
+    "Level": 1,
+    "Pos": {
+     "X": 10,
+     "Y": 4
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 11,
+     "Y": 4
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_bunker",
+    "Level": 1,
+    "Pos": {
+     "X": 28,
+     "Y": 4
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 18,
+     "Y": 4
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mortar",
+    "Level": 1,
+    "Pos": {
+     "X": 35,
+     "Y": 4
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_flame_trap",
+    "Level": 1,
+    "Pos": {
+     "X": 23,
+     "Y": 4
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_tesla",
+    "Level": 1,
+    "Pos": {
+     "X": 2,
+     "Y": 5
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 13,
+     "Y": 4
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 31,
+     "Y": 4
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wire",
+    "Level": 1,
+    "Pos": {
+     "X": 41,
+     "Y": 4
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mine",
+    "Level": 1,
+    "Pos": {
+     "X": 4,
+     "Y": 5
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 7,
+     "Y": 5
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_bunker",
+    "Level": 1,
+    "Pos": {
+     "X": 13,
+     "Y": 5
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 9,
+     "Y": 5
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mortar",
+    "Level": 1,
+    "Pos": {
+     "X": 20,
+     "Y": 5
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_flame_trap",
+    "Level": 1,
+    "Pos": {
+     "X": 16,
+     "Y": 5
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_tesla",
+    "Level": 1,
+    "Pos": {
+     "X": 25,
+     "Y": 5
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 27,
+     "Y": 5
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 31,
+     "Y": 5
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wire",
+    "Level": 1,
+    "Pos": {
+     "X": 38,
+     "Y": 5
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mine",
+    "Level": 1,
+    "Pos": {
+     "X": 39,
+     "Y": 5
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 40,
+     "Y": 5
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_bunker",
+    "Level": 1,
+    "Pos": {
+     "X": 4,
+     "Y": 6
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 11,
+     "Y": 6
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mortar",
+    "Level": 1,
+    "Pos": {
+     "X": 31,
+     "Y": 6
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_flame_trap",
+    "Level": 1,
+    "Pos": {
+     "X": 18,
+     "Y": 6
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_tesla",
+    "Level": 1,
+    "Pos": {
+     "X": 23,
+     "Y": 6
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 27,
+     "Y": 6
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 34,
+     "Y": 6
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wire",
+    "Level": 1,
+    "Pos": {
+     "X": 38,
+     "Y": 6
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mine",
+    "Level": 1,
+    "Pos": {
+     "X": 39,
+     "Y": 6
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 2,
+     "Y": 7
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_bunker",
+    "Level": 1,
+    "Pos": {
+     "X": 7,
+     "Y": 7
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 16,
+     "Y": 7
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mortar",
+    "Level": 1,
+    "Pos": {
+     "X": 25,
+     "Y": 7
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_flame_trap",
+    "Level": 1,
+    "Pos": {
+     "X": 28,
+     "Y": 7
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_tesla",
+    "Level": 1,
+    "Pos": {
+     "X": 34,
+     "Y": 7
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 10,
+     "Y": 7
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 30,
+     "Y": 7
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wire",
+    "Level": 1,
+    "Pos": {
+     "X": 36,
+     "Y": 7
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mine",
+    "Level": 1,
+    "Pos": {
+     "X": 37,
+     "Y": 7
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 38,
+     "Y": 7
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_bunker",
+    "Level": 1,
+    "Pos": {
+     "X": 10,
+     "Y": 8
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 40,
+     "Y": 7
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mortar",
+    "Level": 1,
+    "Pos": {
+     "X": 13,
+     "Y": 8
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_flame_trap",
+    "Level": 1,
+    "Pos": {
+     "X": 18,
+     "Y": 8
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_tesla",
+    "Level": 1,
+    "Pos": {
+     "X": 20,
+     "Y": 8
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 22,
+     "Y": 8
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 23,
+     "Y": 8
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wire",
+    "Level": 1,
+    "Pos": {
+     "X": 24,
+     "Y": 8
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mine",
+    "Level": 1,
+    "Pos": {
+     "X": 30,
+     "Y": 8
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 36,
+     "Y": 8
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_bunker",
+    "Level": 1,
+    "Pos": {
+     "X": 2,
+     "Y": 9
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 5,
+     "Y": 9
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mortar",
+    "Level": 1,
+    "Pos": {
+     "X": 22,
+     "Y": 9
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_flame_trap",
+    "Level": 1,
+    "Pos": {
+     "X": 16,
+     "Y": 9
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_tesla",
+    "Level": 1,
+    "Pos": {
+     "X": 28,
+     "Y": 9
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 30,
+     "Y": 9
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 31,
+     "Y": 9
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wire",
+    "Level": 1,
+    "Pos": {
+     "X": 32,
+     "Y": 9
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mine",
+    "Level": 1,
+    "Pos": {
+     "X": 33,
+     "Y": 9
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 34,
+     "Y": 9
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_bunker",
+    "Level": 1,
+    "Pos": {
+     "X": 38,
+     "Y": 9
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 7,
+     "Y": 10
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mortar",
+    "Level": 1,
+    "Pos": {
+     "X": 18,
+     "Y": 10
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_flame_trap",
+    "Level": 1,
+    "Pos": {
+     "X": 25,
+     "Y": 10
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_tesla",
+    "Level": 1,
+    "Pos": {
+     "X": 30,
+     "Y": 10
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 41,
+     "Y": 9
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 9,
+     "Y": 10
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wire",
+    "Level": 1,
+    "Pos": {
+     "X": 21,
+     "Y": 10
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mine",
+    "Level": 1,
+    "Pos": {
+     "X": 27,
+     "Y": 10
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 32,
+     "Y": 10
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_bunker",
+    "Level": 1,
+    "Pos": {
+     "X": 9,
+     "Y": 11
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 36,
+     "Y": 10
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mortar",
+    "Level": 1,
+    "Pos": {
+     "X": 12,
+     "Y": 11
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_flame_trap",
+    "Level": 1,
+    "Pos": {
+     "X": 5,
+     "Y": 11
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_tesla",
+    "Level": 1,
+    "Pos": {
+     "X": 15,
+     "Y": 11
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 41,
+     "Y": 10
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 17,
+     "Y": 11
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wire",
+    "Level": 1,
+    "Pos": {
+     "X": 21,
+     "Y": 11
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mine",
+    "Level": 1,
+    "Pos": {
+     "X": 27,
+     "Y": 11
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 28,
+     "Y": 11
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_bunker",
+    "Level": 1,
+    "Pos": {
+     "X": 2,
+     "Y": 12
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 34,
+     "Y": 11
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mortar",
+    "Level": 1,
+    "Pos": {
+     "X": 21,
+     "Y": 12
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_flame_trap",
+    "Level": 1,
+    "Pos": {
+     "X": 7,
+     "Y": 12
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_tesla",
+    "Level": 1,
+    "Pos": {
+     "X": 24,
+     "Y": 12
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 41,
+     "Y": 11
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 17,
+     "Y": 12
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wire",
+    "Level": 1,
+    "Pos": {
+     "X": 26,
+     "Y": 12
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mine",
+    "Level": 1,
+    "Pos": {
+     "X": 27,
+     "Y": 12
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 30,
+     "Y": 12
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_bunker",
+    "Level": 1,
+    "Pos": {
+     "X": 36,
+     "Y": 12
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 32,
+     "Y": 12
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mortar",
+    "Level": 1,
+    "Pos": {
+     "X": 39,
+     "Y": 12
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_flame_trap",
+    "Level": 1,
+    "Pos": {
+     "X": 5,
+     "Y": 13
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_tesla",
+    "Level": 1,
+    "Pos": {
+     "X": 15,
+     "Y": 13
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 17,
+     "Y": 13
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 18,
+     "Y": 13
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wire",
+    "Level": 1,
+    "Pos": {
+     "X": 19,
+     "Y": 13
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mine",
+    "Level": 1,
+    "Pos": {
+     "X": 20,
+     "Y": 13
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 26,
+     "Y": 13
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_bunker",
+    "Level": 1,
+    "Pos": {
+     "X": 7,
+     "Y": 14
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 28,
+     "Y": 13
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mortar",
+    "Level": 1,
+    "Pos": {
+     "X": 10,
+     "Y": 14
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_flame_trap",
+    "Level": 1,
+    "Pos": {
+     "X": 34,
+     "Y": 13
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_tesla",
+    "Level": 1,
+    "Pos": {
+     "X": 13,
+     "Y": 14
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 17,
+     "Y": 14
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 18,
+     "Y": 14
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wire",
+    "Level": 1,
+    "Pos": {
+     "X": 19,
+     "Y": 14
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mine",
+    "Level": 1,
+    "Pos": {
+     "X": 20,
+     "Y": 14
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 24,
+     "Y": 14
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_bunker",
+    "Level": 1,
+    "Pos": {
+     "X": 30,
+     "Y": 14
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mg_nest",
+    "Level": 1,
+    "Pos": {
+     "X": 2,
+     "Y": 15
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mortar",
+    "Level": 1,
+    "Pos": {
+     "X": 4,
+     "Y": 15
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_flame_trap",
+    "Level": 1,
+    "Pos": {
+     "X": 15,
+     "Y": 15
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_tesla",
+    "Level": 1,
+    "Pos": {
+     "X": 17,
+     "Y": 15
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 33,
+     "Y": 14
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wall",
+    "Level": 1,
+    "Pos": {
+     "X": 19,
+     "Y": 15
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_wire",
+    "Level": 1,
+    "Pos": {
+     "X": 20,
+     "Y": 15
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "d_mine",
+    "Level": 1,
+    "Pos": {
+     "X": 21,
+     "Y": 15
+    },
+    "Revealed": false
+   },
+   {
+    "ID": "b_hq",
+    "Level": 1,
+    "Pos": {
+     "X": 38,
+     "Y": 38
+    },
+    "Revealed": false
+   }
+  ],
+  "Garrison": [
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   },
+   {
+    "ID": "u_guard",
+    "Level": 1
+   },
+   {
+    "ID": "u_scout",
+    "Level": 1
+   }
+  ],
+  "Army": [
+   {
+    "ID": "u_heavy",
+    "Level": 1,
+    "Count": 120
+   }
+  ],
+  "Spells": null,
+  "Hero": "",
+  "HeroLevel": 0,
+  "Rules": {
+   "GridW": 44,
+   "GridH": 44,
+   "BuildZone": {
+    "X": 2,
+    "Y": 2,
+    "W": 40,
+    "H": 40
+   },
+   "Maps": [
+    {
+     "ID": "plain",
+     "Water": null
+    },
+    {
+     "ID": "coastal",
+     "Water": [
+      {
+       "X": 40,
+       "Y": 0,
+       "W": 4,
+       "H": 44
+      },
+      {
+       "X": 36,
+       "Y": 28,
+       "W": 4,
+       "H": 12
+      },
+      {
+       "X": 34,
+       "Y": 34,
+       "W": 2,
+       "H": 6
+      }
+     ]
+    }
+   ],
+   "MaxTurns": 30,
+   "ParadropEdgeCells": 3,
+   "SplashFalloffPct": 40,
+   "SpellsPerTurn": 2,
+   "Spells": [
+    {
+     "ID": "c_airstrike",
+     "Kind": 1,
+     "RadiusCells": 3,
+     "DurationTurns": 4,
+     "DmgTotal": 62,
+     "HealTotal": 0,
+     "MovePermille": 0,
+     "DmgPermille": 0
+    },
+    {
+     "ID": "c_medkit",
+     "Kind": 2,
+     "RadiusCells": 3,
+     "DurationTurns": 3,
+     "DmgTotal": 0,
+     "HealTotal": 40,
+     "MovePermille": 0,
+     "DmgPermille": 0
+    },
+    {
+     "ID": "c_smoke",
+     "Kind": 3,
+     "RadiusCells": 3,
+     "DurationTurns": 2,
+     "DmgTotal": 0,
+     "HealTotal": 0,
+     "MovePermille": 0,
+     "DmgPermille": 0
+    },
+    {
+     "ID": "c_adrenaline",
+     "Kind": 4,
+     "RadiusCells": 3,
+     "DurationTurns": 2,
+     "DmgTotal": 0,
+     "HealTotal": 0,
+     "MovePermille": 500,
+     "DmgPermille": 250
+    },
+    {
+     "ID": "c_emp",
+     "Kind": 5,
+     "RadiusCells": 3,
+     "DurationTurns": 2,
+     "DmgTotal": 0,
+     "HealTotal": 0,
+     "MovePermille": 0,
+     "DmgPermille": 0
+    },
+    {
+     "ID": "c_breach",
+     "Kind": 6,
+     "RadiusCells": 2,
+     "DurationTurns": 0,
+     "DmgTotal": 0,
+     "HealTotal": 0,
+     "MovePermille": 0,
+     "DmgPermille": 0
+    }
+   ],
+   "Units": [
+    {
+     "ID": "u_rifleman",
+     "Class": 0,
+     "Hero": false,
+     "HP": 50,
+     "HPGrowthPermille": 0,
+     "AP": 2,
+     "MoveCells": 3,
+     "RangeCells": 4,
+     "MinRangeCells": 0,
+     "Dmg": 10,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "u_brawler",
+     "Class": 0,
+     "Hero": false,
+     "HP": 100,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 4,
+     "RangeCells": 1,
+     "MinRangeCells": 0,
+     "Dmg": 30,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "u_sniper",
+     "Class": 0,
+     "Hero": false,
+     "HP": 30,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 9,
+     "MinRangeCells": 2,
+     "Dmg": 28,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "u_medic",
+     "Class": 0,
+     "Hero": false,
+     "HP": 60,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 3,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 15,
+     "HealVs": 1,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "v_engineer",
+     "Class": 1,
+     "Hero": false,
+     "HP": 200,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 3,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 40,
+     "HealVs": 2,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "u_saboteur",
+     "Class": 0,
+     "Hero": false,
+     "HP": 40,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 3,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 2,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "u_decoy",
+     "Class": 0,
+     "Hero": false,
+     "HP": 80,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "u_para",
+     "Class": 0,
+     "Hero": false,
+     "HP": 50,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 4,
+     "MinRangeCells": 0,
+     "Dmg": 20,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 4,
+     "Paradrop": true,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "v_apc",
+     "Class": 1,
+     "Hero": false,
+     "HP": 700,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 3,
+     "RangeCells": 5,
+     "MinRangeCells": 0,
+     "Dmg": 16,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 2,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "v_buggy",
+     "Class": 1,
+     "Hero": false,
+     "HP": 15,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 3,
+     "RangeCells": 3,
+     "MinRangeCells": 0,
+     "Dmg": 6,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 2,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "v_tank",
+     "Class": 1,
+     "Hero": false,
+     "HP": 1100,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 7,
+     "MinRangeCells": 0,
+     "Dmg": 55,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "u_drone",
+     "Class": 2,
+     "Hero": false,
+     "HP": 70,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 5,
+     "RangeCells": 1,
+     "MinRangeCells": 0,
+     "Dmg": 40,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "s_gunboat",
+     "Class": 3,
+     "Hero": false,
+     "HP": 600,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 3,
+     "RangeCells": 8,
+     "MinRangeCells": 0,
+     "Dmg": 30,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "s_lander",
+     "Class": 3,
+     "Hero": false,
+     "HP": 900,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 3,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 3,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "v_turret",
+     "Class": 1,
+     "Hero": false,
+     "HP": 10,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 0,
+     "RangeCells": 3,
+     "MinRangeCells": 0,
+     "Dmg": 5,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "h_commander",
+     "Class": 0,
+     "Hero": true,
+     "HP": 1600,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 5,
+     "MinRangeCells": 0,
+     "Dmg": 80,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "h_marshal",
+     "Class": 0,
+     "Hero": true,
+     "HP": 1000,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 5,
+     "MinRangeCells": 0,
+     "Dmg": 40,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 3,
+     "AuraDmgPermille": 200,
+     "AuraMovePermille": 400
+    },
+    {
+     "ID": "h_cover",
+     "Class": 0,
+     "Hero": true,
+     "HP": 800,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 5,
+     "MinRangeCells": 0,
+     "Dmg": 40,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 1500,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "a_cover_fire",
+      "Kind": 1,
+      "CooldownTurns": 3,
+      "RadiusCells": 2,
+      "DurationTurns": 2,
+      "Dmg": 61,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "h_tech",
+     "Class": 0,
+     "Hero": true,
+     "HP": 500,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 4,
+     "MinRangeCells": 0,
+     "Dmg": 20,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "a_decoy_turret",
+      "Kind": 2,
+      "CooldownTurns": 2,
+      "RadiusCells": 3,
+      "DurationTurns": 2,
+      "Dmg": 0,
+      "DecoyUnit": "u_decoy",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "h_ghost",
+     "Class": 0,
+     "Hero": true,
+     "HP": 300,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 12,
+     "MinRangeCells": 0,
+     "Dmg": 30,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "a_vanish",
+      "Kind": 3,
+      "CooldownTurns": 4,
+      "RadiusCells": 0,
+      "DurationTurns": 2,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 4000,
+      "BonusVs": 9
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "u_breacher",
+     "Class": 0,
+     "Hero": false,
+     "HP": 35,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 3,
+     "RangeCells": 1,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "SplashCells": 1,
+     "Burst": 16,
+     "WallMult": 40,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "u_grenadier",
+     "Class": 0,
+     "Hero": false,
+     "HP": 75,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 6,
+     "MinRangeCells": 0,
+     "Dmg": 20,
+     "SplashCells": 2,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "u_flamer",
+     "Class": 0,
+     "Hero": false,
+     "HP": 120,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 2,
+     "MinRangeCells": 0,
+     "Dmg": 30,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": [
+      {
+       "Tag": 1,
+       "Permille": 1500
+      },
+      {
+       "Tag": 2,
+       "Permille": 500
+      }
+     ],
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "u_heavy",
+     "Class": 0,
+     "Hero": false,
+     "HP": 520,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 1,
+     "RangeCells": 1,
+     "MinRangeCells": 0,
+     "Dmg": 24,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "u_guard",
+     "Class": 0,
+     "Hero": false,
+     "HP": 40,
+     "HPGrowthPermille": 0,
+     "AP": 1,
+     "MoveCells": 2,
+     "RangeCells": 3,
+     "MinRangeCells": 0,
+     "Dmg": 5,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    },
+    {
+     "ID": "u_scout",
+     "Class": 0,
+     "Hero": false,
+     "HP": 40,
+     "HPGrowthPermille": 0,
+     "AP": 2,
+     "MoveCells": 3,
+     "RangeCells": 3,
+     "MinRangeCells": 0,
+     "Dmg": 6,
+     "SplashCells": 0,
+     "Burst": 0,
+     "WallMult": 0,
+     "VsMult": null,
+     "Carries": 0,
+     "Group": 0,
+     "Paradrop": false,
+     "DmgGrowthPermille": 0,
+     "Heal": 0,
+     "HealVs": 0,
+     "JamTurns": 0,
+     "Ability": {
+      "ID": "",
+      "Kind": 0,
+      "CooldownTurns": 0,
+      "RadiusCells": 0,
+      "DurationTurns": 0,
+      "Dmg": 0,
+      "DecoyUnit": "",
+      "BonusPermille": 0,
+      "BonusVs": 0
+     },
+     "AuraCells": 0,
+     "AuraDmgPermille": 0,
+     "AuraMovePermille": 0
+    }
+   ],
+   "Buildings": [
+    {
+     "ID": "b_hq",
+     "Kind": 0,
+     "W": 4,
+     "H": 4,
+     "HP": 800,
+     "HPGrowthPermille": 1220,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": true,
+     "Weight": 0,
+     "HQ": true,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 0,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
+    },
+    {
+     "ID": "b_vault",
+     "Kind": 0,
+     "W": 3,
+     "H": 3,
+     "HP": 500,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": true,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": true,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 0,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
+    },
+    {
+     "ID": "d_mg_nest",
+     "Kind": 1,
+     "W": 2,
+     "H": 2,
+     "HP": 60,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": true,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 7,
+     "MinRangeCells": 0,
+     "Dmg": 20,
+     "Vs": 5,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
+    },
+    {
+     "ID": "d_jammer",
+     "Kind": 1,
+     "W": 2,
+     "H": 2,
+     "HP": 300,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": true,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 0,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0,
+     "AuraCells": 5,
+     "JamPct": 50
+    },
+    {
+     "ID": "d_coastal",
+     "Kind": 1,
+     "W": 3,
+     "H": 3,
+     "HP": 500,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": true,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 9,
+     "MinRangeCells": 0,
+     "Dmg": 25,
+     "Vs": 8,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
+    },
+    {
+     "ID": "d_mortar",
+     "Kind": 1,
+     "W": 3,
+     "H": 3,
+     "HP": 600,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": true,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 10,
+     "MinRangeCells": 3,
+     "Dmg": 22,
+     "Vs": 1,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
+    },
+    {
+     "ID": "d_bunker",
+     "Kind": 1,
+     "W": 3,
+     "H": 3,
+     "HP": 1400,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": true,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 12,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 0,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
+    },
+    {
+     "ID": "d_flame_trap",
+     "Kind": 1,
+     "W": 2,
+     "H": 2,
+     "HP": 380,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": true,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 3,
+     "MinRangeCells": 0,
+     "Dmg": 15,
+     "Vs": 1,
+     "SplashCells": 1,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 3,
+     "CoolTurns": 2,
+     "Chain": 0,
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
+    },
+    {
+     "ID": "d_tesla",
+     "Kind": 1,
+     "W": 2,
+     "H": 2,
+     "HP": 800,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": true,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 7,
+     "MinRangeCells": 0,
+     "Dmg": 12,
+     "Vs": 3,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 4,
+     "ChainCells": 3,
+     "AuraCells": 0,
+     "JamPct": 0
+    },
+    {
+     "ID": "d_wall",
+     "Kind": 2,
+     "W": 1,
+     "H": 1,
+     "HP": 900,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": false,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 0,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
+    },
+    {
+     "ID": "d_wire",
+     "Kind": 2,
+     "W": 1,
+     "H": 1,
+     "HP": 90,
+     "HPGrowthPermille": 0,
+     "Block": 1,
+     "SlowPct": 50,
+     "Counted": false,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 0,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 4,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
+    },
+    {
+     "ID": "d_tank_trap",
+     "Kind": 2,
+     "W": 1,
+     "H": 1,
+     "HP": 600,
+     "HPGrowthPermille": 0,
+     "Block": 2,
+     "SlowPct": 0,
+     "Counted": false,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 0,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
+    },
+    {
+     "ID": "d_mine",
+     "Kind": 2,
+     "W": 1,
+     "H": 1,
+     "HP": 1,
+     "HPGrowthPermille": 0,
+     "Block": 1,
+     "SlowPct": 0,
+     "Counted": false,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": true,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 3,
+     "SplashCells": 1,
+     "Trap": 1,
+     "Burst": 18,
+     "MaxHPFlung": 0,
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
+    },
+    {
+     "ID": "d_spring_trap",
+     "Kind": 2,
+     "W": 1,
+     "H": 1,
+     "HP": 1,
+     "HPGrowthPermille": 0,
+     "Block": 1,
+     "SlowPct": 0,
+     "Counted": false,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": true,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 1,
+     "SplashCells": 0,
+     "Trap": 2,
+     "Burst": 0,
+     "MaxHPFlung": 60,
+     "FlingCells": 3,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
+    },
+    {
+     "ID": "d_fence",
+     "Kind": 2,
+     "W": 1,
+     "H": 1,
+     "HP": 300,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": false,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": false,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 0,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
+    },
+    {
+     "ID": "x_statue",
+     "Kind": 0,
+     "W": 2,
+     "H": 2,
+     "HP": 1,
+     "HPGrowthPermille": 0,
+     "Block": 0,
+     "SlowPct": 0,
+     "Counted": false,
+     "Weight": 0,
+     "HQ": false,
+     "Storage": false,
+     "Hidden": false,
+     "Untargetable": true,
+     "Garrison": 0,
+     "RangeCells": 0,
+     "MinRangeCells": 0,
+     "Dmg": 0,
+     "Vs": 0,
+     "SplashCells": 0,
+     "Trap": 0,
+     "Burst": 0,
+     "MaxHPFlung": 0,
+     "FlingCells": 0,
+     "TriggerCells": 0,
+     "DotDmg": 0,
+     "OverheatFireTurns": 0,
+     "CoolTurns": 0,
+     "Chain": 0,
+     "ChainCells": 0,
+     "AuraCells": 0,
+     "JamPct": 0
+    }
+   ]
+  }
+ },
+ "commands": [
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 2
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 2
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 3
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 3
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 4
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 4
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 5
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 5
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 6
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 6
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 7
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 7
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 8
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 8
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 9
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 9
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 10
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 10
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 11
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 11
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 12
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 12
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 13
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 13
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 14
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 14
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 15
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 15
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 16
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 16
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 17
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 17
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 18
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 18
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 19
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 19
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 20
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 20
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 21
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 21
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 22
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 22
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 23
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 23
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 24
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 24
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 25
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 25
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 26
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 26
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 27
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 27
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 28
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 28
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 29
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 29
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 30
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 30
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 31
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 31
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 32
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 32
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 33
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 33
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 34
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 34
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 35
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 35
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 36
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 36
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 37
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 37
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 38
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 38
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 39
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 39
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 40
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 40
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 0,
+    "Y": 41
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 1,
+    "Y": 41
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 2,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 3,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 4,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 5,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 6,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 7,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 8,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 9,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 10,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 11,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 12,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 13,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 14,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 15,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 16,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 17,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 18,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 19,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 20,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 21,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 22,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 23,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 24,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 25,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 26,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 27,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 28,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 29,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 30,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 31,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 32,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 33,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 34,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 35,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 36,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 37,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 38,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 39,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 40,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "deploy",
+   "id": "u_heavy",
+   "level": 1,
+   "to": {
+    "X": 41,
+    "Y": 0
+   }
+  },
+  {
+   "turn": 0,
+   "op": "start"
+  },
+  {
+   "turn": 1,
+   "op": "end_turn"
+  },
+  {
+   "turn": 2,
+   "op": "end_turn"
+  },
+  {
+   "turn": 3,
+   "op": "end_turn"
+  },
+  {
+   "turn": 4,
+   "op": "end_turn"
+  },
+  {
+   "turn": 5,
+   "op": "end_turn"
+  },
+  {
+   "turn": 6,
+   "op": "end_turn"
+  },
+  {
+   "turn": 7,
+   "op": "end_turn"
+  },
+  {
+   "turn": 8,
+   "op": "end_turn"
+  },
+  {
+   "turn": 9,
+   "op": "retreat"
+  }
+ ],
+ "expect": {
+  "Stars": 0,
+  "Destruction": 0,
+  "StarFlags": 0,
+  "HQDestroyed": false,
+  "TurnsUsed": 9,
+  "EndReason": 4,
+  "LootBasis": {
+   "Storages": null,
+   "PercentDestroyed": 0,
+   "Stars": 0
+  },
+  "UnitsLost": [
+   {
+    "ID": "u_heavy",
+    "Level": 1,
+    "Count": 10
+   }
+  ],
+  "SpellsUsed": null,
+  "HeroDamageTaken": 0,
+  "HeroSurvived": false,
+  "Rejected": null,
+  "EngineVersion": "0.2.4",
+  "StateHash": 10684241908009183323
+ },
+ "state_hash_hex": "94460d68653aa85b"
+}

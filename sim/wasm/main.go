@@ -25,6 +25,7 @@ func main() {
 		return battles.Apply(handle(a, 0), str(a, 1))
 	}))
 	api.Set("result", js.FuncOf(func(_ js.Value, a []js.Value) any { return battles.Result(handle(a, 0)) }))
+	api.Set("state", js.FuncOf(func(_ js.Value, a []js.Value) any { return battles.State(handle(a, 0)) }))
 	api.Set("free", js.FuncOf(func(_ js.Value, a []js.Value) any { return battles.Free(handle(a, 0)) }))
 	js.Global().Set("fireline_sim", api)
 	if cb := js.Global().Get("fireline_sim_ready"); cb.Type() == js.TypeFunction {

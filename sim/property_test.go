@@ -280,6 +280,7 @@ func nBuild(b *Battle) int {
 
 func checkInvariants(t *testing.T, b *Battle) {
 	t.Helper()
+	checkState(t, b) // the client view stays consistent with the world (SIM-6)
 	for _, sl := range b.spells {
 		if sl.Count < 0 {
 			t.Fatalf("spell stock %+v below zero", sl)

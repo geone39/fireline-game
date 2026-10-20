@@ -9,6 +9,31 @@ func fullBase(tb testing.TB) *Battle { return fullBaseWith(tb, nil) }
 // fullBaseWith is fullBase after mut changed the snapshot (nil = untouched).
 func fullBaseWith(tb testing.TB, mut func(*Snapshot)) *Battle {
 	tb.Helper()
+	s := fullBaseSnapshot(mut)
+	b, err := NewBattle(s, 1)
+	if err != nil {
+		tb.Fatal(err)
+	}
+	for i := 0; i < s.Army[0].Count; i++ { // 120 unless mut shrank the army
+		c := fullBaseRimCell(i)
+		if _, err := b.Apply(dep("u_heavy", int(c.X), int(c.Y))); err != nil || len(b.rejected) > 0 {
+			tb.Fatalf("deploy %d at %v: %v %v", i, c, err, b.rejected)
+		}
+	}
+	b.Apply(Command{Op: OpStart})
+	return b
+}
+
+// fullBaseRimCell is the landing cell of the i-th of the 120 attackers: the left rim, then the top rim.
+func fullBaseRimCell(i int) Cell {
+	if i >= 80 {
+		return cell(2+(i-80)%40, (i-80)/40)
+	}
+	return cell(i%2, 2+i/2)
+}
+
+// fullBaseSnapshot is the snapshot of fullBase after mut changed it (nil = untouched).
+func fullBaseSnapshot(mut func(*Snapshot)) Snapshot {
 	s := f01Snapshot()
 	s.Buildings = nil
 	tweakBuilding(&s, "d_bunker", func(d *BuildingDef) { d.Garrison = 12 })
@@ -60,21 +85,7 @@ func fullBaseWith(tb testing.TB, mut func(*Snapshot)) *Battle {
 	if mut != nil {
 		mut(&s)
 	}
-	b, err := NewBattle(s, 1)
-	if err != nil {
-		tb.Fatal(err)
-	}
-	for i := 0; i < 120; i++ {
-		c := cell(i%2, 2+i/2) // left rim, 80 cells, then the top rim
-		if i >= 80 {
-			c = cell(2+(i-80)%40, (i-80)/40)
-		}
-		if _, err := b.Apply(dep("u_heavy", int(c.X), int(c.Y))); err != nil || len(b.rejected) > 0 {
-			tb.Fatalf("deploy %d at %v: %v %v", i, c, err, b.rejected)
-		}
-	}
-	b.Apply(Command{Op: OpStart})
-	return b
+	return s
 }
 
 func TestFullBaseDefencePhase(t *testing.T) {
