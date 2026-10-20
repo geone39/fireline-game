@@ -502,8 +502,7 @@ func (l *loader) defences(r *sim.Rules, f defencesFile) {
 			d.W, d.H = l.size(where, y.Size)
 			d.HP = l.need(y.HP, where, "hp")
 			d.HPGrowthPermille = l.need(f.Growth.HP, "level_growth", "hp_permille")
-			// ASSUMPTION: sim.BuildingDef has no per-level damage growth, so dps_permille is required but not applied (OQ-RAID0-2).
-			l.need(f.Growth.Dps, "level_growth", "dps_permille")
+			dmgGrowth := l.need(f.Growth.Dps, "level_growth", "dps_permille")
 			switch b := y.Blocks.(type) {
 			case nil:
 				d.Block = sim.BlockAll
@@ -545,6 +544,9 @@ func (l *loader) defences(r *sim.Rules, f defencesFile) {
 				d.SplashCells = *y.SplashC
 			} else {
 				d.SplashCells = tenths(y.SplashR) / 10
+			}
+			if d.Dmg > 0 { // only shooting defences grow; traps, walls and Burst/DotDmg stay flat (OQ-SIM13)
+				d.DmgGrowthPermille = dmgGrowth
 			}
 			d.Vs = l.classMask(where+" vs", y.Vs)
 			d.Hidden = y.Hidden

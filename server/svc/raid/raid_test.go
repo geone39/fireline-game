@@ -245,8 +245,19 @@ func TestLoadRulesRealContent(t *testing.T) {
 	if b := building("d_tank_trap"); b.Block != sim.BlockVehicles {
 		t.Fatalf("d_tank_trap %+v", b)
 	}
-	if b := building("d_mg_nest"); b.Dmg != 60 || b.RangeCells != 7 || b.Vs != sim.ClassBit(sim.ClassINF)|sim.ClassBit(sim.ClassAIR) || !b.Counted || b.HPGrowthPermille != 1200 {
+	if b := building("d_mg_nest"); b.Dmg != 60 || b.RangeCells != 7 || b.Vs != sim.ClassBit(sim.ClassINF)|sim.ClassBit(sim.ClassAIR) || !b.Counted || b.HPGrowthPermille != 1200 || b.DmgGrowthPermille != 1170 {
 		t.Fatalf("d_mg_nest %+v", b)
+	}
+	if b := building("d_mine"); b.DmgGrowthPermille != 0 {
+		t.Fatalf("d_mine must not grow: %+v", b)
+	}
+	if b := building("d_tesla"); b.DmgGrowthPermille != 1170 {
+		t.Fatalf("d_tesla growth %+v", b)
+	}
+	for _, b := range r.Buildings {
+		if b.Kind == sim.KindDefence && b.Counted && b.Dmg > 0 && b.DmgGrowthPermille == 0 {
+			t.Fatalf("active defence %s without dmg growth", b.ID)
+		}
 	}
 	if b := building("d_tesla"); b.Chain != 4 || b.ChainCells != 3 {
 		t.Fatalf("d_tesla %+v", b)
