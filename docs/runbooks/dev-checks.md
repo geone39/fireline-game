@@ -44,4 +44,18 @@ Push-Location tests\e2e; npm ci; npx playwright install chromium; npx playwright
 docker compose -f deploy/docker-compose.yml down -v
 ```
 
+## simbattle (боты-атаки, QA-2; отдельный CI-job, не входит в `make check`)
+
+```powershell
+# нужен Go в PATH (C:\Program Files\Go\bin); отдельный go.mod в tools/simbattle
+go -C tools/simbattle vet ./...
+$out = gofmt -l tools/simbattle; if ($out) { "gofmt needed:"; $out; throw "gofmt" }
+go -C tools/simbattle test -short ./...      # ≈25 с — то же, что `make simbattle` и job `simbattle` на PR
+go -C tools/simbattle test ./...             # полный прогон тестов, ≈50 с (`make simbattle-full`)
+go -C tools/simbattle run . -seeds 6 -levels research   # матрица win-rate → tools/simbattle/out/ (`make simbattle-matrix`)
+```
+
+- Job `simbattle` в `ci.yml` гоняет `make simbattle` (vet, gofmt, `test -short`) на каждый push/PR.
+- Nightly `.github/workflows/simbattle-nightly.yml` (cron 03:17 UTC и ручной запуск: Actions → simbattle-nightly → Run workflow, входы `seeds`, `levels`) делает полную матрицу, кладёт `report.md`/`report.json` в артефакт `simbattle-report` (30 дней) и печатает таблицу в job summary. Ничего не коммитит и не падает из-за win-rate (он информативный до M3); падает только при ошибке самого прогона.
+
 Цели `make wasm`, `make e2e`, `make e2e-down` делают то же. При падении e2e в CI артефакт `e2e-failure` содержит отчёт, trace, скриншоты и `compose.log`.

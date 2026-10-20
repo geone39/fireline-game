@@ -1,6 +1,6 @@
 # Корневой Makefile (владелец: ops). Команды целей = документированные команды проверки модулей.
 # Windows без make: docs/runbooks/dev-checks.md
-.PHONY: check content econ sim server client wasm e2e e2e-down
+.PHONY: check content econ sim server client wasm e2e e2e-down simbattle simbattle-full simbattle-matrix
 check: content econ sim server client
 content: ; python3 tools/validate_content.py
 econ:    ; python3 tools/econ_sim.py --check > /dev/null
@@ -20,6 +20,18 @@ wasm:
 	@echo "sim.wasm: $$(wc -c < sim/wasm/dist/sim.wasm) bytes, gzip: $$(gzip -9c sim/wasm/dist/sim.wasm | wc -c) bytes"
 	cd sim && go test -count=1 -v -run TestWasmParity ./wasm/wire/ | tee /tmp/wasm-parity.log
 	@! grep -q -- '--- SKIP' /tmp/wasm-parity.log || { echo "TestWasmParity was skipped"; exit 1; }
+# Боты-атаки tools/simbattle (QA-2, отдельный go.mod). Не входит в check: ~25 с с -short, ~50 с полный прогон тестов (OPS-7).
+simbattle:
+	go -C tools/simbattle vet ./...
+	test -z "$$(gofmt -l tools/simbattle)" || { echo "gofmt needed:"; gofmt -l tools/simbattle; exit 1; }
+	go -C tools/simbattle test -short ./...
+simbattle-full:
+	go -C tools/simbattle vet ./...
+	test -z "$$(gofmt -l tools/simbattle)" || { echo "gofmt needed:"; gofmt -l tools/simbattle; exit 1; }
+	go -C tools/simbattle test ./...
+# Полная матрица win-rate (как в nightly): отчёт в tools/simbattle/out/. Информативна до M3, код возврата от win-rate не зависит.
+simbattle-matrix:
+	go -C tools/simbattle run . -seeds 6 -levels research
 # Сквозные тесты Playwright против docker compose (postgres+server+client). Не входит в check. Остановка: make e2e-down
 E2E_COMPOSE = docker compose -f deploy/docker-compose.yml
 e2e:

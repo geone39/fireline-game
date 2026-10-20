@@ -75,6 +75,21 @@ jobs:
             sim/wasm/dist/wasm_exec.js
           retention-days: 7
 
+  # Боты-атаки tools/simbattle (отдельный go.mod): vet, gofmt, `test -short` (~25 с). Полная матрица — nightly (simbattle-nightly.yml).
+  simbattle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: tools/simbattle/go.mod
+          cache-dependency-path: |
+            tools/simbattle/go.sum
+            sim/go.sum
+            server/go.sum
+      - run: make simbattle
+
   # Playwright против docker compose (postgres + server + client). Тест known-bugs помечен test.fail — зелёный.
   e2e:
     runs-on: ubuntu-latest
