@@ -1,7 +1,7 @@
 {
  "name": "G31",
  "about": "hidden traps, server recomputation: the mine on (6,10) hurts the first rifleman and its path stops, the spring trap on (8,12) throws the second back; compare G32",
- "engine_version": "0.2.6",
+ "engine_version": "0.2.7",
  "seed": 31,
  "snapshot": {
   "ContentVersion": "test-fixture",
@@ -107,7 +107,8 @@
      "DmgTotal": 62,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_medkit",
@@ -117,7 +118,8 @@
      "DmgTotal": 0,
      "HealTotal": 40,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_smoke",
@@ -127,7 +129,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_adrenaline",
@@ -137,7 +140,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 500,
-     "DmgPermille": 250
+     "DmgPermille": 250,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_emp",
@@ -147,7 +151,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_breach",
@@ -157,7 +162,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     }
    ],
    "Units": [
@@ -1850,7 +1856,7 @@
   "HeroDamageTaken": 0,
   "HeroSurvived": false,
   "Rejected": null,
-  "EngineVersion": "0.2.6",
+  "EngineVersion": "0.2.7",
   "StateHash": 2966735117534812137
  },
  "state_hash_hex": "292bf5def756d7e9"

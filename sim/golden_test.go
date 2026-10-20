@@ -183,7 +183,8 @@ func scenarios() []scenario {
 	all = append(all, scenariosSim3()...)
 	all = append(all, scenariosSim5()...)
 	all = append(all, scenariosSim6()...)
-	return append(all, scenariosSim8()...)
+	all = append(all, scenariosSim8()...)
+	return append(all, scenariosSim9()...)
 }
 
 // checkUpdatePolicy is the EngineVersion policy (README of the replays): -update may create a new replay or

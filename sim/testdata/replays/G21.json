@@ -1,7 +1,7 @@
 {
  "name": "G21",
  "about": "abilities: the nest (8 dmg) hurts the saboteur, the medic heals it (capped at max hp), the tank steps on a mine and the engineer heals it (the mine also splashed the engineer, who cannot heal itself), the saboteur jams the nest for 2 turns and it stays silent; rejected: heal on the wrong class / self / full hp / out of range, jam out of range and on a non-gun building, no_ap",
- "engine_version": "0.2.6",
+ "engine_version": "0.2.7",
  "seed": 21,
  "snapshot": {
   "ContentVersion": "test-fixture",
@@ -118,7 +118,8 @@
      "DmgTotal": 62,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_medkit",
@@ -128,7 +129,8 @@
      "DmgTotal": 0,
      "HealTotal": 40,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_smoke",
@@ -138,7 +140,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_adrenaline",
@@ -148,7 +151,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 500,
-     "DmgPermille": 250
+     "DmgPermille": 250,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_emp",
@@ -158,7 +162,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_breach",
@@ -168,7 +173,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     }
    ],
    "Units": [
@@ -2049,7 +2055,7 @@
     "Code": 13
    }
   ],
-  "EngineVersion": "0.2.6",
+  "EngineVersion": "0.2.7",
   "StateHash": 13494074885019474910
  },
  "state_hash_hex": "bb44959cfe1b1bde"

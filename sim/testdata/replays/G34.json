@@ -1,7 +1,7 @@
 {
  "name": "G34",
  "about": "nest level 5, dmg_growth 1170: the brawler walks into range and is shot for 20 x M[5] per turn (20 / 37 / 82 at levels 1 / 5 / 10); at level 10 the brawler dies on turn 2 and the final Retreat is refused (battle_over)",
- "engine_version": "0.2.6",
+ "engine_version": "0.2.7",
  "seed": 34,
  "snapshot": {
   "ContentVersion": "test-fixture",
@@ -89,7 +89,8 @@
      "DmgTotal": 62,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_medkit",
@@ -99,7 +100,8 @@
      "DmgTotal": 0,
      "HealTotal": 40,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_smoke",
@@ -109,7 +111,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_adrenaline",
@@ -119,7 +122,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 500,
-     "DmgPermille": 250
+     "DmgPermille": 250,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_emp",
@@ -129,7 +133,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_breach",
@@ -139,7 +144,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     }
    ],
    "Units": [
@@ -1743,7 +1749,7 @@
   "HeroDamageTaken": 0,
   "HeroSurvived": false,
   "Rejected": null,
-  "EngineVersion": "0.2.6",
+  "EngineVersion": "0.2.7",
   "StateHash": 15283033197862880098
  },
  "state_hash_hex": "d4183db8711e8362"

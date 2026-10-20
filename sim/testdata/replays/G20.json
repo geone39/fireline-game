@@ -1,7 +1,7 @@
 {
  "name": "G20",
  "about": "the first nest kills the only rifleman in the defence phase of turn 1: EndReason no_units, TurnsUsed 1, the next command is battle_over",
- "engine_version": "0.2.6",
+ "engine_version": "0.2.7",
  "seed": 20,
  "snapshot": {
   "ContentVersion": "test-fixture",
@@ -98,7 +98,8 @@
      "DmgTotal": 62,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_medkit",
@@ -108,7 +109,8 @@
      "DmgTotal": 0,
      "HealTotal": 40,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_smoke",
@@ -118,7 +120,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_adrenaline",
@@ -128,7 +131,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 500,
-     "DmgPermille": 250
+     "DmgPermille": 250,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_emp",
@@ -138,7 +142,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_breach",
@@ -148,7 +153,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     }
    ],
    "Units": [
@@ -1766,7 +1772,7 @@
     "Code": 17
    }
   ],
-  "EngineVersion": "0.2.6",
+  "EngineVersion": "0.2.7",
   "StateHash": 18131816940735290107
  },
  "state_hash_hex": "fba12770ecefdafb"

@@ -1,7 +1,7 @@
 {
  "name": "G02",
  "about": "Move over terrain: drone over walls, wire costs 2 for infantry, tank trap blocks vehicles only, implicit EndTurn via Turn 2",
- "engine_version": "0.2.6",
+ "engine_version": "0.2.7",
  "seed": 2,
  "snapshot": {
   "ContentVersion": "test-fixture",
@@ -131,7 +131,8 @@
      "DmgTotal": 62,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_medkit",
@@ -141,7 +142,8 @@
      "DmgTotal": 0,
      "HealTotal": 40,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_smoke",
@@ -151,7 +153,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_adrenaline",
@@ -161,7 +164,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 500,
-     "DmgPermille": 250
+     "DmgPermille": 250,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_emp",
@@ -171,7 +175,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_breach",
@@ -181,7 +186,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     }
    ],
    "Units": [
@@ -1931,7 +1937,7 @@
   "HeroDamageTaken": 0,
   "HeroSurvived": false,
   "Rejected": null,
-  "EngineVersion": "0.2.6",
+  "EngineVersion": "0.2.7",
   "StateHash": 9984478686805408603
  },
  "state_hash_hex": "8a8ffe77327ebb5b"

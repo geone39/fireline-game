@@ -2,6 +2,10 @@
 
 ## Unreleased
 - docs: DoD модуля обновлён (орк. решение владельца 2026-10-19): бенчмарк в ходах боя, порог регрессии 500 ходов/с, цель ~2000; план golden G01..G32; паритет native/WASM
+### 0.2.7 — SIM-9: уровни заклинаний (EngineVersion 0.2.7)
+- **Additive contract-change 0.2.7:** `SpellDef.LevelGrowthPermille` (0 = нет роста, отрицательное → `ErrBadSnapshot`). `DmgTotal` airstrike и `HealTotal` medkit = `floor(base × M[L] / 1000)` через общий `scaledHP`; радиус и длительность не растут (ASSUMPTION, OQ-SIM15). Закрывает sim-часть OQ-ARMY-2.
+- Golden: G36–G38 (airstrike уровней 1/2/3, рост 1200: 62/74/89, гнездо падает на ходу 4/4/3); G01–G35 пересозданы отдельным коммитом, `Result`/`StateHash` не изменились. Тесты `spell_level_test.go`.
+- `api.d.ts` (+ копия `client/sim-wasm`, идентична, `--check` зелёный): пометка версии. **Запрос raid:** загрузчик заполняет `LevelGrowthPermille` из `level_growth` в `spells:`; **запрос content:** ключ `level_growth` у `c_airstrike`/`c_medkit` (OQ-SIM15).
 ### 0.2.6 — SIM-8: рост урона построек по уровню (EngineVersion 0.2.6)
 - **Additive contract-change 0.2.6:** `BuildingDef.DmgGrowthPermille` (0 = нет роста, отрицательное → `ErrBadSnapshot`). Урон выстрела обороны, сплэша и цепи Теслы = `floor(Dmg × M[L] / 1000)`, `M[n]=floor(M[n-1]×g/1000)` (общий `scaledHP`, без float). `Burst`/`DotDmg` ловушек не растут (ASSUMPTION: в спеке рост `dps` относится к стреляющим постройкам). Рост hp построек уже работал (`HPGrowthPermille`).
 - Golden: пересозданы G01–G32 отдельным коммитом (`Result` и `StateHash` не изменились — проверено сравнением до/после), новые G33–G35 (гнездо уровней 1/5/10: 20 / 37 / 82). Тесты: `TestBuildingDmgGrowth`, `TestNestShootsByLevel`, `TestNegativeBuildingGrowthRejected`.

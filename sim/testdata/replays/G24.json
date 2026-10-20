@@ -1,7 +1,7 @@
 {
  "name": "G24",
  "about": "spells: an airstrike under a 50% jammer (62 -\u003e 31 over 4 turns: 10, 7, 7, 7) hurts the nest only inside its radius; EMP weakened to 1 turn; the third spell of a turn is refused (spells_per_turn 2); breach removes walls and leaves wire; medkit heals a wounded rifleman over 3 turns; no_stock after the stack is spent; the tank (not in the nest's vs) stays whole",
- "engine_version": "0.2.6",
+ "engine_version": "0.2.7",
  "seed": 24,
  "snapshot": {
   "ContentVersion": "test-fixture",
@@ -169,7 +169,8 @@
      "DmgTotal": 62,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_medkit",
@@ -179,7 +180,8 @@
      "DmgTotal": 0,
      "HealTotal": 40,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_smoke",
@@ -189,7 +191,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_adrenaline",
@@ -199,7 +202,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 500,
-     "DmgPermille": 250
+     "DmgPermille": 250,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_emp",
@@ -209,7 +213,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_breach",
@@ -219,7 +224,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     }
    ],
    "Units": [
@@ -2030,7 +2036,7 @@
     "Code": 15
    }
   ],
-  "EngineVersion": "0.2.6",
+  "EngineVersion": "0.2.7",
   "StateHash": 4675694252232300384
  },
  "state_hash_hex": "40e3672646a45760"

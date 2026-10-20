@@ -1,7 +1,7 @@
 {
  "name": "G27",
  "about": "a_decoy_turret (h_tech): decoy within 3 cells (out_of_range, cell_occupied rejected), the nest shoots the decoy (the only target in range), the decoy cannot act (no_ap), it expires after 2 turns, no loss is recorded, the cooldown (2 turns) lets the hero make a second one on turn 4",
- "engine_version": "0.2.6",
+ "engine_version": "0.2.7",
  "seed": 27,
  "snapshot": {
   "ContentVersion": "test-fixture",
@@ -89,7 +89,8 @@
      "DmgTotal": 62,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_medkit",
@@ -99,7 +100,8 @@
      "DmgTotal": 0,
      "HealTotal": 40,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_smoke",
@@ -109,7 +111,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_adrenaline",
@@ -119,7 +122,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 500,
-     "DmgPermille": 250
+     "DmgPermille": 250,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_emp",
@@ -129,7 +133,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_breach",
@@ -139,7 +144,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     }
    ],
    "Units": [
@@ -1821,7 +1827,7 @@
     "Code": 5
    }
   ],
-  "EngineVersion": "0.2.6",
+  "EngineVersion": "0.2.7",
   "StateHash": 13457460593631654562
  },
  "state_hash_hex": "bac2811bf63b72a2"

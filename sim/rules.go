@@ -121,6 +121,10 @@ type SpellDef struct {
 	HealTotal     int // medkit: hit points to each infantry unit over the whole duration
 	MovePermille  int // adrenaline: bonus to move_cells (floor, at least +1 cell)
 	DmgPermille   int // adrenaline: bonus to damage
+	// LevelGrowthPermille is the per-level growth (content troops.yaml spells level_growth), 0 = none: DmgTotal
+	// (airstrike) and HealTotal (medkit) of level L are floor(base x M[L] / 1000), M as in scaledHP. Radius, duration
+	// and the adrenaline permille bonuses do not grow; smoke, EMP and breach have nothing to grow (ASSUMPTION, OQ-SIM15).
+	LevelGrowthPermille int
 }
 
 // BuildingDef is a defender structure: building, defence, wall, trap, decor, obstacle.
@@ -273,7 +277,7 @@ func (r *Rules) validate() error {
 			return bad("duplicate spell %q", sp.ID)
 		}
 		seen["c:"+sp.ID] = true
-		if sp.RadiusCells < 0 || sp.DurationTurns < 0 || sp.DmgTotal < 0 || sp.HealTotal < 0 || sp.MovePermille < 0 || sp.DmgPermille < 0 {
+		if sp.RadiusCells < 0 || sp.DurationTurns < 0 || sp.DmgTotal < 0 || sp.HealTotal < 0 || sp.MovePermille < 0 || sp.DmgPermille < 0 || sp.LevelGrowthPermille < 0 {
 			return bad("spell %q has invalid numbers", sp.ID)
 		}
 		ok := false

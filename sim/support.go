@@ -362,9 +362,9 @@ func (b *Battle) cmdCast(c Command) ([]Event, RejectCode) {
 	switch sp.Kind {
 	case SpellAirstrike:
 		b.zones = append(b.zones, zone{kind: zoneAirstrike, centre: c.To, r: sp.RadiusCells, first: b.turn, last: last,
-			amount: weaken(sp.DmgTotal, b.jamPct(c.To))})
+			amount: weaken(scaledHP(sp.DmgTotal, sp.LevelGrowthPermille, b.spells[slot].Level), b.jamPct(c.To))})
 	case SpellMedkit:
-		b.zones = append(b.zones, zone{kind: zoneMedkit, centre: c.To, r: sp.RadiusCells, first: b.turn, last: last, amount: sp.HealTotal})
+		b.zones = append(b.zones, zone{kind: zoneMedkit, centre: c.To, r: sp.RadiusCells, first: b.turn, last: last, amount: scaledHP(sp.HealTotal, sp.LevelGrowthPermille, b.spells[slot].Level)})
 	case SpellSmoke:
 		b.zones = append(b.zones, zone{kind: zoneSmoke, centre: c.To, r: sp.RadiusCells, first: b.turn, last: last})
 	case SpellAdrenaline:

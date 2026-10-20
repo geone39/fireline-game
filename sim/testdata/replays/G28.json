@@ -1,7 +1,7 @@
 {
  "name": "G28",
  "about": "a_vanish (h_ghost): hidden for 2 turns (the nest in range has no target), the first shot out of hiding is x4 against the HQ (30 -\u003e 120) and ends the hiding, then the nest shoots the hero; the next shot is plain 30; the cooldown (4 turns) refuses a new vanish",
- "engine_version": "0.2.6",
+ "engine_version": "0.2.7",
  "seed": 28,
  "snapshot": {
   "ContentVersion": "test-fixture",
@@ -83,7 +83,8 @@
      "DmgTotal": 62,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_medkit",
@@ -93,7 +94,8 @@
      "DmgTotal": 0,
      "HealTotal": 40,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_smoke",
@@ -103,7 +105,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_adrenaline",
@@ -113,7 +116,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 500,
-     "DmgPermille": 250
+     "DmgPermille": 250,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_emp",
@@ -123,7 +127,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     },
     {
      "ID": "c_breach",
@@ -133,7 +138,8 @@
      "DmgTotal": 0,
      "HealTotal": 0,
      "MovePermille": 0,
-     "DmgPermille": 0
+     "DmgPermille": 0,
+     "LevelGrowthPermille": 0
     }
    ],
    "Units": [
@@ -1771,7 +1777,7 @@
     "Code": 6
    }
   ],
-  "EngineVersion": "0.2.6",
+  "EngineVersion": "0.2.7",
   "StateHash": 7480227694834371323
  },
  "state_hash_hex": "67cf1b74dda44afb"
