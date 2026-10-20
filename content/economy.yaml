@@ -42,3 +42,12 @@ start_grant:   # one-off wallet grant for a new guest; Ledger idemKey "start_gra
   gems: 0        # premium is earned (campaign/quests) or bought, never given at start
   alloy: 0       # unlocks at HQ4
   trophies: 0
+# ECON-5: the player model the pacing check is calibrated with (tools/econ_sim.py --check compares these with its constants; no server code reads them).
+# They are assumptions about behaviour, not game balance. Rationale and the numbers they give: docs/design/economy.md "Армия и лаборатория".
+army_lab:
+  raid_army_loss_pct: {unit: 15, garage: 10, spell: 25}   # share of the full pool lost/used in an average raid (units, vehicles+ships, spells); qa simbattle can replace it by a measurement
+  research_share_of_fuel_bill_pct: 35                     # share of the level's fuel bill a player puts into research; the rest: army build-up, heroes, reserve
+  research_tier_by_hq: {1: 1, 2: 1, 3: 1, 4: 2, 5: 2, 6: 2, 7: 3, 8: 3, 9: 3, 10: 4}   # tier of the node taken at HQ L (research.yaml tiers); tier 5 is kept for R2
+payer_check:   # OQ-ARMY-4 / criterion 4: an active player who spends ref_gems_per_day on timers (builds, queues, research: one function) and owns the 6th builder
+  max_speed_x_vs_casual: 1.6
+  ref_gems_per_day: 10       # ~ the free gems (about 60 a week); more than that exceeds 1.6x with the current income, see docs/design/economy.md and OQ-ECON5-2
