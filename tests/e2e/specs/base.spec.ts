@@ -3,9 +3,9 @@ import { expect, test } from '@playwright/test';
 import { calibrate, num, openGame, pageApi, placeBuilding, reloadGame, shot, wallet } from '../helpers';
 
 test('новый гость: стартовая база → стройка → улучшение → перестановка → перезагрузка', async ({ page }, info) => {
-    await openGame(page);
+  await openGame(page);
   const api = await pageApi(page);
-  let project = await calibrate(page);
+  const project = await calibrate(page);
   const me0 = await api.me();
   const playerId = me0.profile.id;
 
@@ -39,10 +39,6 @@ test('новый гость: стартовая база → стройка → 
     wireUid = (await api.base()).layout.items.find((i) => i.type === 'd_wire')!.uid;
     // стройка проволоки — 1 с; сервер пересчитывает таймеры лениво, HUD обновляется по запросам/тикам клиента
     await expect.poll(async () => (await api.base()).timers.some((t) => t.target_id === wireUid), { timeout: 15_000 }).toBe(false);
-    // BUG geone39/fireline#60 (specs/known-bugs.spec.ts): без перезагрузки завершённая стройка остаётся «Уже строится».
-    // Обходим перезагрузкой, чтобы проверить остальной сценарий.
-    await reloadGame(page);
-    project = await calibrate(page);
     const at = project(24, 14);
     await page.mouse.click(at.x, at.y);
     await expect(page.getByTestId('card')).toBeVisible();
@@ -57,11 +53,9 @@ test('новый гость: стартовая база → стройка → 
   });
 
   await test.step('перестановка и сохранение раскладки', async () => {
-    // улучшение проволоки (2 с) завершится на сервере; клиент о нём не узнает без перезагрузки (#60) — иначе PUT layout
-    // уйдёт с устаревшим level и получит layout_mismatch
+    // улучшение проволоки (2 с): ждём, пока клиент сам узнает об окончании (#60 исправлен), иначе PUT layout вернёт layout_mismatch
     await expect.poll(async () => (await api.base()).timers.some((t) => t.target_id === wireUid), { timeout: 15_000 }).toBe(false);
-    await reloadGame(page);
-    project = await calibrate(page);
+    await expect(page.getByTestId('hud-builders')).toContainText('1/2', { timeout: 15_000 }); // занят только строитель гнезда (10 мин)
     await page.getByTestId('toggle-edit').click();
     const from = project(26, 16);
     const to = project(30, 16);
