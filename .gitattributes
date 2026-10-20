@@ -1,0 +1,4 @@
+# Append-only журналы, в которые параллельно дописывают разные агенты:
+# при локальном merge конфликты в конце файла разрешаются объединением строк.
+docs/open-questions.md merge=union
+modules/*/CHANGELOG.md merge=union
