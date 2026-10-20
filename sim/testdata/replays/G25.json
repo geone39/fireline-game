@@ -1,7 +1,7 @@
 {
  "name": "G25",
  "about": "h_marshal aura (+40% move: 3 -\u003e 4) lets a rifleman walk 4 cells; smoke hides everything inside beyond 1 cell for 2 turns (a rifleman that walks out of it is shot); adrenaline (+50% move, +25% dmg) adds to the aura (5 cells, dmg x1.45 in aura) and expires after 2 turns",
- "engine_version": "0.2.4",
+ "engine_version": "0.2.6",
  "seed": 25,
  "snapshot": {
   "ContentVersion": "test-fixture",
@@ -1167,6 +1167,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1201,6 +1202,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1235,6 +1237,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1269,6 +1272,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 5,
      "JamPct": 50
     },
@@ -1303,6 +1307,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1337,6 +1342,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1371,6 +1377,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1405,6 +1412,7 @@
      "CoolTurns": 2,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1439,6 +1447,7 @@
      "CoolTurns": 0,
      "Chain": 4,
      "ChainCells": 3,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1473,6 +1482,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1507,6 +1517,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1541,6 +1552,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1575,6 +1587,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1609,6 +1622,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1643,6 +1657,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1677,6 +1692,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     }
@@ -1929,7 +1945,7 @@
     "Code": 8
    }
   ],
-  "EngineVersion": "0.2.4",
+  "EngineVersion": "0.2.6",
   "StateHash": 17853909539347558318
  },
  "state_hash_hex": "f7c5d421c8c4efae"

@@ -1,7 +1,7 @@
 {
  "name": "G30",
  "about": "large base HQ10 (150 buildings, 12-man bunkers, 120 garrison, 120 attackers): eight idle turns of the defence phase; the Snapshot.Buildings order does not matter (TestGoldenShuffleInvariant)",
- "engine_version": "0.2.4",
+ "engine_version": "0.2.6",
  "seed": 30,
  "snapshot": {
   "ContentVersion": "test-fixture",
@@ -2960,6 +2960,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -2994,6 +2995,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -3028,6 +3030,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -3062,6 +3065,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 5,
      "JamPct": 50
     },
@@ -3096,6 +3100,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -3130,6 +3135,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -3164,6 +3170,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -3198,6 +3205,7 @@
      "CoolTurns": 2,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -3232,6 +3240,7 @@
      "CoolTurns": 0,
      "Chain": 4,
      "ChainCells": 3,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -3266,6 +3275,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -3300,6 +3310,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -3334,6 +3345,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -3368,6 +3380,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -3402,6 +3415,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -3436,6 +3450,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -3470,6 +3485,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     }
@@ -4741,7 +4757,7 @@
   "HeroDamageTaken": 0,
   "HeroSurvived": false,
   "Rejected": null,
-  "EngineVersion": "0.2.4",
+  "EngineVersion": "0.2.6",
   "StateHash": 10684241908009183323
  },
  "state_hash_hex": "94460d68653aa85b"

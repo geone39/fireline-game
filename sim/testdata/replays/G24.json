@@ -1,7 +1,7 @@
 {
  "name": "G24",
  "about": "spells: an airstrike under a 50% jammer (62 -\u003e 31 over 4 turns: 10, 7, 7, 7) hurts the nest only inside its radius; EMP weakened to 1 turn; the third spell of a turn is refused (spells_per_turn 2); breach removes walls and leaves wire; medkit heals a wounded rifleman over 3 turns; no_stock after the stack is spent; the tank (not in the nest's vs) stays whole",
- "engine_version": "0.2.4",
+ "engine_version": "0.2.6",
  "seed": 24,
  "snapshot": {
   "ContentVersion": "test-fixture",
@@ -1227,6 +1227,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1261,6 +1262,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1295,6 +1297,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1329,6 +1332,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 5,
      "JamPct": 50
     },
@@ -1363,6 +1367,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1397,6 +1402,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1431,6 +1437,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1465,6 +1472,7 @@
      "CoolTurns": 2,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1499,6 +1507,7 @@
      "CoolTurns": 0,
      "Chain": 4,
      "ChainCells": 3,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1533,6 +1542,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1567,6 +1577,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1601,6 +1612,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1635,6 +1647,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1669,6 +1682,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1703,6 +1717,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1737,6 +1752,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     }
@@ -2014,7 +2030,7 @@
     "Code": 15
    }
   ],
-  "EngineVersion": "0.2.4",
+  "EngineVersion": "0.2.6",
   "StateHash": 4675694252232300384
  },
  "state_hash_hex": "40e3672646a45760"

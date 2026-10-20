@@ -9,7 +9,7 @@
 | Пункт DoD | Где выполнено |
 |---|---|
 | `go test ./...` зелёный | CI: `go vet`, `gofmt`, `go test ./...` в `sim/` |
-| golden G01…G26 (+G27…G32), план → файл → что проверяет | `testdata/replays/README.md`; `TestGoldenPlanIsDocumented`, `TestGoldenCoversEveryRejectCode` |
+| golden G01…G26 (+G27…G35), план → файл → что проверяет | `testdata/replays/README.md`; `TestGoldenPlanIsDocumented`, `TestGoldenCoversEveryRejectCode` |
 | golden не меняются без bump `EngineVersion` | `TestGolden` (расхождение = падение), `-update` отказывает переписывать реплей текущей версии (`TestGoldenUpdatePolicy`); пересоздание — отдельным коммитом (README реплеев) |
 | property: Run дважды = одинаковые `Result`/`StateHash` на 1000 случайных боёв | `TestPropertyRunTwiceSameResult1000`, `TestPropertySupportRunTwiceSameResult1000` (+ Run = Apply-цикл, перестановка `Buildings`, инварианты мира и `State()`) |
 | фазз случайных команд: без паник, невалидные → `RejectCode` | `TestFuzzGarbageCommands1000`, `TestFuzzDegenerateBattles`, `FuzzApply` (`go test -fuzz FuzzApply -fuzztime 60s`) |

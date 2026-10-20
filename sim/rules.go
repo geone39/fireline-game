@@ -156,6 +156,8 @@ type BuildingDef struct {
 	Chain             int // d_tesla: the arc hits up to Chain targets (<= 1 = single target)
 	ChainCells        int // d_tesla: reach of each jump to the next target
 	// Support (SIM-5, contract 0.2.4, additive; zero = "none").
+	// Level growth (SIM-8, contract 0.2.6, additive; zero = "none").
+	DmgGrowthPermille int // per-level growth of Dmg (defences.yaml level_growth.dps_permille), 0 = none; Burst/DotDmg do not grow
 	AuraCells int // d_jammer: a spell centred within this many cells of the footprint is weakened
 	JamPct    int // d_jammer: airstrike damage / EMP duration lose this percent (0..100)
 }
@@ -311,7 +313,7 @@ func (r *Rules) validate() error {
 		if d.TriggerCells < 0 || d.DotDmg < 0 || d.OverheatFireTurns < 0 || d.CoolTurns < 0 || d.Chain < 0 || d.ChainCells < 0 {
 			return bad("building %q has invalid defence numbers", d.ID)
 		}
-		if d.AuraCells < 0 || d.JamPct < 0 || d.JamPct > 100 {
+		if d.DmgGrowthPermille < 0 || d.AuraCells < 0 || d.JamPct < 0 || d.JamPct > 100 {
 			return bad("building %q has invalid jammer numbers", d.ID)
 		}
 		if d.OverheatFireTurns > 0 && d.CoolTurns < 1 {

@@ -1,7 +1,7 @@
 {
  "name": "G22",
  "about": "carriers: the APC unloads one passenger (Target) and, next turn, the rest in (Y,X) order; unloaded units have no AP; the fragile buggy is shot to pieces by the tesla chain and throws its cargo out with its remaining hp",
- "engine_version": "0.2.4",
+ "engine_version": "0.2.6",
  "seed": 22,
  "snapshot": {
   "ContentVersion": "test-fixture",
@@ -1162,6 +1162,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1196,6 +1197,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1230,6 +1232,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1264,6 +1267,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 5,
      "JamPct": 50
     },
@@ -1298,6 +1302,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1332,6 +1337,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1366,6 +1372,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1400,6 +1407,7 @@
      "CoolTurns": 2,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1434,6 +1442,7 @@
      "CoolTurns": 0,
      "Chain": 4,
      "ChainCells": 3,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1468,6 +1477,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1502,6 +1512,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1536,6 +1547,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1570,6 +1582,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1604,6 +1617,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1638,6 +1652,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1672,6 +1687,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     }
@@ -1932,7 +1948,7 @@
     "Code": 5
    }
   ],
-  "EngineVersion": "0.2.4",
+  "EngineVersion": "0.2.6",
   "StateHash": 4602525446483487386
  },
  "state_hash_hex": "3fdf748223582a9a"

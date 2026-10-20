@@ -1,7 +1,7 @@
 {
  "name": "G27",
  "about": "a_decoy_turret (h_tech): decoy within 3 cells (out_of_range, cell_occupied rejected), the nest shoots the decoy (the only target in range), the decoy cannot act (no_ap), it expires after 2 turns, no loss is recorded, the cooldown (2 turns) lets the hero make a second one on turn 4",
- "engine_version": "0.2.4",
+ "engine_version": "0.2.6",
  "seed": 27,
  "snapshot": {
   "ContentVersion": "test-fixture",
@@ -1147,6 +1147,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1181,6 +1182,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1215,6 +1217,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1249,6 +1252,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 5,
      "JamPct": 50
     },
@@ -1283,6 +1287,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1317,6 +1322,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1351,6 +1357,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1385,6 +1392,7 @@
      "CoolTurns": 2,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1419,6 +1427,7 @@
      "CoolTurns": 0,
      "Chain": 4,
      "ChainCells": 3,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1453,6 +1462,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1487,6 +1497,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1521,6 +1532,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1555,6 +1567,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1589,6 +1602,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1623,6 +1637,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     },
@@ -1657,6 +1672,7 @@
      "CoolTurns": 0,
      "Chain": 0,
      "ChainCells": 0,
+     "DmgGrowthPermille": 0,
      "AuraCells": 0,
      "JamPct": 0
     }
@@ -1805,7 +1821,7 @@
     "Code": 5
    }
   ],
-  "EngineVersion": "0.2.4",
+  "EngineVersion": "0.2.6",
   "StateHash": 13457460593631654562
  },
  "state_hash_hex": "bac2811bf63b72a2"

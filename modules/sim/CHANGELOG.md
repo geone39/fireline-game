@@ -2,6 +2,10 @@
 
 ## Unreleased
 - docs: DoD модуля обновлён (орк. решение владельца 2026-10-19): бенчмарк в ходах боя, порог регрессии 500 ходов/с, цель ~2000; план golden G01..G32; паритет native/WASM
+### 0.2.6 — SIM-8: рост урона построек по уровню (EngineVersion 0.2.6)
+- **Additive contract-change 0.2.6:** `BuildingDef.DmgGrowthPermille` (0 = нет роста, отрицательное → `ErrBadSnapshot`). Урон выстрела обороны, сплэша и цепи Теслы = `floor(Dmg × M[L] / 1000)`, `M[n]=floor(M[n-1]×g/1000)` (общий `scaledHP`, без float). `Burst`/`DotDmg` ловушек не растут (ASSUMPTION: в спеке рост `dps` относится к стреляющим постройкам). Рост hp построек уже работал (`HPGrowthPermille`).
+- Golden: пересозданы G01–G32 отдельным коммитом (`Result` и `StateHash` не изменились — проверено сравнением до/после), новые G33–G35 (гнездо уровней 1/5/10: 20 / 37 / 82). Тесты: `TestBuildingDmgGrowth`, `TestNestShootsByLevel`, `TestNegativeBuildingGrowthRejected`.
+- `api.d.ts` (+ копия `client/sim-wasm`): только пометка версии контракта (`Rules` в типах нетипизирован). **Загрузчик (raid):** заполнить `DmgGrowthPermille` из `defences.yaml level_growth.dps_permille` — запрос в OQ-RAID0. `Garrison`/радар: источника в контенте нет, sim не меняется.
 ### 0.2.5 — SIM-6: закрытие DoD модуля (EngineVersion 0.2.4 не менялся, правил нет)
 - **Additive contract-change 0.2.5:** `Battle.State()` → `State{Phase, Turn, EndReason, Entities[EntityState], Zones[ZoneState], SpellsLeft, SpellsThisTurn, StockLeft, HeroUsed}`; WASM `fireline_sim.state(handle)`, `wire.Battles.State`, типы в `api.d.ts`. Без скрытых ловушек (OQ-7.8), независимая копия, не входит в `StateHash`. Ответ на OQ-C4b-1; переход клиента с «теневого мира» на `state(handle)` — запрос client-core (OQ-SIM12).
 - Golden: G30 (база HQ10: 150 построек, 120 гарнизона, 120 атакующих), G31/G32 (скрытые ловушки: сервер против клиентского вида, OQ-7.8). Существующие реплеи не менялись. План «план → файл → что проверяет» и политика EngineVersion — `sim/testdata/replays/README.md`.

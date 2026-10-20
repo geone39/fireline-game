@@ -157,7 +157,7 @@ func (b *Battle) fireBuilding(s *entity) []Event {
 	if s.bd.Chain > 1 {
 		return b.chainShot(s, t)
 	}
-	return b.blast(s, t, aimCell(s, t), s.bd.SplashCells, func(*entity) int { return s.bd.Dmg }, nil)
+	return b.blast(s, t, aimCell(s, t), s.bd.SplashCells, func(*entity) int { return s.buildingDmg() }, nil)
 }
 
 // chainShot is the d_tesla arc (spec 6.2): the primary target and up to Chain-1 more, each the nearest (EntityID
@@ -189,7 +189,7 @@ func (b *Battle) chainShot(s, first *entity) []Event {
 	}
 	var evs []Event
 	for _, v := range victims {
-		evs = append(evs, b.hurt(s.id, v, s.bd.Dmg)...)
+		evs = append(evs, b.hurt(s.id, v, s.buildingDmg())...)
 	}
 	return evs
 }
@@ -231,4 +231,9 @@ func (b *Battle) actGarrison(u *entity, done func([]Event) bool) bool {
 		}
 	}
 	return false
+}
+
+// buildingDmg is the damage of one shot of a defence building at its level (spec 3.2: Mdps, one floor).
+func (e *entity) buildingDmg() int {
+	return scaledHP(e.bd.Dmg, e.bd.DmgGrowthPermille, e.level)
 }

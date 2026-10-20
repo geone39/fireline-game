@@ -10,7 +10,7 @@
 package sim
 
 // EngineVersion identifies the rule set. Any rule change bumps it and regenerates the golden replays.
-const EngineVersion = "0.2.4"
+const EngineVersion = "0.2.6"
 
 // Game numbers (turn limit, time limit, splash falloff, ...) live in content/battle.yaml and are passed in by
 // the caller; there are deliberately no such constants here (AGENTS.md rule 3).
