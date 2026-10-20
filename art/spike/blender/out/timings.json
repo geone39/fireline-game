@@ -1,0 +1,11 @@
+{
+ "total_s": 12.14,
+ "per_asset_s": {
+  "u_rifleman": 11.39,
+  "b_hq": 0.31,
+  "b_cash_mine": 0.22
+ },
+ "ss": 4,
+ "blender": "5.2.2 LTS",
+ "engine": "BLENDER_EEVEE"
+}

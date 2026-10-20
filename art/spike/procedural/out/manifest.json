@@ -1,0 +1,472 @@
+{
+ "schema": 1,
+ "atlases": {
+  "spike_proc_units": {
+   "image": "spike/procedural/out/spike_proc_units.png",
+   "data": "spike/procedural/out/spike_proc_units.json",
+   "size": [
+    512,
+    512
+   ]
+  },
+  "spike_proc_buildings": {
+   "image": "spike/procedural/out/spike_proc_buildings.png",
+   "data": "spike/procedural/out/spike_proc_buildings.json",
+   "size": [
+    512,
+    256
+   ]
+  }
+ },
+ "sprites": [
+  {
+   "id": "b_cash_mine",
+   "atlas": "spike_proc_buildings",
+   "frames": [
+    {
+     "name": "b_cash_mine_0",
+     "x": 257,
+     "y": 0,
+     "w": 192,
+     "h": 136
+    }
+   ],
+   "anchors": {
+    "ground": {
+     "x": 96,
+     "y": 87
+    }
+   },
+   "fps": 0
+  },
+  {
+   "id": "b_hq",
+   "atlas": "spike_proc_buildings",
+   "frames": [
+    {
+     "name": "b_hq_0",
+     "x": 0,
+     "y": 0,
+     "w": 256,
+     "h": 176
+    }
+   ],
+   "anchors": {
+    "ground": {
+     "x": 128,
+     "y": 111
+    }
+   },
+   "fps": 0
+  },
+  {
+   "id": "u_rifleman",
+   "atlas": "spike_proc_units",
+   "frames": [
+    {
+     "name": "u_rifleman_idle_d0_0",
+     "x": 392,
+     "y": 98,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_idle_d0_1",
+     "x": 441,
+     "y": 98,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_idle_d1_0",
+     "x": 0,
+     "y": 147,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_idle_d1_1",
+     "x": 49,
+     "y": 147,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_idle_d2_0",
+     "x": 98,
+     "y": 147,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_idle_d2_1",
+     "x": 147,
+     "y": 147,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_idle_d3_0",
+     "x": 196,
+     "y": 147,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_idle_d3_1",
+     "x": 245,
+     "y": 147,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_walk_d0_0",
+     "x": 294,
+     "y": 147,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_walk_d0_1",
+     "x": 343,
+     "y": 147,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_walk_d0_2",
+     "x": 392,
+     "y": 147,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_walk_d0_3",
+     "x": 441,
+     "y": 147,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_walk_d1_0",
+     "x": 0,
+     "y": 196,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_walk_d1_1",
+     "x": 49,
+     "y": 196,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_walk_d1_2",
+     "x": 98,
+     "y": 196,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_walk_d1_3",
+     "x": 147,
+     "y": 196,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_walk_d2_0",
+     "x": 196,
+     "y": 196,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_walk_d2_1",
+     "x": 245,
+     "y": 196,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_walk_d2_2",
+     "x": 294,
+     "y": 196,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_walk_d2_3",
+     "x": 343,
+     "y": 196,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_walk_d3_0",
+     "x": 392,
+     "y": 196,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_walk_d3_1",
+     "x": 441,
+     "y": 196,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_walk_d3_2",
+     "x": 0,
+     "y": 245,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_walk_d3_3",
+     "x": 49,
+     "y": 245,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_attack_d0_0",
+     "x": 0,
+     "y": 0,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_attack_d0_1",
+     "x": 49,
+     "y": 0,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_attack_d0_2",
+     "x": 98,
+     "y": 0,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_attack_d1_0",
+     "x": 147,
+     "y": 0,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_attack_d1_1",
+     "x": 196,
+     "y": 0,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_attack_d1_2",
+     "x": 245,
+     "y": 0,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_attack_d2_0",
+     "x": 294,
+     "y": 0,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_attack_d2_1",
+     "x": 343,
+     "y": 0,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_attack_d2_2",
+     "x": 392,
+     "y": 0,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_attack_d3_0",
+     "x": 441,
+     "y": 0,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_attack_d3_1",
+     "x": 0,
+     "y": 49,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_attack_d3_2",
+     "x": 49,
+     "y": 49,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_die_d0_0",
+     "x": 98,
+     "y": 49,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_die_d0_1",
+     "x": 147,
+     "y": 49,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_die_d0_2",
+     "x": 196,
+     "y": 49,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_die_d0_3",
+     "x": 245,
+     "y": 49,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_die_d1_0",
+     "x": 294,
+     "y": 49,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_die_d1_1",
+     "x": 343,
+     "y": 49,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_die_d1_2",
+     "x": 392,
+     "y": 49,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_die_d1_3",
+     "x": 441,
+     "y": 49,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_die_d2_0",
+     "x": 0,
+     "y": 98,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_die_d2_1",
+     "x": 49,
+     "y": 98,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_die_d2_2",
+     "x": 98,
+     "y": 98,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_die_d2_3",
+     "x": 147,
+     "y": 98,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_die_d3_0",
+     "x": 196,
+     "y": 98,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_die_d3_1",
+     "x": 245,
+     "y": 98,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_die_d3_2",
+     "x": 294,
+     "y": 98,
+     "w": 48,
+     "h": 48
+    },
+    {
+     "name": "u_rifleman_die_d3_3",
+     "x": 343,
+     "y": 98,
+     "w": 48,
+     "h": 48
+    }
+   ],
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "fps": 10
+  }
+ ],
+ "_note": "ART-1 spike, procedural path; frames[] flat: {id}_{anim}_d{dir}_{n}, dirs=4 (0=S, по часовой на экране)",
+ "_anims": {
+  "u_rifleman": {
+   "dirs": 4,
+   "order": [
+    "idle",
+    "walk",
+    "attack",
+    "die"
+   ],
+   "idle": {
+    "fps": 3,
+    "frames": 2,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 4,
+    "loop": true
+   },
+   "attack": {
+    "fps": 8,
+    "frames": 3,
+    "loop": true
+   },
+   "die": {
+    "fps": 8,
+    "frames": 4,
+    "loop": false
+   }
+  }
+ }
+}

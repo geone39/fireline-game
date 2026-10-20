@@ -1,0 +1,53 @@
+{
+ "frames": {
+  "b_hq_0": {
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 256,
+    "h": 176
+   },
+   "rotated": false,
+   "trimmed": false,
+   "sourceSize": {
+    "w": 256,
+    "h": 176
+   },
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 256,
+    "h": 176
+   }
+  },
+  "b_cash_mine_0": {
+   "frame": {
+    "x": 257,
+    "y": 0,
+    "w": 192,
+    "h": 136
+   },
+   "rotated": false,
+   "trimmed": false,
+   "sourceSize": {
+    "w": 192,
+    "h": 136
+   },
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 136
+   }
+  }
+ },
+ "meta": {
+  "image": "spike_blender_buildings.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 512,
+   "h": 256
+  },
+  "scale": "1"
+ }
+}
