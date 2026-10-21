@@ -1,5 +1,6 @@
 // Селектор HUD: /v1/me + слайс базы → то, что рисует <Hud>. Чистая функция, без DOM.
 import { remainingSeconds, type BaseWorld, type Catalog } from '../core/base';
+import type { ArmyViewModel } from '../ui/army/store/view-model';
 import type { Me } from './app';
 
 /** Порядок валют в HUD (три игровых ресурса + премиум-валюта gems). */
@@ -11,7 +12,18 @@ export interface HudVM {
   builders: { total: number; free: number };
   /** Накопленное в сборщиках, готовое к сбору. */
   collectors: { res: string; amount: number }[];
+  /** null — армия ещё не загружена (или сервер без /v1/army): HUD не показывает блок. */
+  army: HudArmy | null;
   timers: { id: string; uid: string; nameKey: string; kind: string; toLevel: number; remainingS: number }[];
+}
+
+export interface HudArmy {
+  /** Housing по пулам (лагерь/гараж/центр поддержки). */
+  pools: { id: string; labelKey: string; used: number; capacity: number; full: boolean }[];
+  /** Юнитов в очередях обучения (не считая уже обученных) и сколько секунд до готовности всех очередей. */
+  training: { units: number; remainingS: number } | null;
+  /** Текущее исследование лаборатории. */
+  research: { nameKey: string; remainingS: number; percent: number } | null;
 }
 
 export interface HudInput {
@@ -20,6 +32,19 @@ export interface HudInput {
   catalog: Catalog;
   /** Текущее время сервера, мс. */
   serverNowMs: number;
+  /** Селектор контроллера армии (`app.army.viewModel()`); не задан — блока армии нет. */
+  army?: ArmyViewModel | null;
+}
+
+export function selectHudArmy(a: ArmyViewModel | null | undefined): HudArmy | null {
+  if (!a?.loaded) return null;
+  const units = a.queues.reduce((n, q) => n + q.orders.reduce((m, o) => m + o.remaining, 0), 0);
+  const r = a.lab.active;
+  return {
+    pools: a.pools.map((p) => ({ id: p.id, labelKey: p.labelKey, used: p.used, capacity: p.capacity, full: p.full })),
+    training: units > 0 ? { units, remainingS: Math.max(0, ...a.queues.map((q) => q.remainingS)) } : null,
+    research: r ? { nameKey: r.nameKey, remainingS: r.remainingS, percent: r.percent } : null,
+  };
 }
 
 export function selectHud(i: HudInput): HudVM {
@@ -59,6 +84,7 @@ export function selectHud(i: HudInput): HudVM {
     wallet,
     builders: { total, free: total - busy },
     collectors,
+    army: selectHudArmy(i.army),
     timers,
   };
 }

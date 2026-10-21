@@ -4,6 +4,8 @@ import { ApiClient, ApiError, type ContentOutdated } from '../core/api';
 import { createBaseApi, createBaseController, serverClock, type BaseController } from '../core/base';
 import { createStore, type Store } from '../core/store';
 import { UnsupportedError, type PlatformAdapter } from '../platform/adapter';
+import { createArmyApi } from '../ui/army/api';
+import { createArmyController, type ArmyController } from '../ui/army/store/controller';
 import type { Content } from './content';
 import { createPersistentTokens } from './session';
 
@@ -57,6 +59,8 @@ export interface App {
   store: Store<AppState>;
   api: ApiClient;
   base: BaseController;
+  /** Армия и лаборатория (client/ui/army): один контроллер на сессию. */
+  army: ArmyController;
   /** Восстановить сессию (или войти гостем) и загрузить me + base. Не бросает: итог — в store.phase. */
   start(): Promise<void>;
   /** Обновить кошельки/билдеров (/v1/me). */
@@ -70,6 +74,8 @@ export interface App {
 const TIMER_SYNC_MARGIN_MS = 300;
 const TIMER_SYNC_MIN_MS = 1000;
 const MAX_TIMEOUT_MS = 2 ** 31 - 1;
+/** Не чаще: если сервер не продвигает finish_at (или сеть лежит), армию не опрашиваем в цикле. */
+const ARMY_SYNC_MIN_MS = 3000;
 
 export function createApp(d: AppDeps): App {
   const store = createStore<AppState>({ phase: 'booting', me: null, error: null, outdated: null });
@@ -95,6 +101,18 @@ export function createApp(d: AppDeps): App {
     grid: d.content.grid,
     now: d.now,
     newUid: d.newUid,
+    // OQ-B11: кошелёк из /v1/me → подсветка нехватки ресурсов в панели построек (Issue #62).
+    wallet: () => store.getState().me?.wallets,
+  });
+  const army = createArmyController({
+    api: createArmyApi(api),
+    catalog: d.content.army,
+    buildings: () => base.model.store.getState().view.items.map((i) => ({ uid: i.uid, type: i.type, level: i.level })),
+    wallet: () => store.getState().me?.wallets,
+    // Обучение/ускорение/исследование тратят ресурсы: обновляем кошелёк в HUD.
+    onSettled: () => void refreshMe(),
+    now: d.now,
+    newKey: d.newKey,
   });
 
   let signing: Promise<void> | null = null;
@@ -112,7 +130,8 @@ export function createApp(d: AppDeps): App {
   }
 
   async function loadAll(): Promise<void> {
-    const [me] = await Promise.all([api.get<Me>('/v1/me'), base.model.load()]);
+    // Армия не бросает: отказ (в т.ч. 404, пока сервер без /v1/army) остаётся уведомлением её экрана, шелл стартует.
+    const [me] = await Promise.all([api.get<Me>('/v1/me'), base.model.load(), army.actions.refresh()]);
     store.setState({ me });
   }
 
@@ -217,6 +236,31 @@ export function createApp(d: AppDeps): App {
     }, Math.min(delay, MAX_TIMEOUT_MS));
   }
 
+  // Очереди обучения и лаборатория (#60 для армии): один таймер на ближайший finish_at, по срабатыванию — GET /v1/army + /v1/lab.
+  // Работает на любом экране (HUD показывает счётчики), а не только при открытой вкладке армии.
+  let armyTimer: ReturnType<typeof setTimeout> | null = null;
+  const clearArmyTimer = (): void => {
+    if (armyTimer !== null) clearTimeout(armyTimer);
+    armyTimer = null;
+  };
+  function armArmySync(): void {
+    clearArmyTimer();
+    if (store.getState().phase !== 'ready') return;
+    const c = army.store.getState().confirmed;
+    const finishes = c.army.queues.flatMap((q) => (q.orders[0] ? [q.orders[0].unit_finish_at] : []));
+    if (c.lab.active) finishes.push(c.lab.active.finishAt);
+    if (finishes.length === 0) return;
+    const delay = Math.max((Math.min(...finishes) - army.serverNowS()) * 1000 + TIMER_SYNC_MARGIN_MS, ARMY_SYNC_MIN_MS);
+    armyTimer = setTimeout(() => {
+      armyTimer = null;
+      if (store.getState().phase !== 'ready') return;
+      void army.actions.refresh().finally(armArmySync);
+    }, Math.min(delay, MAX_TIMEOUT_MS));
+  }
+  const offArmy = army.store.subscribe((s, prev) => {
+    if (s.confirmed !== prev.confirmed) armArmySync();
+  });
+
   // Кошельки меняются от команд базы (списание, сбор): после каждого подтверждения сервера обновляем me.
   const offBase = base.model.store.subscribe((s, prev) => {
     if (s.confirmed.serverTime !== lastServerTime) {
@@ -229,12 +273,18 @@ export function createApp(d: AppDeps): App {
     }
   });
   const offPhase = store.subscribe((s, prev) => {
-    if (s.phase !== prev.phase) armTimerSync();
+    if (s.phase !== prev.phase) {
+      armTimerSync();
+      armArmySync();
+    }
   });
   const offLife = [
     d.platform.lifecycle.on('visible', () => {
       // load() меняет confirmed → подписка ниже сама обновит /v1/me
-      if (store.getState().phase === 'ready') void base.model.load().catch(() => undefined);
+      if (store.getState().phase === 'ready') {
+        void base.model.load().catch(() => undefined);
+        void army.actions.refresh();
+      }
     }),
     d.platform.lifecycle.on('online', () => {
       if (store.getState().phase === 'ready') void base.model.store.flush();
@@ -245,11 +295,14 @@ export function createApp(d: AppDeps): App {
     store,
     api,
     base,
+    army,
     start,
     refreshMe,
     serverNowMs,
     dispose() {
       clearTimerHandle();
+      clearArmyTimer();
+      offArmy();
       offBase();
       offPhase();
       offLife.forEach((f) => f());
