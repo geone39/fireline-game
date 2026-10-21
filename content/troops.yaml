@@ -31,7 +31,7 @@ ships:      # from Shipyard; only on bases with a coastline map (water tiles); a
 # level_growth (SIM-9, sim 0.2.7; OQ-ARMY-2): permille multiplier per level (1160 = x1.16, same unit as level_growth.dps_permille above) for the amount of a spell: dmg_total (airstrike) / heal_total (medkit).
 #   Absent = no growth; only airstrike and medkit have a growable amount (radius, duration and adrenaline bonuses do not grow, OQ-SIM15), so the lab nodes of the other spells stay `soon: true`.
 # ASSUMPTION (OQ-CONTENT6B-1, needs-owner/balance): 1160 for both = the dps growth of troops/defences (airstrike is damage); the heal could use the hp growth 1180 instead.
-spells:     # "Support calls" — one-shot abilities from Support Bay (same role as CoC spells); cost fuel
+spells:     # "Support calls" — one-shot abilities from Support Bay (same role as spells in classic async base-attack strategies); cost fuel
   - {id: c_airstrike,name_key: c.airstrike,role: "Авиаудар: урон в круге r=3 за 4 с", dmg_total: 600, radius: 3.0, housing: 2, train_s: 60, cost: {fuel: 150}, unlock: {hq: 4}, kind: airstrike, duration_s: 4, radius_cells: 3, level_growth: 1160}
   - {id: c_smoke,    name_key: c.smoke,    role: "Дымовая завеса: враг не видит цели внутри 8 с (падает точность по пехоте)", radius: 3.5, duration_s: 8, housing: 1, train_s: 30, cost: {fuel: 80}, unlock: {hq: 3}, kind: smoke, radius_cells: 3}
   - {id: c_medkit,   name_key: c.medkit,   role: "Аптечка: лечит пехоту 12 с", radius: 3.0, heal_total: 400, housing: 1, train_s: 35, cost: {fuel: 90}, unlock: {hq: 3}, kind: medkit, duration_s: 12, radius_cells: 3, level_growth: 1160}

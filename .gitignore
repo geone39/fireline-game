@@ -3,3 +3,6 @@ dist/
 *.wasm
 __pycache__/
 .env
+
+# local profiling artifacts
+*.prof
