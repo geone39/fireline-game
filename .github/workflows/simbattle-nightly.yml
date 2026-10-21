@@ -1,9 +1,9 @@
 name: simbattle-nightly
-# Полная матрица win-rate ботов-атак (QA-2). Информативна до M3: job не падает из-за win-rate,
+# Раз в неделю (пн 03:17 UTC, OPS-8 #136) и по запросу. Полная матрица win-rate ботов-атак (QA-2). Информативна до M3: job не падает из-за win-rate,
 # ничего не коммитит; отчёт — артефакт + краткая сводка в job summary.
 on:
   schedule:
-    - cron: "17 3 * * *"
+    - cron: "17 3 * * 1"
   workflow_dispatch:
     inputs:
       seeds:

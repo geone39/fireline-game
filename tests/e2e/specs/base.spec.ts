@@ -1,6 +1,6 @@
 // QA-1: сквозной сценарий базы M1. Окружение: docker compose (postgres + server + client), см. README.
 import { expect, test } from '@playwright/test';
-import { calibrate, num, openGame, pageApi, placeBuilding, reloadGame, shot, wallet } from '../helpers';
+import { calibrate, num, openGame, pageApi, placeBuilding, reloadGame, shot, startGrant, startLayoutTypes, wallet } from '../helpers';
 
 test('новый гость: стартовая база → стройка → улучшение → перестановка → перезагрузка', async ({ page }, info) => {
   await openGame(page);
@@ -9,11 +9,16 @@ test('новый гость: стартовая база → стройка → 
   const me0 = await api.me();
   const playerId = me0.profile.id;
 
-  await test.step('стартовая база и ресурсы 1500/600', async () => {
-    expect(await num(wallet(page, 'cash'))).toBe(1500);
-    expect(await num(wallet(page, 'fuel'))).toBe(600);
+  await test.step('стартовая база и ресурсы по start_grant (1500/600)', async () => {
+    const grant = startGrant();
+    expect(await num(wallet(page, 'cash'))).toBe(grant.cash);
+    expect(await num(wallet(page, 'fuel'))).toBe(grant.fuel);
     await expect(page.getByTestId('hud-builders')).toContainText('2/2');
-    expect((await api.base()).layout.items.map((i) => i.type)).toEqual(['b_hq']);
+    // состав стартовой базы: HQ обязателен; остальное — подмножество content/start_layout.yaml (до SERVER-5 сервер строит только HQ)
+    const types = (await api.base()).layout.items.map((i) => i.type).sort();
+    expect(types.filter((t) => t === 'b_hq')).toHaveLength(1);
+    const allowed = startLayoutTypes() ?? ['b_hq'];
+    for (const t of types) expect(allowed, `тип ${t} входит в start_layout.yaml`).toContain(t);
     await shot(page, info, '01-start-base');
   });
 
@@ -96,4 +101,18 @@ test('новый гость: стартовая база → стройка → 
     await expect(page.locator(`[data-testid=timer-${nestUid}]`)).toBeVisible();
     await shot(page, info, '06-after-reload');
   });
+});
+
+test('новый гость: /v1/me — кошелёк по гранту, блоки армии и лаборатории', async ({ page }) => {
+  await openGame(page);
+  const me = await (await pageApi(page)).me();
+  const grant = startGrant();
+  expect(me.wallets.cash).toBe(grant.cash);
+  expect(me.wallets.fuel).toBe(grant.fuel);
+
+  // docs/03-api.md (SERVER-5, #133): army.pools и lab. До слияния #133 полей нет — проверка пропускается (не падает)
+  test.fixme(me.army === undefined || me.lab === undefined, 'SERVER-5 (#133) ещё не в main: /v1/me без army/lab');
+  expect(me.army!.pools).toEqual(expect.objectContaining({ unit: expect.objectContaining({ used: 0, capacity: expect.any(Number) }) }));
+  expect(me.lab).toMatchObject({ active: null });
+  expect(me.lab!.level).toBeGreaterThanOrEqual(0);
 });
