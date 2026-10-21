@@ -29,14 +29,20 @@ jobs:
         id: f
         if: github.event_name == 'pull_request'
         with:
-          predicate-quantifier: every
+          # Квантификатор по умолчанию (some): файл подходит, если совпал с ЛЮБЫМ шаблоном области.
+          # (`every` требовал совпадения со ВСЕМИ шаблонами и обнулял e2e/wasm/simbattle.)
           filters: |
             code:
-              - '**'
-              - '!docs/**'
-              - '!backlog/**'
-              - '!**/*.md'
-              - '!.gitattributes'
+              - 'client/**'
+              - 'server/**'
+              - 'sim/**'
+              - 'content/**'
+              - 'tools/**'
+              - 'deploy/**'
+              - 'tests/**'
+              - 'art/**'
+              - '.github/**'
+              - 'Makefile'
             e2e:
               - 'client/**'
               - 'server/**'
