@@ -56,24 +56,33 @@ func envFloat(key string, def float64) (float64, error) {
 
 // loadBase reads the content the base module needs. LoadPriceBook needs
 // content/building_costs.yaml (OQ-B6), so the server does not start without it.
-func loadBase(store *db.Store, dir string) (*gateway.BaseModule, error) {
+func loadBase(store *db.Store, dir string) (*gateway.BaseModule, *gateway.ArmyModule, error) {
 	econ, err := economy.Load(filepath.Join(dir, "economy.yaml"))
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	cat, err := base.LoadCatalog(dir)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	grid, err := base.LoadGrid(dir, "")
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	prices, err := base.LoadPriceBook(dir)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	return gateway.NewBaseModule(gateway.BaseConfig{Store: store, Econ: econ, Cat: cat, Grid: grid, Prices: prices})
+	baseMod, err := gateway.NewBaseModule(gateway.BaseConfig{Store: store, Econ: econ, Cat: cat, Grid: grid, Prices: prices, ContentDir: dir})
+	if err != nil {
+		return nil, nil, err
+	}
+	armyMod, err := gateway.NewArmyModule(gateway.ArmyConfig{Store: store, Ledger: baseMod.Ledger, ContentDir: dir, Cat: cat, Prices: prices})
+	if err != nil {
+		return nil, nil, err
+	}
+	baseMod.Army = armyMod
+	return baseMod, armyMod, nil
 }
 
 func run(log zerolog.Logger) error {
@@ -114,7 +123,7 @@ func run(log zerolog.Logger) error {
 	}
 	log.Info().Str("content_version", content.Version()).Msg("content loaded")
 
-	baseMod, err := loadBase(store, contentDir)
+	baseMod, armyMod, err := loadBase(store, contentDir)
 	if err != nil {
 		return err
 	}
@@ -126,6 +135,7 @@ func run(log zerolog.Logger) error {
 		Auth: &auth.Service{Store: store, Signer: &auth.Signer{Secret: []byte(secret), AccessTTL: accessTTL, RefreshTTL: refreshTTL},
 			Provision: baseMod.Provision},
 		Base:    baseMod,
+		Army:    armyMod,
 		Store:   store,
 		Idem:    store,
 		Content: content,

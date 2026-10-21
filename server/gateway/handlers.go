@@ -101,6 +101,8 @@ type meResponse struct {
 	Profile  profile          `json:"profile"`
 	Wallets  map[string]int64 `json:"wallets"`
 	Builders []builder        `json:"builders"`
+	Army     *meArmy          `json:"army,omitempty"`
+	Lab      *meLab           `json:"lab,omitempty"`
 }
 
 func (s *Server) handleMe(w http.ResponseWriter, r *http.Request) {
@@ -126,11 +128,21 @@ func (s *Server) handleMe(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+	var meA *meArmy
+	var meL *meLab
+	if s.army != nil {
+		if meA, meL, err = s.army.me(r.Context(), id); err != nil {
+			s.internal(w, r, err)
+			return
+		}
+	}
 	s.writeJSON(w, http.StatusOK, meResponse{
 		Profile: profile{ID: p.ID.String(), Nickname: p.Nickname, HQLevel: p.HQLevel, Trophies: p.Trophies,
 			League: p.League, ShieldUntil: p.ShieldUntil, CreatedAt: p.CreatedAt},
 		Wallets:  wallets,
 		Builders: builders,
+		Army:     meA,
+		Lab:      meL,
 	})
 }
 
