@@ -1,6 +1,7 @@
 # CHANGELOG `qa`
 
 ## Unreleased
+- QA-4: e2e base.spec устойчив к составу стартовой базы: типы зданий сверяются с `content/start_layout.yaml` (HQ обязателен, остальное — подмножество), кошелёк — со `start_grant` из `content/economy.yaml`; новый тест `/v1/me`: блоки `army.pools` и `lab` (SERVER-5, #133) — `test.fixme`, пока поля не в main. Проходит на main и после #133
 - модуль заведён
 - QA-1: e2e на Playwright (`tests/e2e`): сквозной сценарий базы (гость → стройка → улучшение → перестановка →
   перезагрузка), негативный «не хватает ресурсов», известные баги (`test.fail`), README (Windows/CI), запросы к ops/server-core
