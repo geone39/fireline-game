@@ -127,7 +127,7 @@ const CONTENT = new URL('../../content/', import.meta.url);
 export function startLayoutTypes(): string[] | null {
   try {
     const text = readFileSync(new URL('start_layout.yaml', CONTENT), 'utf8');
-    const types = [...text.matchAll(/^\s*-\s*\{[^}]*type:\s*([\w]+)/gm)].map((m) => m[1]!);
+    const types = [...text.matchAll(/^\s*-\s*\{[^}]*\btype:\s*([\w]+)/gm)].map((m) => m[1]!);
     return types.length > 0 ? types : null;
   } catch {
     return null;
