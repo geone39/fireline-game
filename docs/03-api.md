@@ -14,7 +14,10 @@ HTTP-статусы: `invalid` 400, `unauthorized` 401, `not_found` 404, `confli
 | PUT | /v1/base/layout | сохранить раскладку (валидация) → новый defence snapshot |
 | GET | /v1/army | армия, лагеря, очереди обучения |
 | POST | /v1/army/train | поставить в очередь `{building_id, unit_id, count}` |
-| POST | /v1/lab/research | начать исследование |
+| POST | /v1/army/cancel, /v1/army/speedup | `{order_id, count?}` — отмена с возвратом; `{building_id}` — ускорение очереди здания за gems |
+| GET | /v1/lab | лаборатория: узлы, активное исследование |
+| POST | /v1/lab/research | начать исследование `{node_id}` |
+| POST | /v1/lab/cancel, /v1/lab/speedup | `{}` — отмена (возврат 50%) / ускорение за gems |
 | POST | /v1/raids/search | найти цель (списывает стоимость поиска) |
 | POST | /v1/raids/start | `{target_id, army[], spells[], hero}` → `RaidTicket` |
 | POST | /v1/raids/{id}/finish | `{commands[], client_result_hash}` → результат |
@@ -33,6 +36,14 @@ HTTP-статусы: `invalid` 400, `unauthorized` 401, `not_found` 404, `confli
 `PUT /v1/base/layout`: `{layout:{items:[...]}}` или `{items:[...]}`; меняются только позиции/повороты существующих объектов; при изменении версия растёт и пишется иммутабельный defence snapshot.
 Ошибки базы: `details.reason` (код правила), `details.uid?`, `details.index?` (номер команды); `invalid` 400, `not_found` 404 (нет базы), `conflict` 409 (uid занят, все билдеры заняты), `insufficient_resources` 422.
 `GET /v1/me`: `builders:[{id,busy_until,target_id?}]` — по элементу на слот билдера.
+
+## Армия и лаборатория: `/v1/army*`, `/v1/lab*` (формы ответов, SERVER-5)
+`ArmyState` (ответ `GET /v1/army` и всех `POST /v1/army/*`) + `server_time`, `content_version`: `{stock:[{id,count,level}], spells:[{id,count,level}], deployed:[{raid_id,units:[Slot],spells:[Slot]}], pools:{<unit|garage|spell>:{capacity,used,free,base,perk_pct}}, queues:[{building_id,finish_at,orders:[{order_id,unit_id,count,remaining,unit_finish_at}]}], perks:{<key>:int}}`; `finish_at`/`unit_finish_at` — unix-секунды; готовые юниты попадают в `stock` лениво при любом чтении.
+`POST /v1/army/train`: `{building_id, unit_id, count}`; `POST /v1/army/cancel`: `{order_id, count?}`; `POST /v1/army/speedup`: `{building_id}`. Нужен `Idempotency-Key`; повтор ключа отдаёт сохранённый ответ (`Idempotent-Replay: true`).
+Туториал (`content/army.yaml tutorial.free_finish_first_order`): первый успешно поставленный в очередь заказ армии игрока завершается бесплатно один раз — ответ этого `POST /v1/army/train` уже содержит юнитов в `stock` и пустую очередь; `start_army` автоматически не выдаётся (`start_army_auto_grant: false`).
+`LabState` (ответ `GET /v1/lab` и `POST /v1/lab/*`): `{lab_level (0: лаборатории нет), active:{node_id,started_at,finish_at,paid}|null, done:[node_id], nodes:[{id,available,reason?,cost,hours,to_level?}], perks}`.
+Ошибки (`details.reason` — код правила): `invalid` 400 (`bad_request`, `wrong_building`, `not_built`, `not_multiple_of_group`, `bad_count`, `empty_queue`, `no_node`, `already_done`, `coming_soon`); `not_found` 404 (`no_building`, `no_order`, нет базы); `conflict` 409 (`housing_full` + `max_count`, `queue_full`, `locked` + `need`, `lab_busy`, `lab_level`, `prerequisite`, `no_research`); `insufficient_resources` 422 (`details` перечисляет нехватку).
+`GET /v1/me` дополнительно: `army:{pools:{<pool>:{used,capacity}}}`, `lab:{level, active:{node_id,finish_at}|null}`.
 
 ## Примеры
 `POST /v1/raids/start` → `{raid_id, expires_at, seed, content_version, engine_version, snapshot:{...}, rules:{max_turns, time_limit_s, deploy_zone:"outside_build_zone"}}` (`snapshot` — клиентский вид **без скрытых ловушек**, OQ-7.8; `time_limit_s` и `max_turns` берутся из `content/battle.yaml`; по `expires_at = now + time_limit_s` сервер обрывает бой)

@@ -1,6 +1,7 @@
 # CHANGELOG `qa`
 
 ## Unreleased
+- QA-7: `insufficient.spec` совместим с UX #62 (недоступное по ресурсам здание — disabled с подсказкой «нужно X, есть Y»): серверный отказ проверяется прямым API (422 `insufficient_resources`, без изменений), UI-ветка — disabled+подсказка либо клик и «Не хватает ресурсов»
 - QA-4: e2e base.spec устойчив к составу стартовой базы: типы зданий сверяются с `content/start_layout.yaml` (HQ обязателен, остальное — подмножество), кошелёк — со `start_grant` из `content/economy.yaml`; новый тест `/v1/me`: блоки `army.pools` и `lab` (SERVER-5, #133) — `test.fixme`, пока поля не в main. Проходит на main и после #133
 - модуль заведён
 - QA-1: e2e на Playwright (`tests/e2e`): сквозной сценарий базы (гость → стройка → улучшение → перестановка →
