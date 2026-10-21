@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { BattlePlayback } from './battle-playback';
 import { sampleAfter, sampleBattle, sampleEvents } from './battle-fixture';
 import { EVENT, type BattleEvent } from './battle-types';
-import { BATTLE_MOVE_STEP_MS, BATTLE_SHOT_MS } from './config';
+import { BATTLE_DIE_MS, BATTLE_MOVE_STEP_MS, BATTLE_SHOT_MS } from './config';
 import { footprints, grid } from './test-content';
 
 const base = () => sampleBattle(grid.size, footprints);
@@ -157,5 +157,47 @@ describe('BattlePlayback', () => {
     expect(get(p, 10)).toMatchObject({ x: 11, y: 24 });
     p.tick(BATTLE_MOVE_STEP_MS);
     expect(p.busy).toBe(false);
+  });
+
+  it('attack: действие стрелка несёт вектор на цель и живёт BATTLE_SHOT_MS; skip его убирает', () => {
+    const p = new BattlePlayback();
+    p.setState(base());
+    const shooter = get(p, 10)!;
+    const target = get(p, 3)!;
+    p.enqueue([ev(EVENT.attacked, 10, 3, target.x, target.y, 1)]);
+    p.tick(1);
+    const a = p.actions.get(10)!;
+    expect(a.dx).toBeCloseTo(target.x - shooter.x + ((target.w ?? 1) - 1) / 2);
+    expect(a.dy).toBeCloseTo(target.y - shooter.y + ((target.h ?? 1) - 1) / 2);
+    p.tick(BATTLE_SHOT_MS);
+    expect(p.actions.size).toBe(0);
+    p.enqueue([ev(EVENT.attacked, 10, 3, target.x, target.y, 1)]);
+    p.tick(1);
+    p.skip();
+    expect(p.actions.size).toBe(0);
+  });
+
+  it('killed: юнит остаётся в dying на BATTLE_DIE_MS (для die), постройка — нет; skip и quiet не оставляют призраков', () => {
+    const p = new BattlePlayback();
+    p.setState(base());
+    p.enqueue([ev(EVENT.killed, 10, 11, 15, 22)]);
+    p.tick(1);
+    expect(p.dying.has(11)).toBe(true);
+    expect(get(p, 11)).toBeUndefined();
+    expect(p.animating).toBe(true);
+    p.tick(BATTLE_DIE_MS + 1);
+    expect(p.dying.size).toBe(0);
+
+    const q = new BattlePlayback();
+    q.setState(base());
+    q.enqueue([ev(EVENT.destroyed, 11, 3, 16, 24)]);
+    q.tick(1);
+    expect(q.dying.size).toBe(0);
+
+    const r = new BattlePlayback();
+    r.setState(base());
+    r.enqueue([ev(EVENT.killed, 10, 11, 15, 22)]);
+    r.skip();
+    expect(r.dying.size).toBe(0);
   });
 });

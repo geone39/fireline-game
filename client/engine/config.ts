@@ -47,3 +47,17 @@ export const BATTLE_AP_FULL = 0xffd23f;
 export const BATTLE_AP_EMPTY = 0x555555;
 export const BATTLE_HP_BAR_WIDTH = 28;
 export const BATTLE_HP_BAR_HEIGHT = 4;
+
+// Арт: экраны и категории атласов (ленивая загрузка), анимации, тени.
+/** Категории атласов, нужные экрану. '*' — все. Неизвестные категории грузит только бой. */
+export const ART_SCREEN_CATEGORIES = {
+  base: ['buildings', 'defences', 'decor', 'walls', 'traps', 'terrain'],
+  battle: ['*'],
+} as const;
+export const DEFAULT_ANIM_FPS = 8;
+/** Сколько после гибели юнит остаётся на поле, проигрывая die (кадр держится на последнем), мс. */
+export const BATTLE_DIE_MS = 600;
+export const BATTLE_DIE_FADE_MS = 150;
+export const SHADOW_WIDTH = 20;
+export const SHADOW_HEIGHT = 10;
+export const SHADOW_ALPHA = 0.27;

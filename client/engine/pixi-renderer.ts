@@ -1,5 +1,8 @@
-import { Application, Assets, Container, Graphics, Rectangle, Sprite, Texture } from 'pixi.js';
-import { indexSprites, parseArtManifest, type ArtSprite } from './atlas';
+import { Application, Assets, Container, Graphics, Sprite, Texture, UPDATE_PRIORITY } from 'pixi.js';
+import { ArtSpriteView, FrameTextures } from './art-sprite';
+import { indexSprites, parseArtManifest, type ArtFrame, type ArtSprite, type LegacyAnimMeta } from './atlas';
+import { AtlasLoader, type ArtScreen } from './atlas-loader';
+import { buildSpriteArt, type SpriteArt } from './sprite-anim';
 import { footprintOf, type BaseItem, type Rect } from './base-types';
 import { centerOn, clampCamera, intersects, visibleRect, worldBounds, type WorldRect } from './camera';
 import {
@@ -51,10 +54,29 @@ export class PixiRenderer implements BattleRenderer {
   private readonly overlay = new Graphics();
   private readonly handlers = new Set<InputHandler>();
   private readonly nodes = new Map<string, Node>();
-  private readonly textures = new Map<string, Texture>();
+  private readonly frames = new FrameTextures();
   private sprites = new Map<string, ArtSprite>();
-  private atlasTextures = new Map<string, Texture>();
+  private readonly arts = new Map<string, SpriteArt>();
+  private animMeta: Record<string, LegacyAnimMeta> = {};
+  private readonly unloading = new Map<string, Promise<void>>();
+  private readonly loader = new AtlasLoader<Texture>({
+    resolve: (p) => (this.options.resolveAssetUrl ?? ((x: string) => x))(p),
+    load: async (url) => {
+      await this.unloading.get(url); // повторная загрузка не должна получить текстуру, которую выгружают
+      return (await Assets.load(url)) as Texture;
+    },
+    unload: (_t, url) => {
+      const p = Assets.unload(url)
+        .catch(() => undefined)
+        .finally(() => this.unloading.delete(url));
+      this.unloading.set(url, p);
+    },
+    supportsWebp: detectWebp,
+    onUnload: (name) => this.frames.drop(name),
+    onError: (name, err) => console.warn(`atlas ${name}: не загрузился, остаются заглушки`, err),
+  });
   private state: WorldState | null = null;
+  private rendered = 0;
   private camera: Camera = { x: 0, y: 0, zoom: 1 };
   private hover: { x: number; y: number } | null = null;
   private groundKey = '';
@@ -92,23 +114,31 @@ export class PixiRenderer implements BattleRenderer {
       getState: () => this.playback.state,
       emit: (e) => this.dispatch(e),
     });
+    // После отрисовки кадра (PixiJS рендерит сцену с приоритетом LOW): счётчик для замеров draw calls на кадр.
+    this.app.ticker.add(() => this.rendered++, undefined, UPDATE_PRIORITY.UTILITY);
     this.app.ticker.add((t) => {
-      if (this.mode === 'battle' && this.playback.tick(t.deltaMS)) this.redrawBattle();
+      if (this.mode === 'battle') {
+        if (this.playback.tick(t.deltaMS)) this.redrawBattle();
+        this.battleView.tickAnim(t.deltaMS);
+      } else {
+        this.tickBaseAnim(t.deltaMS);
+      }
     });
   }
 
+  /**
+   * Регистрирует атласы манифеста и загружает те, что нужны текущему экрану (база/бой); остальные — лениво при
+   * переходе. WebP с PNG-запасом, см. AtlasLoader. Нехватка поля манифеста не ошибка: рисуются заглушки.
+   */
   async loadAtlas(manifest: AtlasManifest): Promise<void> {
     const m = parseArtManifest(manifest);
-    const resolve = this.options.resolveAssetUrl ?? ((p: string) => p);
     this.sprites = indexSprites(m);
-    this.textures.clear();
-    this.atlasTextures = new Map();
-    for (const [name, a] of Object.entries(m.atlases)) {
-      this.atlasTextures.set(name, (await Assets.load(resolve(a.image))) as Texture);
-    }
-    this.battleView.resetSprites();
-    if (this.mode === 'battle') this.redrawBattle();
-    else if (this.state) this.render(this.state);
+    this.arts.clear();
+    this.animMeta = m._anims ?? {};
+    this.resetViews();
+    this.frames.clear();
+    this.loader.setManifest(m.atlases);
+    await this.enterScreen(this.mode, true);
   }
 
   render(state: WorldState): void {
@@ -158,6 +188,21 @@ export class PixiRenderer implements BattleRenderer {
     this.cull();
   }
 
+  /** Сколько кадров отрисовано (для dev-замеров draw calls/fps; не часть интерфейса Renderer). */
+  get framesRendered(): number {
+    return this.rendered;
+  }
+
+  /** Средний fps по ticker PixiJS. */
+  get fps(): number {
+    return this.app.ticker.FPS;
+  }
+
+  /** Имена загруженных сейчас атласов (ленивая загрузка по экранам). */
+  get loadedAtlases(): string[] {
+    return this.loader.loadedNames;
+  }
+
   /** Камера по центру карты. Вызывается один раз после первого render(). */
   centerCamera(zoom = 1): void {
     const size = this.gridSize() ?? 0;
@@ -171,6 +216,8 @@ export class PixiRenderer implements BattleRenderer {
   }
 
   destroy(): void {
+    this.loader.dispose();
+    this.frames.clear();
     this.app.destroy(true, { children: true });
   }
 
@@ -182,6 +229,7 @@ export class PixiRenderer implements BattleRenderer {
     if (this.mode === mode) return;
     this.mode = mode;
     this.hover = null;
+    void this.enterScreen(mode, false);
     const battle = mode === 'battle';
     this.itemsLayer.visible = !battle;
     this.overlay.visible = !battle;
@@ -270,14 +318,14 @@ export class PixiRenderer implements BattleRenderer {
       const c = footprintCenter(item.x, item.y, w, h);
       const p = tileToScreen(c.x, c.y);
       let n = this.nodes.get(item.uid);
-      const sprite = this.sprites.get(item.type);
-      const wantSprite = sprite !== undefined && this.atlasTextures.has(sprite.atlas);
+      const art = this.artFor(item.type);
+      const wantSprite = art !== undefined;
       if (n && (n.view instanceof Sprite) !== wantSprite) {
         n.view.destroy();
         n = undefined;
       }
       if (!n) {
-        const view = wantSprite ? this.makeSprite(sprite) : new Graphics();
+        const view = art ? this.makeSprite(art) : new Graphics();
         this.itemsLayer.addChild(view);
         n = { item, view, bounds: { left: 0, top: 0, right: 0, bottom: 0 } };
         this.nodes.set(item.uid, n);
@@ -302,25 +350,54 @@ export class PixiRenderer implements BattleRenderer {
     });
   }
 
-  /** Спрайт по id контента, если арт загружен; иначе undefined (рисуется заглушка-фигура). */
-  private spriteFor(type: string): Sprite | undefined {
-    const def = this.sprites.get(type);
-    if (!def || !this.atlasTextures.has(def.atlas)) return undefined;
-    return this.makeSprite(def);
+  /** Экран грузит свои атласы (ленивая загрузка), отпускает чужие и пересобирает вид, если что-то подгрузилось. */
+  private async enterScreen(screen: ArtScreen, force: boolean): Promise<void> {
+    const fresh = await this.loader.acquire(screen);
+    if (this.mode !== screen) return;
+    const other: ArtScreen = screen === 'base' ? 'battle' : 'base';
+    if (this.loader.release(other).length > 0) this.resetViews(other);
+    if (!force && fresh.length === 0) return;
+    this.resetViews(screen);
+    if (screen === 'base') {
+      if (this.state) this.render(this.state);
+    } else this.redrawBattle();
   }
 
-  private makeSprite(def: ArtSprite): Sprite {
-    let tex = this.textures.get(def.id);
-    if (!tex) {
-      const f = def.frames[0];
-      const src = this.atlasTextures.get(def.atlas);
-      if (!f || !src) throw new Error(`no frame for ${def.id}`);
-      tex = new Texture({ source: src.source, frame: new Rectangle(f.x, f.y, f.w, f.h) });
-      this.textures.set(def.id, tex);
+  /** Сбрасывает спрайты (после смены/выгрузки атласов они пересоздаются); без аргумента — оба экрана. */
+  private resetViews(screen?: ArtScreen): void {
+    if (screen !== 'battle') {
+      for (const n of this.nodes.values()) n.view.destroy();
+      this.nodes.clear();
     }
-    const s = new Sprite(tex);
-    s.anchor.set(def.anchors.ground.x / tex.width, def.anchors.ground.y / tex.height);
-    return s;
+    if (screen !== 'base') this.battleView.resetSprites();
+  }
+
+  private tickBaseAnim(dtMs: number): void {
+    for (const n of this.nodes.values()) {
+      if (n.view instanceof ArtSpriteView && n.view.animated && n.view.visible) n.view.advance(dtMs);
+    }
+  }
+
+  private artFor(type: string): SpriteArt | undefined {
+    let art = this.arts.get(type);
+    if (!art) {
+      const def = this.sprites.get(type);
+      if (!def) return undefined;
+      art = buildSpriteArt(def, this.animMeta[def.id]);
+      this.arts.set(type, art);
+    }
+    return this.loader.has(art.def.atlas) ? art : undefined;
+  }
+
+  /** Спрайт по id контента, если арт загружен; иначе undefined (рисуется заглушка-фигура). */
+  private spriteFor(type: string): ArtSpriteView | undefined {
+    const art = this.artFor(type);
+    return art ? this.makeSprite(art) : undefined;
+  }
+
+  private makeSprite(art: SpriteArt): ArtSpriteView {
+    const src = this.loader.get(art.def.atlas) as Texture;
+    return new ArtSpriteView(art, (f: ArtFrame) => this.frames.get(art.def.atlas, src, f));
   }
 
   private drawOverlay(): void {
@@ -360,4 +437,17 @@ function maxOf(a: number[], off: number): number {
   let m = -Infinity;
   for (let i = off; i < a.length; i += 2) m = Math.max(m, a[i] as number);
   return m;
+}
+
+let webpSupport: boolean | undefined;
+
+/** Поддерживает ли браузер WebP (проверка кодированием одного пикселя; результат кэшируется). */
+export function detectWebp(): boolean {
+  if (webpSupport !== undefined) return webpSupport;
+  try {
+    webpSupport = document.createElement('canvas').toDataURL('image/webp').startsWith('data:image/webp');
+  } catch {
+    webpSupport = false;
+  }
+  return webpSupport;
 }

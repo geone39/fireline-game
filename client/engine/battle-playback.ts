@@ -1,4 +1,5 @@
 import {
+  BATTLE_DIE_MS,
   BATTLE_END_MS,
   BATTLE_EXPLOSION_MS,
   BATTLE_HEAL_MS,
@@ -37,6 +38,23 @@ export interface MoveAnim {
   duration: number;
 }
 
+/** Действие юнита с направлением (выстрел): рисуется состоянием `attack` в сторону цели. dx,dy — вектор в клетках. */
+export interface ActionAnim {
+  dx: number;
+  dy: number;
+  age: number;
+  duration: number;
+}
+
+/** Погибший юнит, проигрывающий `die` на месте гибели. */
+export interface DyingUnit {
+  entity: BattleEntity;
+  x: number;
+  y: number;
+  age: number;
+  duration: number;
+}
+
 interface Step {
   total: number;
   age: number;
@@ -62,6 +80,8 @@ export class BattlePlayback {
   private current: Step | null = null;
   private instant = false;
   readonly moves = new Map<number, MoveAnim>();
+  readonly actions = new Map<number, ActionAnim>();
+  readonly dying = new Map<number, DyingUnit>();
   fx: Fx[] = [];
 
   constructor(private readonly onIdle: () => void = () => undefined) {}
@@ -73,7 +93,7 @@ export class BattlePlayback {
 
   /** Есть что перерисовывать каждый кадр. */
   get animating(): boolean {
-    return this.busy || this.fx.length > 0 || this.moves.size > 0;
+    return this.busy || this.fx.length > 0 || this.moves.size > 0 || this.actions.size > 0 || this.dying.size > 0;
   }
 
   /** Режим «пропустить»: события применяются мгновенно, эффекты не создаются. */
@@ -110,6 +130,8 @@ export class BattlePlayback {
       this.begin(ev, true).end?.();
     }
     this.moves.clear();
+    this.actions.clear();
+    this.dying.clear();
     this.fx = [];
     this.adopt();
     if (wasBusy) this.onIdle();
@@ -123,6 +145,14 @@ export class BattlePlayback {
     for (const [id, m] of this.moves) {
       m.age += dtMs;
       if (m.age >= m.duration) this.moves.delete(id);
+    }
+    for (const [id, a] of this.actions) {
+      a.age += dtMs;
+      if (a.age >= a.duration) this.actions.delete(id);
+    }
+    for (const [id, d] of this.dying) {
+      d.age += dtMs;
+      if (d.age >= d.duration) this.dying.delete(id);
     }
     const wasBusy = this.busy;
     let left = dtMs;
@@ -209,6 +239,11 @@ export class BattlePlayback {
       case EVENT.attacked: {
         const shooter = this.display.get(ev.Actor);
         const from = shooter ? this.centre(shooter) : { x: cx, y: cy };
+        const aimed = this.display.get(ev.Target);
+        const to = aimed ? this.centre(aimed) : { x: cx, y: cy };
+        if (!quiet && shooter) {
+          this.actions.set(shooter.id, { dx: to.x - from.x, dy: to.y - from.y, age: 0, duration: BATTLE_SHOT_MS });
+        }
         at('shot', { fromX: from.x, fromY: from.y }, BATTLE_SHOT_MS);
         step.total = BATTLE_SHOT_MS;
         step.end = () => {
@@ -225,6 +260,11 @@ export class BattlePlayback {
         const c = gone ? this.centre(gone) : { x: cx, y: cy };
         this.display.delete(ev.Target);
         this.moves.delete(ev.Target);
+        this.actions.delete(ev.Target);
+        if (!quiet && gone && ev.Kind === EVENT.killed) {
+          const p = this.positionOf(gone);
+          this.dying.set(gone.id, { entity: gone, x: p.x, y: p.y, age: 0, duration: BATTLE_DIE_MS });
+        }
         this.addFx({ kind: 'explosion', x: c.x, y: c.y, big, duration: BATTLE_EXPLOSION_MS }, quiet);
         this.addFx({ kind: 'smoke', x: c.x, y: c.y, big, duration: BATTLE_SMOKE_MS }, quiet);
         step.total = BATTLE_EXPLOSION_MS;

@@ -1,4 +1,5 @@
 import { Container, Graphics, Sprite } from 'pixi.js';
+import { ArtSpriteView } from './art-sprite';
 import {
   BATTLE_AP_EMPTY,
   BATTLE_AP_FULL,
@@ -16,13 +17,18 @@ import {
   BATTLE_TARGET_COLOR,
   BATTLE_TRAP_COLOR,
   HOVER_ALPHA,
+  BATTLE_DIE_FADE_MS,
   HOVER_COLOR,
   SELECT_COLOR,
+  SHADOW_ALPHA,
+  SHADOW_HEIGHT,
+  SHADOW_WIDTH,
   TILE_HEIGHT,
   TILE_WIDTH,
 } from './config';
 import { battleDepth, hpRatio, rangeCells, showHpBar, sortBattle } from './battle-logic';
 import type { BattlePlayback, Fx } from './battle-playback';
+import { facingOf } from './direction';
 import { footprintSize, type BattleEntity, type BattleWorldState } from './battle-types';
 import { diamond, footprintCenter, footprintDiamond, tileToScreen } from './iso';
 
@@ -30,6 +36,10 @@ interface View {
   node: Sprite | Graphics;
   /** Высота над точкой «земли» для полосок hp (px мира). */
   top: number;
+  /** Спрайт из манифеста с анимацией; у заглушек-фигур отсутствует. */
+  art?: ArtSpriteView;
+  /** Последнее обработанное действие (выстрел): новый выстрел перезапускает клип attack. */
+  action?: object;
 }
 
 export type SpriteFactory = (type: string) => Sprite | undefined;
@@ -38,14 +48,17 @@ export type SpriteFactory = (type: string) => Sprite | undefined;
 export class BattleView {
   readonly container = new Container();
   private readonly highlight = new Graphics();
+  private readonly shadows = new Graphics();
   private readonly entities = new Container();
   private readonly bars = new Graphics();
   private readonly fxLayer = new Graphics();
   private readonly views = new Map<number, View>();
+  /** Погибшие юниты, проигрывающие die (по id сущности). */
+  private readonly ghosts = new Map<number, View>();
 
   constructor(private readonly spriteFor: SpriteFactory) {
     this.entities.sortableChildren = true;
-    this.container.addChild(this.highlight, this.entities, this.bars, this.fxLayer);
+    this.container.addChild(this.highlight, this.shadows, this.entities, this.bars, this.fxLayer);
     this.container.visible = false;
   }
 
@@ -57,11 +70,20 @@ export class BattleView {
   resetSprites(): void {
     for (const v of this.views.values()) v.node.destroy();
     this.views.clear();
+    for (const v of this.ghosts.values()) v.node.destroy();
+    this.ghosts.clear();
+  }
+
+  /** Продвигает анимацию спрайтов (idle/walk/attack/die) каждый кадр; перерисовка сцены не нужна. */
+  tickAnim(dtMs: number): void {
+    for (const v of this.views.values()) v.art?.advance(dtMs);
+    for (const v of this.ghosts.values()) v.art?.advance(dtMs);
   }
 
   draw(state: BattleWorldState, playback: BattlePlayback, hover: { x: number; y: number } | null): void {
     this.syncEntities(state, playback);
     this.drawHighlight(state, hover);
+    this.drawShadows(state, playback);
     this.drawBars(state, playback);
     this.drawFx(playback.fx);
   }
@@ -83,18 +105,80 @@ export class BattleView {
       v.node.position.set(p.x, p.y);
       v.node.zIndex = battleDepth(e, pos);
       if (v.node instanceof Graphics) this.paintFallback(v.node, e);
+      else this.pose(v, e, playback);
     }
     for (const [id, v] of this.views) {
-      if (!alive.has(id)) {
+      if (alive.has(id)) continue;
+      this.views.delete(id);
+      if (v.art?.hasDie && playback.dying.has(id) && !this.ghosts.has(id)) {
+        v.art.play('die', v.art.facing, true);
+        this.ghosts.set(id, v);
+      } else {
         v.node.destroy();
-        this.views.delete(id);
       }
+    }
+    this.syncGhosts(playback);
+  }
+
+  /** Состояние анимации юнита: attack (по событию) > walk (идёт перемещение) > idle; направление — по вектору. */
+  private pose(v: View, e: BattleEntity, playback: BattlePlayback): void {
+    const art = v.art;
+    if (!art?.animated) return;
+    const act = playback.actions.get(e.id);
+    if (act) {
+      art.play('attack', facingOf(act.dx, act.dy) ?? art.facing, v.action !== act);
+      v.action = act;
+      return;
+    }
+    v.action = undefined;
+    const mv = playback.moves.get(e.id);
+    if (mv) art.play('walk', facingOf(mv.toX - mv.fromX, mv.toY - mv.fromY) ?? art.facing);
+    else art.play('idle', art.facing);
+  }
+
+  private syncGhosts(playback: BattlePlayback): void {
+    for (const [id, v] of this.ghosts) {
+      const d = playback.dying.get(id);
+      if (!d) {
+        v.node.destroy();
+        this.ghosts.delete(id);
+        continue;
+      }
+      const { w, h } = footprintSize(d.entity);
+      const c = footprintCenter(d.x, d.y, w, h);
+      const p = tileToScreen(c.x, c.y);
+      v.node.position.set(p.x, p.y);
+      v.node.zIndex = battleDepth(d.entity, { x: d.x, y: d.y }) - 0.5;
+      v.node.alpha = Math.min(1, (d.duration - d.age) / BATTLE_DIE_FADE_MS);
+    }
+  }
+
+  /** Мягкое пятно под юнитами с арт-спрайтом (у заглушек тень рисуется самой фигурой, у зданий запечена в кадре). */
+  private drawShadows(state: BattleWorldState, playback: BattlePlayback): void {
+    const g = this.shadows.clear();
+    const spot = (x: number, y: number, e: BattleEntity, alpha: number) => {
+      const { w, h } = footprintSize(e);
+      const c = footprintCenter(x, y, w, h);
+      const p = tileToScreen(c.x, c.y);
+      g.ellipse(p.x, p.y, SHADOW_WIDTH / 2, SHADOW_HEIGHT / 2).fill({ color: 0x000000, alpha });
+    };
+    for (const e of state.entities) {
+      if (isStatic(e) || !this.views.get(e.id)?.art) continue;
+      const pos = playback.positionOf(e);
+      spot(pos.x, pos.y, e, SHADOW_ALPHA);
+    }
+    for (const [id, v] of this.ghosts) {
+      const d = playback.dying.get(id);
+      if (d && v.art) spot(d.x, d.y, d.entity, SHADOW_ALPHA * v.node.alpha);
     }
   }
 
   private makeView(e: BattleEntity): View {
     const sprite = this.spriteFor(e.type);
-    if (sprite) return { node: sprite, top: sprite.height * sprite.anchor.y };
+    if (sprite) {
+      const art = sprite instanceof ArtSpriteView ? sprite : undefined;
+      return { node: sprite, art, top: art ? art.topOffset : sprite.height * sprite.anchor.y };
+    }
     const isBuilding = isStatic(e);
     return { node: new Graphics(), top: isBuilding ? 28 : 26 };
   }
