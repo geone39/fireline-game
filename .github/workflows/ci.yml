@@ -1,57 +1,116 @@
 name: ci
-on: [push, pull_request]
+# OPS-8 (#136): расход минут Actions. Запуск только на pull_request и push в main (без дублей push ветки + PR);
+# job `changes` определяет затронутые области, неактуальные jobs пропускаются (skipped = не провал).
+# Push в main и workflow_dispatch всегда гоняют всё.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pull-requests: read
 # Новый пуш в ту же ветку/PR отменяет устаревший запуск (на main — не отменяем, нужен каждый коммит).
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
-  check:
+  # Дешёвый job (≈10 с, биллинг 1 мин): какие области затронул PR. Не-PR события — всё `true`.
+  changes:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      code: ${{ steps.out.outputs.code }}
+      e2e: ${{ steps.out.outputs.e2e }}
+      wasm: ${{ steps.out.outputs.wasm }}
+      simbattle: ${{ steps.out.outputs.simbattle }}
+    steps:
+      - uses: dorny/paths-filter@v3.0.2
+        id: f
+        if: github.event_name == 'pull_request'
+        with:
+          predicate-quantifier: every
+          filters: |
+            code:
+              - '**'
+              - '!docs/**'
+              - '!backlog/**'
+              - '!**/*.md'
+              - '!.gitattributes'
+            e2e:
+              - 'client/**'
+              - 'server/**'
+              - 'content/**'
+              - 'deploy/**'
+              - 'tests/**'
+              - 'sim/**'
+              - '.github/e2e/**'
+              - '.github/workflows/ci.yml'
+              - 'Makefile'
+            wasm:
+              - 'sim/**'
+              - 'client/sim-wasm/**'
+              - 'deploy/**'
+              - '.github/workflows/ci.yml'
+              - 'Makefile'
+            simbattle:
+              - 'tools/simbattle/**'
+              - 'sim/**'
+              - 'content/**'
+              - 'server/svc/raid/**'
+              - '.github/workflows/ci.yml'
+              - 'Makefile'
+      - id: out
+        run: |
+          for k in code e2e wasm simbattle; do
+            if [ "${{ github.event_name }}" = "pull_request" ]; then
+              case $k in
+                code) v='${{ steps.f.outputs.code }}';;
+                e2e) v='${{ steps.f.outputs.e2e }}';;
+                wasm) v='${{ steps.f.outputs.wasm }}';;
+                simbattle) v='${{ steps.f.outputs.simbattle }}';;
+              esac
+            else v=true; fi
+            echo "$k=$v" >> "$GITHUB_OUTPUT"
+          done
+          cat "$GITHUB_OUTPUT"
+
+  # `make check` уже включает server и client (отдельные jobs были дублем и удалены в OPS-8).
+  # Docs-only PR: только `make content`.
+  check:
+    needs: changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - run: pip install pyyaml jsonschema
       - uses: actions/setup-go@v5
+        if: needs.changes.outputs.code == 'true'
         with:
           go-version-file: server/go.mod
           cache-dependency-path: server/go.sum
       - uses: actions/setup-node@v4
+        if: needs.changes.outputs.code == 'true'
         with:
           node-version: 22
           cache: npm
           cache-dependency-path: client/package-lock.json
       - run: make check
+        if: needs.changes.outputs.code == 'true'
         env:
           REQUIRE_DOCKER: "1"
+      - run: make content
+        if: needs.changes.outputs.code != 'true'
       # next stages (enable as modules land): replay-regression, load smoke (k6)
-
-  server:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: server/go.mod
-          cache-dependency-path: server/go.sum
-      - run: make server
-        env:
-          REQUIRE_DOCKER: "1"
-
-  client:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: client/package-lock.json
-      - run: make client
 
   # Сборка sim.wasm + паритет G01..G20 native/WASM (node). Параллельно с остальными, основной job не удлиняет.
   wasm:
+    needs: changes
+    if: needs.changes.outputs.wasm == 'true'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -77,6 +136,8 @@ jobs:
 
   # Боты-атаки tools/simbattle (отдельный go.mod): vet, gofmt, `test -short` (~25 с). Полная матрица — nightly (simbattle-nightly.yml).
   simbattle:
+    needs: changes
+    if: needs.changes.outputs.simbattle == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -92,8 +153,10 @@ jobs:
 
   # Playwright против docker compose (postgres + server + client). Тест known-bugs помечен test.fail — зелёный.
   e2e:
+    needs: changes
+    if: needs.changes.outputs.e2e == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - name: Compose up (healthchecks)
