@@ -14,5 +14,5 @@
     "resolveJsonModule": true,
     "types": ["vite/client", "node"]
   },
-  "include": ["engine", "core", "platform", "sim-wasm", "app", "vite.config.ts"]
+  "include": ["engine", "core", "platform", "sim-wasm", "app", "ui/army", "ui/lab", "vite.config.ts"]
 }
