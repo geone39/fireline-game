@@ -1,11 +1,12 @@
 // Экран боя: канвас PixiRenderer (BattleRenderer 0.3) + панель (ход, ОД, EndTurn/Retreat, итог) над ядром sim (WASM).
-// Бой локальный, на тестовом Snapshot, без сервера (серверная часть рейдов ещё не готова: OQ-C4b-2).
+// Бой локальный, без сервера (серверная часть рейдов ещё не готова: OQ-C4b-2): на тестовом Snapshot или на составе из армии игрока (battle-prep.ts).
 import type { VNode } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import artManifest from '../../art/manifest.json';
 import { createBattle, type Battle } from '../core/battle';
 import { PixiRenderer } from '../engine/pixi-renderer';
 import { browserSources, loadSim } from '../sim-wasm';
+import type { Snapshot } from '../sim-wasm/api';
 import type { T } from '../ui/base/i18n';
 import { TEST_SEED, testSnapshot } from './battle-fixture';
 import { selectPanel, stars } from './battle-model';
@@ -16,6 +17,8 @@ const atlasUrl = (path: string): string => (atlasUrls[`../../art/${path}`] as st
 export interface BattleScreenProps {
   t: T;
   onExit: () => void;
+  /** Что играть; не задан — тестовый Snapshot (автономный бой без сервера). */
+  snapshot?: Snapshot;
 }
 
 export function BattleScreen(p: BattleScreenProps): VNode {
@@ -40,7 +43,7 @@ export function BattleScreen(p: BattleScreenProps): VNode {
         if (disposed) return;
         const sim = await loadSim(browserSources(import.meta.env.BASE_URL));
         if (disposed) return;
-        b = createBattle({ sim, snapshot: testSnapshot(), seed: TEST_SEED });
+        b = createBattle({ sim, snapshot: p.snapshot ?? testSnapshot(), seed: TEST_SEED });
         const ctl = b;
         r.setBattle(ctl.renderState());
         r.centerCamera(1);

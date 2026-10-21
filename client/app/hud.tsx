@@ -55,6 +55,34 @@ export function CollectorIndicators(p: { collectors: HudVM['collectors']; t: T }
   );
 }
 
+export function ArmyIndicators(p: { army: NonNullable<HudVM['army']>; t: T }): VNode {
+  const { army, t } = p;
+  return (
+    <span data-testid="hud-army">
+      {t('hud.army')}:{' '}
+      {army.pools.map((pl) => (
+        <span key={pl.id} data-testid={`army-pool-${pl.id}`} title={t(pl.labelKey)} style={{ marginRight: '8px', color: pl.full ? '#ffd54a' : undefined }}>
+          {t(pl.labelKey)} <strong>{pl.used}/{pl.capacity}</strong>
+        </span>
+      ))}
+      <span data-testid="hud-training">
+        {army.training ? `${t('hud.training', { n: army.training.units })} (${formatDuration(army.training.remainingS, t)})` : t('hud.training_idle')}
+      </span>{' '}
+      <span data-testid="hud-research">
+        {army.research ? (
+          <>
+            {t('hud.research')}: {t(army.research.nameKey)}{' '}
+            <progress value={army.research.percent} max={100} aria-label={t('hud.research')} />{' '}
+            <strong>{army.research.remainingS > 0 ? formatDuration(army.research.remainingS, t) : t('hud.ready')}</strong>
+          </>
+        ) : (
+          t('hud.research_idle')
+        )}
+      </span>
+    </span>
+  );
+}
+
 export function TimerList(p: { timers: HudVM['timers']; t: T }): VNode {
   return (
     <ul data-testid="hud-timers" aria-label={p.t('hud.timers')} style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', gap: '12px' }}>
@@ -82,6 +110,7 @@ export function Hud(p: { vm: HudVM; t: T }): VNode {
       <ResourceBar wallet={vm.wallet} t={t} />
       <BuilderIndicator builders={vm.builders} t={t} />
       <CollectorIndicators collectors={vm.collectors} t={t} />
+      {vm.army && <ArmyIndicators army={vm.army} t={t} />}
       <TimerList timers={vm.timers} t={t} />
     </header>
   );

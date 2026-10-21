@@ -106,6 +106,7 @@ export function BaseScreen(p: { app: App; content: Content; t: T }): VNode {
     world: p.app.base.model.store.getState().view,
     catalog: p.content.catalog,
     serverNowMs: p.app.serverNowMs(),
+    army: p.app.army.viewModel(),
   });
   const project = makeProject(renderer.current ? cameraOf(renderer.current) : { x: 0, y: 0, zoom: 1 });
   return (
