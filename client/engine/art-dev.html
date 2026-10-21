@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fireline — art atlases (dev)</title>
+    <style>
+      html, body, #app { margin: 0; height: 100%; background: #111; }
+      #bar { position: fixed; top: 8px; left: 8px; right: 8px; display: flex; flex-wrap: wrap; gap: 6px; z-index: 2; align-items: center; }
+      #bar button { font: 13px sans-serif; padding: 6px 10px; }
+      #bar button.on { background: #ffd23f; }
+      #bar .sep { width: 12px; }
+      #hud { position: fixed; bottom: 8px; left: 8px; color: #ddd; font: 12px/1.4 monospace; background: #000a; padding: 6px 8px; z-index: 2; white-space: pre; }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="bar">
+      <button data-view="base">База</button>
+      <button data-view="battle">Бой</button>
+      <button data-view="perf">База: 150 построек</button>
+      <span class="sep"></span>
+      <button data-backend="blender">Blender (8 напр.)</button>
+      <button data-backend="proc">Процедурный (4 напр.)</button>
+      <button data-backend="none">Заглушки</button>
+      <span class="sep"></span>
+      <span id="battle-bar">
+        <button id="walk">Ходьба ×8</button>
+        <button id="attack">Атака ×8</button>
+        <button id="die">Смерть ×8</button>
+        <button id="reset">Сброс</button>
+      </span>
+    </div>
+    <div id="hud"></div>
+    <script type="module" src="/engine/art-dev.ts"></script>
+  </body>
+</html>
