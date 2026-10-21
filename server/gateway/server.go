@@ -43,6 +43,9 @@ type Deps struct {
 
 	// Base, when set, mounts /v1/base* and fills builders in GET /v1/me.
 	Base *BaseModule
+
+	// Army, when set, mounts /v1/army* and /v1/lab* and adds army and lab to GET /v1/me.
+	Army *ArmyModule
 }
 
 // Server is the HTTP gateway.
@@ -58,12 +61,13 @@ type Server struct {
 	userLimits *limiterSet
 	extra      func(r chi.Router)
 	base       *BaseModule
+	army       *ArmyModule
 	metrics    *metrics
 }
 
 // New builds a Server.
 func New(d Deps) *Server {
-	s := &Server{cfg: d.Config, auth: d.Auth, store: d.Store, idem: d.Idem, content: d.Content, log: d.Log, nowFn: d.Now, extra: d.ExtraAuthedRoutes, base: d.Base}
+	s := &Server{cfg: d.Config, auth: d.Auth, store: d.Store, idem: d.Idem, content: d.Content, log: d.Log, nowFn: d.Now, extra: d.ExtraAuthedRoutes, base: d.Base, army: d.Army}
 	var pool *pgxpool.Pool
 	if d.Store != nil {
 		pool = d.Store.Pool
@@ -116,6 +120,9 @@ func (s *Server) Handler() http.Handler {
 			r.Get("/me", s.handleMe)
 			if s.base != nil {
 				s.base.routes(s)(r)
+			}
+			if s.army != nil {
+				s.army.routes(s)(r)
 			}
 			if s.extra != nil {
 				s.extra(r)
