@@ -1,0 +1,381 @@
+{
+ "atlases": {
+  "units": {
+   "data": "atlases/units.json",
+   "image": "atlases/units.png",
+   "size": [
+    1024,
+    128
+   ],
+   "webp": "atlases/units.webp"
+  }
+ },
+ "category": "units",
+ "lock": {
+  "u_brawler": {
+   "renderer": "placeholder"
+  },
+  "u_breacher": {
+   "renderer": "placeholder"
+  },
+  "u_dasher": {
+   "renderer": "placeholder"
+  },
+  "u_drone": {
+   "renderer": "placeholder"
+  },
+  "u_flamer": {
+   "renderer": "placeholder"
+  },
+  "u_grenadier": {
+   "renderer": "placeholder"
+  },
+  "u_heavy": {
+   "renderer": "placeholder"
+  },
+  "u_medic": {
+   "renderer": "placeholder"
+  },
+  "u_paratrooper": {
+   "renderer": "placeholder"
+  },
+  "u_rifleman": {
+   "renderer": "placeholder"
+  },
+  "u_saboteur": {
+   "renderer": "placeholder"
+  },
+  "u_sniper": {
+   "renderer": "placeholder"
+  }
+ },
+ "px_hash": {
+  "units": "e166e419570cadd6"
+ },
+ "sprites": [
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "units",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "u_brawler_0",
+     "w": 48,
+     "x": 0,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "u_brawler_1",
+     "w": 48,
+     "x": 49,
+     "y": 0
+    }
+   ],
+   "id": "u_brawler"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "units",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "u_breacher_0",
+     "w": 48,
+     "x": 98,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "u_breacher_1",
+     "w": 48,
+     "x": 147,
+     "y": 0
+    }
+   ],
+   "id": "u_breacher"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "units",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "u_dasher_0",
+     "w": 48,
+     "x": 196,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "u_dasher_1",
+     "w": 48,
+     "x": 245,
+     "y": 0
+    }
+   ],
+   "id": "u_dasher"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "units",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "u_drone_0",
+     "w": 48,
+     "x": 294,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "u_drone_1",
+     "w": 48,
+     "x": 343,
+     "y": 0
+    }
+   ],
+   "id": "u_drone"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "units",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "u_flamer_0",
+     "w": 48,
+     "x": 392,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "u_flamer_1",
+     "w": 48,
+     "x": 441,
+     "y": 0
+    }
+   ],
+   "id": "u_flamer"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "units",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "u_grenadier_0",
+     "w": 48,
+     "x": 490,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "u_grenadier_1",
+     "w": 48,
+     "x": 539,
+     "y": 0
+    }
+   ],
+   "id": "u_grenadier"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "units",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "u_heavy_0",
+     "w": 48,
+     "x": 588,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "u_heavy_1",
+     "w": 48,
+     "x": 637,
+     "y": 0
+    }
+   ],
+   "id": "u_heavy"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "units",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "u_medic_0",
+     "w": 48,
+     "x": 686,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "u_medic_1",
+     "w": 48,
+     "x": 735,
+     "y": 0
+    }
+   ],
+   "id": "u_medic"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "units",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "u_paratrooper_0",
+     "w": 48,
+     "x": 784,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "u_paratrooper_1",
+     "w": 48,
+     "x": 833,
+     "y": 0
+    }
+   ],
+   "id": "u_paratrooper"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "units",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "u_rifleman_0",
+     "w": 48,
+     "x": 882,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "u_rifleman_1",
+     "w": 48,
+     "x": 931,
+     "y": 0
+    }
+   ],
+   "id": "u_rifleman"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "units",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "u_saboteur_0",
+     "w": 48,
+     "x": 0,
+     "y": 49
+    },
+    {
+     "h": 48,
+     "name": "u_saboteur_1",
+     "w": 48,
+     "x": 49,
+     "y": 49
+    }
+   ],
+   "id": "u_saboteur"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "units",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "u_sniper_0",
+     "w": 48,
+     "x": 98,
+     "y": 49
+    },
+    {
+     "h": 48,
+     "name": "u_sniper_1",
+     "w": 48,
+     "x": 147,
+     "y": 49
+    }
+   ],
+   "id": "u_sniper"
+  }
+ ]
+}

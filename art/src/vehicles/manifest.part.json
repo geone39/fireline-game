@@ -1,0 +1,171 @@
+{
+ "atlases": {
+  "vehicles": {
+   "data": "atlases/vehicles.json",
+   "image": "atlases/vehicles.png",
+   "size": [
+    1024,
+    64
+   ],
+   "webp": "atlases/vehicles.webp"
+  }
+ },
+ "category": "vehicles",
+ "lock": {
+  "v_apc": {
+   "renderer": "placeholder"
+  },
+  "v_engineer": {
+   "renderer": "placeholder"
+  },
+  "v_humvee": {
+   "renderer": "placeholder"
+  },
+  "v_mortar": {
+   "renderer": "placeholder"
+  },
+  "v_tank": {
+   "renderer": "placeholder"
+  }
+ },
+ "px_hash": {
+  "vehicles": "472b1ecf6d45c5e6"
+ },
+ "sprites": [
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "vehicles",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "v_apc_0",
+     "w": 48,
+     "x": 0,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "v_apc_1",
+     "w": 48,
+     "x": 49,
+     "y": 0
+    }
+   ],
+   "id": "v_apc"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "vehicles",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "v_engineer_0",
+     "w": 48,
+     "x": 98,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "v_engineer_1",
+     "w": 48,
+     "x": 147,
+     "y": 0
+    }
+   ],
+   "id": "v_engineer"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "vehicles",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "v_humvee_0",
+     "w": 48,
+     "x": 196,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "v_humvee_1",
+     "w": 48,
+     "x": 245,
+     "y": 0
+    }
+   ],
+   "id": "v_humvee"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "vehicles",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "v_mortar_0",
+     "w": 48,
+     "x": 294,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "v_mortar_1",
+     "w": 48,
+     "x": 343,
+     "y": 0
+    }
+   ],
+   "id": "v_mortar"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "vehicles",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "v_tank_0",
+     "w": 48,
+     "x": 392,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "v_tank_1",
+     "w": 48,
+     "x": 441,
+     "y": 0
+    }
+   ],
+   "id": "v_tank"
+  }
+ ]
+}

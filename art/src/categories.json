@@ -1,0 +1,26 @@
+{
+ "_doc": "Категории пайплайна art (ART-2). Одна категория = одна папка art/src/<cat>/ (models.json, manifest.part.json) и один владелец-агент за раз. Числа — художественные (px, кадры), игровых чисел здесь нет (AGENTS.md п.3). anims: имя -> число кадров (план по STYLE.md §6) — для CATALOG.md и проверки полноты; фактический состав берётся из models.json.",
+ "ss": 4,
+ "atlas_max_px": 2048,
+ "atlas_row_px": 1024,
+ "atlas_pad_px": 1,
+ "webp": {"quality": 90, "method": 6},
+ "budget": {"first_load_mb": 3, "full_mb": 40, "webp_bytes_per_px": 0.2},
+ "spec": {
+  "building_px": "w=(fw+fh)*32, h=(fw+fh)*16+height; anchor = footprint centre on ground",
+  "tile_px": [64, 32],
+  "unit_frame_px": 48
+ },
+ "categories": {
+  "terrain":   {"atlas": "terrain",   "content": false, "id_prefix": "t_",  "kind": "prop",  "dirs": 1, "states": ["normal"], "first_load": true,  "frame_px": null, "doc": "тайлы земли, воды, берега, пропсы карты (не из content: id свободные с префиксом t_)"},
+  "decor":     {"atlas": "decor",     "content": true,  "kind": "prop",  "dirs": 1, "states": ["normal"], "first_load": false, "frame_px": null, "doc": "декор и препятствия (x_*, o_*), футпринт из content"},
+  "buildings": {"atlas": "buildings", "content": true,  "kind": "building", "dirs": 1, "states": ["normal", "damaged", "ruin"], "first_load": true, "frame_px": null, "doc": "здания базы (b_*), ширина кадра (fw+fh)*32"},
+  "defences":  {"atlas": "defences",  "content": true,  "kind": "building", "dirs": 1, "states": ["normal", "damaged", "ruin"], "first_load": false, "frame_px": null, "doc": "оборона (d_*): пассивные препятствия и активные башни"},
+  "units":     {"atlas": "units",     "content": true,  "kind": "unit",  "dirs": 8, "anims": {"idle": 2, "walk": 4, "attack": 3, "die": 4}, "first_load": true, "frame_px": [48, 48], "doc": "пехота и дроны (u_*)"},
+  "vehicles":  {"atlas": "vehicles",  "content": true,  "kind": "unit",  "dirs": 8, "anims": {"idle": 2, "walk": 4, "attack": 3, "die": 4}, "first_load": false, "frame_px": [48, 48], "doc": "техника (v_*); кадр 48 до решения OQ-ART1-2"},
+  "ships":     {"atlas": "ships",     "content": true,  "kind": "unit",  "dirs": 8, "anims": {"idle": 2, "walk": 4, "attack": 3, "die": 4}, "first_load": false, "frame_px": [48, 48], "doc": "корабли (s_*); кадр 48 до решения OQ-ART1-2"},
+  "heroes":    {"atlas": "heroes",    "content": true,  "kind": "unit",  "dirs": 8, "anims": {"idle": 2, "walk": 4, "attack": 3, "die": 4, "ability": 3}, "first_load": false, "frame_px": [48, 48], "doc": "герои (h_*)"},
+  "spells_fx": {"atlas": "spells",    "content": true,  "kind": "prop",  "dirs": 1, "states": ["icon"], "anims": {"cast": 6}, "first_load": false, "frame_px": [48, 48], "doc": "заклинания (c_*): иконка + эффект применения"},
+  "ui":        {"atlas": "ui",        "content": false, "id_prefix": "ui_", "kind": "prop", "dirs": 1, "states": ["normal"], "first_load": true, "frame_px": null, "doc": "иконки и элементы интерфейса U03+U01 (id свободные с префиксом ui_)"}
+ }
+}

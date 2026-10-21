@@ -1,15 +1,10 @@
 #!/usr/bin/env python3
-"""Generate neutral placeholder sprites (flat colour blocks) + art/manifest.json from content/*.yaml.
+"""Заглушки (ART-0): нейтральные цветные блоки для сущностей, у которых ещё нет модели. Детерминированно, только stdlib.
 
-Deterministic, stdlib + PyYAML only. Style-agnostic on purpose (OQ-2: style not chosen yet).
-Run:  python3 art/tools/gen_placeholders.py        (rewrites art/atlases/*, art/manifest.json)
+Библиотека для art/tools/build_art.py (раньше gen_placeholders.py: реестр сущностей переехал в artlib.py, упаковка — в build_art.py).
+Любое изменение этого файла пересобирает заглушки всех категорий (он входит в хэш сборки).
 """
-import colorsys, json, os, struct, zlib
-import yaml
-
-ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
-ART = os.path.join(ROOT, "art")
-load = lambda n: yaml.safe_load(open(os.path.join(ROOT, "content", n), encoding="utf-8"))
+import colorsys, struct, zlib
 
 # ---- size spec (ASSUMPTION: no size spec exists yet; see PR description) --------------------
 TILE_W, TILE_H = 64, 32          # iso tile diamond, px
@@ -151,116 +146,27 @@ def unit(cls, col, scale=1.0, frame=0, hero=False):
     return im
 
 
-# ---- content -> entities -------------------------------------------------------------------
-def entities():
-    """[(id, atlas, kind, params)] for every entity that needs a sprite."""
-    T, D, B, H = load("troops.yaml"), load("defences.yaml"), load("buildings.yaml"), load("heroes.yaml")
-    out = []
-    for sect in ("troops", "vehicles", "ships"):
-        for u in T[sect]:
-            out.append((u["id"], "units", "unit", {"cls": u["class"], "hp": u["hp"]}))
-    for s in T["spells"]:
-        out.append((s["id"], "spells", "spell", {}))
-    for h in H["heroes"]:
-        out.append((h["id"], "heroes", "hero", {}))
-    for sect in ("passive_obstacles", "active"):
-        for d in D[sect]:
-            out.append((d["id"], "defences", "building",
-                        {"size": d["size"], "passive": sect != "active", "hp": d["hp"]}))
-    for sect in ("core", "resources", "military"):
-        for b in B[sect]:
-            out.append((b["id"], "buildings", "building", {"size": b["size"]}))
-    for d in B["decor"]:
-        out.append((d["id"], "decor", "building", {"size": [1, 1], "decor": True}))
-    for o in B["obstacles"]:
-        out.append((o["id"], "decor", "building", {"size": [1, 1], "obstacle": True}))
-    return out
-
-
-def render(eid, kind, p, idx):
-    """-> (frames[Img], anchor(x, y), fps)"""
-    col = hsv(hue_for(idx), .55, .85)
+def render(e):
+    """Сущность из artlib.entities() -> (frames[Img], anchor(x, y), fps)."""
+    eid, kind = e["id"], e["category"]
+    col = hsv(hue_for(e["idx"]), .55, .85)
     foot = (UNIT_FRAME // 2, UNIT_FRAME - 5)
-    if kind == "hero":
+    if kind == "heroes":
         return [unit("INF", col, 1.25, f, hero=True) for f in range(UNIT_FRAMES)], foot, UNIT_FPS
-    if kind == "unit":
-        scale = 1.0 + min(p["hp"], 1000) / 2500   # tougher = visibly bigger silhouette
-        return [unit(p["cls"], col, scale, f) for f in range(UNIT_FRAMES)], foot, UNIT_FPS
-    if kind == "spell":
+    if kind in ("units", "vehicles", "ships"):
+        scale = 1.0 + min(e["hp"], 1000) / 2500   # tougher = visibly bigger silhouette
+        return [unit(e["cls"], col, scale, f) for f in range(UNIT_FRAMES)], foot, UNIT_FPS
+    if kind == "spells_fx":
         return [unit("SPELL", col)], (UNIT_FRAME // 2, UNIT_FRAME // 2), 0
-    w, h = p["size"]
+    w, h = e["size"]
+    if e.get("decor") or e.get("obstacle"):
+        w, h = 1, 1   # ART-0: заглушки декора/препятствий всегда 1x1 (результат сборки не менялся); у настоящих моделей футпринт из content
     if eid == "b_hq":
         col = hsv(.12, .75, .9)
-    if p.get("passive"):
-        im, a = building(w, h, col, 6 if p["hp"] < 100 else 12, low=True)
-    elif p.get("decor") or p.get("obstacle"):
-        im, a = building(w, h, hsv(.33 if p.get("decor") else .08, .35, .7), 10 if p.get("decor") else 8, low=True)
+    if e.get("passive"):
+        im, a = building(w, h, col, 6 if e["hp"] < 100 else 12, low=True)
+    elif e.get("decor") or e.get("obstacle"):
+        im, a = building(w, h, hsv(.33 if e.get("decor") else .08, .35, .7), 10 if e.get("decor") else 8, low=True)
     else:
         im, a = building(w, h, col, 14 + 8 * max(w, h))
     return [im], a, 0
-
-
-def pack(frames, maxw=1024):
-    """Shelf packing. frames: [(key, Img)] -> (atlas Img, {key: (x, y, w, h)})."""
-    x = y = rowh = 0
-    place = {}
-    for k, im in sorted(frames, key=lambda f: (-f[1].h, f[0])):
-        if x + im.w + 1 > maxw:
-            x, y, rowh = 0, y + rowh + 1, 0
-        place[k] = (x, y, im.w, im.h)
-        x += im.w + 1
-        rowh = max(rowh, im.h)
-    H = 1
-    while H < y + rowh:
-        H *= 2
-    atlas = Img(maxw, H)
-    for k, im in frames:
-        atlas.blit(im, place[k][0], place[k][1])
-    return atlas, place
-
-
-def main():
-    ents = entities()
-    ids = [e[0] for e in ents]
-    assert len(ids) == len(set(ids)), "duplicate ids in content"
-    by_atlas = {}
-    for i, (eid, atlas, kind, p) in enumerate(ents):
-        frames, anchor, fps = render(eid, kind, p, i)
-        by_atlas.setdefault(atlas, []).append((eid, frames, anchor, fps))
-    os.makedirs(os.path.join(ART, "atlases"), exist_ok=True)
-    manifest = {
-        "schema": 1, "placeholder": True,
-        "spec": {"tile_px": [TILE_W, TILE_H], "unit_frame_px": UNIT_FRAME,
-                 "building_px": "w=(fw+fh)*32, h=(fw+fh)*16+height; anchor = footprint centre on ground"},
-        "atlases": {}, "sprites": [],
-    }
-    for atlas, items in sorted(by_atlas.items()):
-        flat = [(f"{eid}_{n}", im) for eid, frames, _, _ in items for n, im in enumerate(frames)]
-        img, place = pack(flat)
-        fn = f"atlases/{atlas}.png"
-        with open(os.path.join(ART, fn), "wb") as f:
-            f.write(img.png())
-        tp = {"frames": {k: {"frame": dict(zip("xywh", v)), "rotated": False, "trimmed": False,
-                             "spriteSourceSize": {"x": 0, "y": 0, "w": v[2], "h": v[3]},
-                             "sourceSize": {"w": v[2], "h": v[3]}} for k, v in sorted(place.items())},
-              "meta": {"image": f"{atlas}.png", "format": "RGBA8888",
-                       "size": {"w": img.w, "h": img.h}, "scale": "1"}}
-        with open(os.path.join(ART, f"atlases/{atlas}.json"), "w", newline="\n") as f:
-            json.dump(tp, f, indent=1, sort_keys=True)
-            f.write("\n")
-        manifest["atlases"][atlas] = {"image": fn, "data": f"atlases/{atlas}.json", "size": [img.w, img.h]}
-        for eid, frames, anchor, fps in items:
-            manifest["sprites"].append({
-                "id": eid, "atlas": atlas,
-                "frames": [{"name": f"{eid}_{n}", **dict(zip("xywh", place[f"{eid}_{n}"]))}
-                           for n in range(len(frames))],
-                "anchors": {"ground": {"x": anchor[0], "y": anchor[1]}}, "fps": fps})
-    manifest["sprites"].sort(key=lambda s: s["id"])
-    with open(os.path.join(ART, "manifest.json"), "w", encoding="utf-8", newline="\n") as f:
-        json.dump(manifest, f, indent=1, sort_keys=True)
-        f.write("\n")
-    print(f"{len(manifest['sprites'])} sprites, {len(by_atlas)} atlases")
-
-
-if __name__ == "__main__":
-    main()
