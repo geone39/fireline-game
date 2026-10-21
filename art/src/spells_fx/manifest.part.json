@@ -1,0 +1,159 @@
+{
+ "atlases": {
+  "spells": {
+   "data": "atlases/spells.json",
+   "image": "atlases/spells.png",
+   "size": [
+    1024,
+    64
+   ],
+   "webp": "atlases/spells.webp"
+  }
+ },
+ "category": "spells_fx",
+ "lock": {
+  "c_adrenaline": {
+   "renderer": "placeholder"
+  },
+  "c_airstrike": {
+   "renderer": "placeholder"
+  },
+  "c_breach": {
+   "renderer": "placeholder"
+  },
+  "c_emp": {
+   "renderer": "placeholder"
+  },
+  "c_medkit": {
+   "renderer": "placeholder"
+  },
+  "c_smoke": {
+   "renderer": "placeholder"
+  }
+ },
+ "px_hash": {
+  "spells": "301d7815165c514e"
+ },
+ "sprites": [
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 24
+    }
+   },
+   "atlas": "spells",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 48,
+     "name": "c_adrenaline_0",
+     "w": 48,
+     "x": 0,
+     "y": 0
+    }
+   ],
+   "id": "c_adrenaline"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 24
+    }
+   },
+   "atlas": "spells",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 48,
+     "name": "c_airstrike_0",
+     "w": 48,
+     "x": 49,
+     "y": 0
+    }
+   ],
+   "id": "c_airstrike"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 24
+    }
+   },
+   "atlas": "spells",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 48,
+     "name": "c_breach_0",
+     "w": 48,
+     "x": 98,
+     "y": 0
+    }
+   ],
+   "id": "c_breach"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 24
+    }
+   },
+   "atlas": "spells",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 48,
+     "name": "c_emp_0",
+     "w": 48,
+     "x": 147,
+     "y": 0
+    }
+   ],
+   "id": "c_emp"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 24
+    }
+   },
+   "atlas": "spells",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 48,
+     "name": "c_medkit_0",
+     "w": 48,
+     "x": 196,
+     "y": 0
+    }
+   ],
+   "id": "c_medkit"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 24
+    }
+   },
+   "atlas": "spells",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 48,
+     "name": "c_smoke_0",
+     "w": 48,
+     "x": 245,
+     "y": 0
+    }
+   ],
+   "id": "c_smoke"
+  }
+ ]
+}

@@ -33,11 +33,8 @@ node art/spike/build_preview.mjs                # пересобрать preview
 В `*/out/`: атласы `spike_{proc|blender}_{units|buildings}.png` + TexturePacker-JSON, `manifest.json` (ключи `{id, atlas, frames[], anchors, fps}` как в контракте `art` 0.1; атласы названы с префиксом `spike_*`, чтобы не пересекаться с реальными), `timings.json`.
 Контракт 0.1 не знает про направления и анимации, поэтому они закодированы в имени кадра: `u_rifleman_{anim}_d{dir}_{n}` (dir 0 = лицом к камере, далее по часовой стрелке на экране), а метаданные — в служебном ключе `_anims` манифеста спайка (не входит в контракт). Предложение расширить контракт — OQ-ART1-1 в `docs/open-questions.md`.
 
-## Показать в клиенте (временная подмена заглушек)
+## Показать в клиенте
 
-```powershell
-python art/tools/merge_spike.py blender          # показать, что заменится (ничего не пишет)
-python art/tools/merge_spike.py blender --write  # подменить b_hq, b_cash_mine, u_rifleman в art/manifest.json
-python art/tools/gen_placeholders.py             # откат: вернуть заглушки
-```
-Атласы подтягиваются по путям `spike/<path>/out/*.png` относительно `art/`. Клиент пока не умеет выбирать анимацию/направление (кадры идут подряд) — отдельная dev-страница принадлежит client-engine, запрос — OQ-ART1-4. `art/manifest.json` в этом PR **не изменён**.
+С ART-2 `merge_spike.py` и `gen_placeholders.py` заменены пайплайном (`art/README.md`). Спайк заморожен как запись ART-1; его три ассета лежат в `art/src/{buildings,units}/models.json` со статусом `wip`. Подменить заглушки в `art/manifest.json`: поставить `"status": "done"` и `python art/tools/build_art.py --id b_hq,b_cash_mine,u_rifleman`; откат — вернуть `wip` и пересобрать.
+
+(Ниже — исторические замечания ART-1.) Атласы подтягиваются по путям `spike/<path>/out/*.png` относительно `art/`. Клиент пока не умеет выбирать анимацию/направление (кадры идут подряд) — отдельная dev-страница принадлежит client-engine, запрос — OQ-ART1-4. `art/manifest.json` в этом PR **не изменён**.

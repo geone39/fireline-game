@@ -1,0 +1,4 @@
+{
+ "_doc": "Модели категории ships (формат: art/src/README.md). Нет модели у id из content = заглушка. status: wip (рендерится только --preview) | done (идёт в art/manifest.json).",
+ "models": []
+}

@@ -1,0 +1,141 @@
+{
+ "atlases": {
+  "heroes": {
+   "data": "atlases/heroes.json",
+   "image": "atlases/heroes.png",
+   "size": [
+    1024,
+    64
+   ],
+   "webp": "atlases/heroes.webp"
+  }
+ },
+ "category": "heroes",
+ "lock": {
+  "h_commander": {
+   "renderer": "placeholder"
+  },
+  "h_engineer": {
+   "renderer": "placeholder"
+  },
+  "h_ghost": {
+   "renderer": "placeholder"
+  },
+  "h_warden": {
+   "renderer": "placeholder"
+  }
+ },
+ "px_hash": {
+  "heroes": "39fa792f1f401b1e"
+ },
+ "sprites": [
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "heroes",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "h_commander_0",
+     "w": 48,
+     "x": 0,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "h_commander_1",
+     "w": 48,
+     "x": 49,
+     "y": 0
+    }
+   ],
+   "id": "h_commander"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "heroes",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "h_engineer_0",
+     "w": 48,
+     "x": 98,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "h_engineer_1",
+     "w": 48,
+     "x": 147,
+     "y": 0
+    }
+   ],
+   "id": "h_engineer"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "heroes",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "h_ghost_0",
+     "w": 48,
+     "x": 196,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "h_ghost_1",
+     "w": 48,
+     "x": 245,
+     "y": 0
+    }
+   ],
+   "id": "h_ghost"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 24,
+     "y": 43
+    }
+   },
+   "atlas": "heroes",
+   "fps": 6,
+   "frames": [
+    {
+     "h": 48,
+     "name": "h_warden_0",
+     "w": 48,
+     "x": 294,
+     "y": 0
+    },
+    {
+     "h": 48,
+     "name": "h_warden_1",
+     "w": 48,
+     "x": 343,
+     "y": 0
+    }
+   ],
+   "id": "h_warden"
+  }
+ ]
+}

@@ -1,0 +1,389 @@
+{
+ "atlases": {
+  "defences": {
+   "data": "atlases/defences.json",
+   "image": "atlases/defences.png",
+   "size": [
+    1024,
+    256
+   ],
+   "webp": "atlases/defences.webp"
+  }
+ },
+ "category": "defences",
+ "lock": {
+  "d_aa": {
+   "renderer": "placeholder"
+  },
+  "d_at_cannon": {
+   "renderer": "placeholder"
+  },
+  "d_bunker": {
+   "renderer": "placeholder"
+  },
+  "d_coastal": {
+   "renderer": "placeholder"
+  },
+  "d_fence": {
+   "renderer": "placeholder"
+  },
+  "d_flame_trap": {
+   "renderer": "placeholder"
+  },
+  "d_jammer": {
+   "renderer": "placeholder"
+  },
+  "d_mg_nest": {
+   "renderer": "placeholder"
+  },
+  "d_mine": {
+   "renderer": "placeholder"
+  },
+  "d_mortar": {
+   "renderer": "placeholder"
+  },
+  "d_sniper_tower": {
+   "renderer": "placeholder"
+  },
+  "d_spring_trap": {
+   "renderer": "placeholder"
+  },
+  "d_tank_trap": {
+   "renderer": "placeholder"
+  },
+  "d_tesla": {
+   "renderer": "placeholder"
+  },
+  "d_wall": {
+   "renderer": "placeholder"
+  },
+  "d_wire": {
+   "renderer": "placeholder"
+  }
+ },
+ "px_hash": {
+  "defences": "cfb6ea9e83129c76"
+ },
+ "sprites": [
+  {
+   "anchors": {
+    "ground": {
+     "x": 64,
+     "y": 63
+    }
+   },
+   "atlas": "defences",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 96,
+     "name": "d_aa_0",
+     "w": 128,
+     "x": 579,
+     "y": 0
+    }
+   ],
+   "id": "d_aa"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 64,
+     "y": 63
+    }
+   },
+   "atlas": "defences",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 96,
+     "name": "d_at_cannon_0",
+     "w": 128,
+     "x": 708,
+     "y": 0
+    }
+   ],
+   "id": "d_at_cannon"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 96,
+     "y": 87
+    }
+   },
+   "atlas": "defences",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 136,
+     "name": "d_bunker_0",
+     "w": 192,
+     "x": 0,
+     "y": 0
+    }
+   ],
+   "id": "d_bunker"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 96,
+     "y": 87
+    }
+   },
+   "atlas": "defences",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 136,
+     "name": "d_coastal_0",
+     "w": 192,
+     "x": 193,
+     "y": 0
+    }
+   ],
+   "id": "d_coastal"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 32,
+     "y": 29
+    }
+   },
+   "atlas": "defences",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 46,
+     "name": "d_fence_0",
+     "w": 64,
+     "x": 516,
+     "y": 137
+    }
+   ],
+   "id": "d_fence"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 64,
+     "y": 63
+    }
+   },
+   "atlas": "defences",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 96,
+     "name": "d_flame_trap_0",
+     "w": 128,
+     "x": 837,
+     "y": 0
+    }
+   ],
+   "id": "d_flame_trap"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 64,
+     "y": 63
+    }
+   },
+   "atlas": "defences",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 96,
+     "name": "d_jammer_0",
+     "w": 128,
+     "x": 0,
+     "y": 137
+    }
+   ],
+   "id": "d_jammer"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 64,
+     "y": 63
+    }
+   },
+   "atlas": "defences",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 96,
+     "name": "d_mg_nest_0",
+     "w": 128,
+     "x": 129,
+     "y": 137
+    }
+   ],
+   "id": "d_mg_nest"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 32,
+     "y": 23
+    }
+   },
+   "atlas": "defences",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 40,
+     "name": "d_mine_0",
+     "w": 64,
+     "x": 711,
+     "y": 137
+    }
+   ],
+   "id": "d_mine"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 96,
+     "y": 87
+    }
+   },
+   "atlas": "defences",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 136,
+     "name": "d_mortar_0",
+     "w": 192,
+     "x": 386,
+     "y": 0
+    }
+   ],
+   "id": "d_mortar"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 64,
+     "y": 63
+    }
+   },
+   "atlas": "defences",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 96,
+     "name": "d_sniper_tower_0",
+     "w": 128,
+     "x": 258,
+     "y": 137
+    }
+   ],
+   "id": "d_sniper_tower"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 32,
+     "y": 23
+    }
+   },
+   "atlas": "defences",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 40,
+     "name": "d_spring_trap_0",
+     "w": 64,
+     "x": 776,
+     "y": 137
+    }
+   ],
+   "id": "d_spring_trap"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 32,
+     "y": 29
+    }
+   },
+   "atlas": "defences",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 46,
+     "name": "d_tank_trap_0",
+     "w": 64,
+     "x": 581,
+     "y": 137
+    }
+   ],
+   "id": "d_tank_trap"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 64,
+     "y": 63
+    }
+   },
+   "atlas": "defences",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 96,
+     "name": "d_tesla_0",
+     "w": 128,
+     "x": 387,
+     "y": 137
+    }
+   ],
+   "id": "d_tesla"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 32,
+     "y": 29
+    }
+   },
+   "atlas": "defences",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 46,
+     "name": "d_wall_0",
+     "w": 64,
+     "x": 646,
+     "y": 137
+    }
+   ],
+   "id": "d_wall"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 32,
+     "y": 23
+    }
+   },
+   "atlas": "defences",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 40,
+     "name": "d_wire_0",
+     "w": 64,
+     "x": 841,
+     "y": 137
+    }
+   ],
+   "id": "d_wire"
+  }
+ ]
+}

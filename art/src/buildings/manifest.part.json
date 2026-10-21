@@ -1,0 +1,435 @@
+{
+ "atlases": {
+  "buildings": {
+   "data": "atlases/buildings.json",
+   "image": "atlases/buildings.png",
+   "size": [
+    1024,
+    1024
+   ],
+   "webp": "atlases/buildings.webp"
+  }
+ },
+ "category": "buildings",
+ "lock": {
+  "b_alloy_depot": {
+   "renderer": "placeholder"
+  },
+  "b_alloy_foundry": {
+   "renderer": "placeholder"
+  },
+  "b_barracks": {
+   "renderer": "placeholder"
+  },
+  "b_camp": {
+   "renderer": "placeholder"
+  },
+  "b_cash_mine": {
+   "renderer": "placeholder"
+  },
+  "b_command": {
+   "renderer": "placeholder"
+  },
+  "b_defense_barracks": {
+   "renderer": "placeholder"
+  },
+  "b_factory": {
+   "renderer": "placeholder"
+  },
+  "b_fuel_refinery": {
+   "renderer": "placeholder"
+  },
+  "b_fuel_tank": {
+   "renderer": "placeholder"
+  },
+  "b_garage": {
+   "renderer": "placeholder"
+  },
+  "b_hq": {
+   "renderer": "placeholder"
+  },
+  "b_laboratory": {
+   "renderer": "placeholder"
+  },
+  "b_market": {
+   "renderer": "placeholder"
+  },
+  "b_radar": {
+   "renderer": "placeholder"
+  },
+  "b_shipyard": {
+   "renderer": "placeholder"
+  },
+  "b_support_bay": {
+   "renderer": "placeholder"
+  },
+  "b_vault": {
+   "renderer": "placeholder"
+  }
+ },
+ "px_hash": {
+  "buildings": "e18d47053c1b4e82"
+ },
+ "sprites": [
+  {
+   "anchors": {
+    "ground": {
+     "x": 64,
+     "y": 63
+    }
+   },
+   "atlas": "buildings",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 96,
+     "name": "b_alloy_depot_0",
+     "w": 128,
+     "x": 772,
+     "y": 491
+    }
+   ],
+   "id": "b_alloy_depot"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 96,
+     "y": 87
+    }
+   },
+   "atlas": "buildings",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 136,
+     "name": "b_alloy_foundry_0",
+     "w": 192,
+     "x": 514,
+     "y": 177
+    }
+   ],
+   "id": "b_alloy_foundry"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 96,
+     "y": 87
+    }
+   },
+   "atlas": "buildings",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 136,
+     "name": "b_barracks_0",
+     "w": 192,
+     "x": 707,
+     "y": 177
+    }
+   ],
+   "id": "b_barracks"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 128,
+     "y": 111
+    }
+   },
+   "atlas": "buildings",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 176,
+     "name": "b_camp_0",
+     "w": 256,
+     "x": 0,
+     "y": 0
+    }
+   ],
+   "id": "b_camp"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 96,
+     "y": 87
+    }
+   },
+   "atlas": "buildings",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 136,
+     "name": "b_cash_mine_0",
+     "w": 192,
+     "x": 0,
+     "y": 354
+    }
+   ],
+   "id": "b_cash_mine"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 96,
+     "y": 87
+    }
+   },
+   "atlas": "buildings",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 136,
+     "name": "b_command_0",
+     "w": 192,
+     "x": 193,
+     "y": 354
+    }
+   ],
+   "id": "b_command"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 96,
+     "y": 87
+    }
+   },
+   "atlas": "buildings",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 136,
+     "name": "b_defense_barracks_0",
+     "w": 192,
+     "x": 386,
+     "y": 354
+    }
+   ],
+   "id": "b_defense_barracks"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 128,
+     "y": 111
+    }
+   },
+   "atlas": "buildings",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 176,
+     "name": "b_factory_0",
+     "w": 256,
+     "x": 257,
+     "y": 0
+    }
+   ],
+   "id": "b_factory"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 96,
+     "y": 87
+    }
+   },
+   "atlas": "buildings",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 136,
+     "name": "b_fuel_refinery_0",
+     "w": 192,
+     "x": 579,
+     "y": 354
+    }
+   ],
+   "id": "b_fuel_refinery"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 96,
+     "y": 87
+    }
+   },
+   "atlas": "buildings",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 136,
+     "name": "b_fuel_tank_0",
+     "w": 192,
+     "x": 772,
+     "y": 354
+    }
+   ],
+   "id": "b_fuel_tank"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 96,
+     "y": 87
+    }
+   },
+   "atlas": "buildings",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 136,
+     "name": "b_garage_0",
+     "w": 192,
+     "x": 0,
+     "y": 491
+    }
+   ],
+   "id": "b_garage"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 128,
+     "y": 111
+    }
+   },
+   "atlas": "buildings",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 176,
+     "name": "b_hq_0",
+     "w": 256,
+     "x": 514,
+     "y": 0
+    }
+   ],
+   "id": "b_hq"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 128,
+     "y": 111
+    }
+   },
+   "atlas": "buildings",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 176,
+     "name": "b_laboratory_0",
+     "w": 256,
+     "x": 0,
+     "y": 177
+    }
+   ],
+   "id": "b_laboratory"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 96,
+     "y": 87
+    }
+   },
+   "atlas": "buildings",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 136,
+     "name": "b_market_0",
+     "w": 192,
+     "x": 193,
+     "y": 491
+    }
+   ],
+   "id": "b_market"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 64,
+     "y": 63
+    }
+   },
+   "atlas": "buildings",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 96,
+     "name": "b_radar_0",
+     "w": 128,
+     "x": 0,
+     "y": 628
+    }
+   ],
+   "id": "b_radar"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 128,
+     "y": 111
+    }
+   },
+   "atlas": "buildings",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 176,
+     "name": "b_shipyard_0",
+     "w": 256,
+     "x": 257,
+     "y": 177
+    }
+   ],
+   "id": "b_shipyard"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 96,
+     "y": 87
+    }
+   },
+   "atlas": "buildings",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 136,
+     "name": "b_support_bay_0",
+     "w": 192,
+     "x": 386,
+     "y": 491
+    }
+   ],
+   "id": "b_support_bay"
+  },
+  {
+   "anchors": {
+    "ground": {
+     "x": 96,
+     "y": 87
+    }
+   },
+   "atlas": "buildings",
+   "fps": 0,
+   "frames": [
+    {
+     "h": 136,
+     "name": "b_vault_0",
+     "w": 192,
+     "x": 579,
+     "y": 491
+    }
+   ],
+   "id": "b_vault"
+  }
+ ]
+}
