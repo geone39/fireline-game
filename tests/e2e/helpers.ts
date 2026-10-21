@@ -1,6 +1,7 @@
 // Общие помощники e2e: API-клиент для проверок/подготовки и доступ к канвасу базы по тайловым координатам.
 import { expect, type Locator, type Page, type TestInfo } from '@playwright/test';
 import { randomUUID } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 
 export interface BaseItem {
   uid: string;
@@ -21,6 +22,9 @@ export interface Me {
   profile: { id: string; nickname: string; hq_level: number };
   wallets: Record<string, number>;
   builders: { id: string; busy_until: string | null }[];
+  /** SERVER-5 (docs/03-api.md): на main до слияния #133 полей может не быть. */
+  army?: { pools: Record<string, { used: number; capacity: number }> };
+  lab?: { level: number; active: { node_id: string; finish_at: number } | null };
 }
 
 const API = process.env.E2E_API_URL ?? process.env.E2E_BASE_URL ?? 'http://localhost:5173';
@@ -115,4 +119,26 @@ export async function reloadGame(page: Page): Promise<void> {
   await page.reload();
   await expect(page.getByTestId('hud-profile')).toBeVisible();
   await expect(wallet(page, 'cash')).toBeVisible();
+}
+
+const CONTENT = new URL('../../content/', import.meta.url);
+
+/** Типы зданий стартовой раскладки из content/start_layout.yaml (если файла/ключей нет — null: сервер ещё строит базу сам). */
+export function startLayoutTypes(): string[] | null {
+  try {
+    const text = readFileSync(new URL('start_layout.yaml', CONTENT), 'utf8');
+    const types = [...text.matchAll(/^\s*-\s*\{[^}]*type:\s*([\w]+)/gm)].map((m) => m[1]!);
+    return types.length > 0 ? types : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Одноразовый грант кошелька нового гостя из content/economy.yaml (start_grant: cash, fuel). */
+export function startGrant(): { cash: number; fuel: number } {
+  const text = readFileSync(new URL('economy.yaml', CONTENT), 'utf8');
+  const start = text.search(/^start_grant:/m);
+  const block = start < 0 ? '' : text.slice(start, text.indexOf('\n#', start) < 0 ? undefined : text.indexOf('\n#', start));
+  const get = (k: string): number => Number(new RegExp('^\\s+' + k + ':\\s*(\\d+)', 'm').exec(block)?.[1]);
+  return { cash: get('cash'), fuel: get('fuel') };
 }
